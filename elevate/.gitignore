@@ -1,7 +1,15 @@
+# Python bytecode files
 *.pyc
-__pycache__/
-db.sqlite3
+*.pyo
+__pycache__
+
+# Django specific
+*.sqlite3
+/static/
 /media/
-/staticfiles/
-env/
+
+# Secret key
+.env
+
+# Environment files
 .env
