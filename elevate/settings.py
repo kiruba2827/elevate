@@ -55,7 +55,7 @@ ROOT_URLCONF = 'elevate.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': ['templates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -126,3 +126,17 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+
+
+# settings.py
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'  # You can use other email providers
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = 'kalaimani2827@gmail.com'  # Your email
+EMAIL_HOST_PASSWORD = 'hrjw hqmg lgvt asaj'  # Your email password or app password
+DEFAULT_FROM_EMAIL = 'kalaimani2827@gmail.com'
+EMAIL_USE_SSL = False
+
+
