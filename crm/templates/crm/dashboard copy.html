@@ -1,72 +1,301 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    {% load static %}
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Welcome to C-DAC</title>
-
+    <title>Admin Panel</title>
     <!-- Bootstrap CSS -->
     <link
-      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css"
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
       rel="stylesheet"
     />
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+      
+      .status-approved {
+        color: green;
+        font-weight: bold;
+      }
+      .status-pending {
+        color: orange;
+        font-weight: bold;
+      }
+      .status-rejected {
+        color: red;
+        font-weight: bold;
+      }
 
-    <!-- Custom CSS (for additional styles) -->
-    <link rel="stylesheet" href="{% static 'css/styles3.css' %}" />
+      .btn-icon {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 45px;
+        height: 45px;
+        border-radius: 50%;
+        transition: all 0.3s;
+        background-color: #007bff;
+        color: #fff;
+      }
 
-    <!-- jQuery (optional) -->
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+      .btn-icon:hover {
+        width: 125px;
+        border-radius: 40px;
+      }
+      .btn-icon span {
+        margin-left: 10px;
+        opacity: 0;
+        transition: opacity 0.3s;
+      }
+      .btn-icon:hover span {
+        opacity: 1;
+      }
 
-    <!-- Bootstrap JS -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+      .chart-container {
+        margin-top: 50px;
+      }
+    </style>
   </head>
   <body>
-    <div class="container mt-5">
-      <!-- Welcome message -->
-      <h1 class="text-center mb-4">Welcome to C-DAC</h1>
-
-      <!-- User Dashboard -->
-      <h2 class="text-center mb-4">User Dashboard</h2>
-
-      {% if user.is_superuser %}
-      <!-- Table of Users -->
-      <div class="table-responsive">
-        <table class="table table-striped table-bordered">
-          <thead>
-            <tr>
-              <th>Username</th>
-              <th>Age</th>
-              <th>Gender</th>
-              <th>Date of Birth</th>
-            </tr>
-          </thead>
-          <tbody>
-            {% for user_profile in users %}
-            <tr>
-              <td>{{ user_profile.user.username }}</td>
-              <td>{{ user_profile.age }}</td>
-              <td>{{ user_profile.gender }}</td>
-              <td>{{ user_profile.date_of_birth }}</td>
-            </tr>
-            {% endfor %}
-          </tbody>
-        </table>
-        <!-- Logout Button -->
-        <div class="text-center mb-4">
-          <a href="{% url 'user-logout' %}" class="btn btn-danger"
-            >Logout Here</a
-          >
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+      <div class="container">
+        <a class="navbar-brand" href="#">Admin Panel</a>
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarNav"
+          aria-controls="navbarNav"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+          <ul class="navbar-nav ms-auto">
+            <li class="nav-item">
+              <a class="nav-link btn btn-outline-light" href="#">Dashboard</a>
+            </li>
+            <li class="nav-item">
+              <a
+                class="nav-link btn btn-outline-danger text-light"
+                href="{% url 'logout' %}"
+              >
+                Logout
+              </a>
+            </li>
+          </ul>
         </div>
       </div>
-      {% else %}
-      <p class="text-center text-danger">
-        You do not have permission to view this page.
-      </p>
-      {% endif %}
-    </div>
+    </nav>
 
-    <!-- Optional Custom Script -->
-    <script src="{% static 'js/script3.js' %}"></script>
+    <!-- Main Content -->
+    <div class="container my-5">
+      <h1 class="text-center mb-4">Admin Dashboard</h1>
+
+      <!-- Dashboard Summary -->
+      <div class="row mb-5">
+        <div class="col-md-3">
+          <div class="card bg-info text-white">
+            <div class="card-body">
+              <h5 class="card-title">Total Users</h5>
+              <p class="card-text">{{ total_users }}</p>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-3">
+          <div class="card bg-success text-white">
+            <div class="card-body">
+              <h5 class="card-title">Approved Users</h5>
+              <p class="card-text">{{ approved_users }}</p>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-3">
+          <div class="card bg-warning text-white">
+            <div class="card-body">
+              <h5 class="card-title">Pending Users</h5>
+              <p class="card-text">{{ pending_users }}</p>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-3">
+          <div class="card bg-danger text-white">
+            <div class="card-body">
+              <h5 class="card-title">Rejected Users</h5>
+              <p class="card-text">{{ rejected_users }}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Analytics Graph -->
+      <div class="chart-container">
+        <h3 class="text-center">User Statistics Over Time</h3>
+        <canvas id="userAnalytics"></canvas>
+      </div>
+
+      <!-- Search Bar -->
+<div class="row mb-3">
+  <div class="col-md-6 mx-auto">
+    <input
+      type="text"
+      id="searchBar"
+      class="form-control"
+      placeholder="Search users by username or email"
+    />
+  </div>
+</div>
+
+<!-- User Table -->
+<div class="row">
+  <div class="col-12">
+    <table class="table table-bordered table-hover">
+      <thead class="table-dark">
+        <tr>
+          <th>Username</th>
+          <th>Email</th>
+          <th>Gender</th>
+          <th>Date of Birth</th>
+          <th>Status</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody id="userTableBody">
+        {% for user in users %}
+        <tr>
+          <td>{{ user.user.username }}</td>
+          <td>{{ user.user.email }}</td>
+          <td>{{ user.gender }}</td>
+          <td>{{ user.date_of_birth }}</td>
+          <td>
+            <span
+              class="{% if user.is_approved %} status-approved {% elif user.is_rejected %} status-rejected {% else %} status-pending {% endif %}"
+            >
+              {% if user.is_approved %} Approved {% elif user.is_rejected %} Rejected {% else %} Pending {% endif %}
+            </span>
+          </td>
+          <td>
+            <div class="d-flex gap-2">
+              <a
+                href="{% url 'approve-user' user.user.id %}"
+                class="btn btn-success btn-sm"
+                >Approve</a
+              >
+              <a
+                href="{% url 'reject-user' user.user.id %}"
+                class="btn btn-danger btn-sm"
+                >Reject</a
+              >
+            </div>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+
+    <!-- Bootstrap JS Bundle -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+      const searchBar = document.getElementById("searchBar");
+  const tableBody = document.getElementById("userTableBody");
+  const rows = tableBody.getElementsByTagName("tr");
+
+  searchBar.addEventListener("keyup", function () {
+    const searchValue = searchBar.value.toLowerCase();
+
+    for (let row of rows) {
+      const username = row.cells[0].textContent.toLowerCase(); // Username column
+      const email = row.cells[1].textContent.toLowerCase(); // Email column
+
+      // Show row if username or email matches the search value
+      if (username.includes(searchValue) || email.includes(searchValue)) {
+        row.style.display = "";
+      } else {
+        row.style.display = "none";
+      }
+    }
+  });
+   // Check if the dynamic data is being passed correctly
+   console.log("Labels:", {{ labels|safe }});
+   console.log("Approved Users:", {{ approved_users_weekly|safe }});
+   console.log("Rejected Users:", {{ rejected_users_weekly|safe }});
+   console.log("Pending Users:", {{ pending_users_weekly|safe }});
+ 
+   // Dynamic data from Django
+   const labels = {{ labels|safe }};
+   const approvedData = {{ approved_users_weekly|safe }};
+   const rejectedData = {{ rejected_users_weekly|safe }};
+   const pendingData = {{ pending_users_weekly|safe }};
+ 
+   // Get the canvas element for the chart
+   const ctx = document.getElementById("userAnalytics").getContext("2d");
+ 
+   // Create the horizontal bar chart
+   const userAnalyticsChart = new Chart(ctx, {
+     type: "bar",  // Set the chart type to 'bar' for horizontal bars
+     data: {
+       labels: labels,  // X-axis labels (weeks)
+       datasets: [
+         {
+           label: "Approved Users",
+           data: approvedData,  // Data for approved users
+           backgroundColor: "rgba(75, 192, 192, 0.6)",  // Bar color for approved users
+           borderColor: "rgba(75, 192, 192, 1)",  // Border color for bars
+           borderWidth: 1,  // Border width for bars
+         },
+         {
+           label: "Rejected Users",
+           data: rejectedData,  // Data for rejected users
+           backgroundColor: "rgba(255, 99, 132, 0.6)",  // Bar color for rejected users
+           borderColor: "rgba(255, 99, 132, 1)",  // Border color for bars
+           borderWidth: 1,  // Border width for bars
+         },
+         {
+           label: "Pending Users",
+           data: pendingData,  // Data for pending users
+           backgroundColor: "rgba(255, 206, 86, 0.6)",  // Bar color for pending users
+           borderColor: "rgba(255, 206, 86, 1)",  // Border color for bars
+           borderWidth: 1,  // Border width for bars
+         },
+       ],
+     },
+     options: {
+       responsive: true,  // Ensure the chart is responsive
+       indexAxis: 'y',  // Change bars to horizontal (default is vertical)
+       plugins: {
+         legend: {
+           position: "top",  // Position of the legend
+         },
+         title: {
+           display: true,  // Display the title
+           text: "User Approval Statistics Over Time",  // Chart title
+         },
+         tooltip: {
+           mode: "index",  // Show tooltips for all datasets on hover
+           intersect: false,  // Allow tooltip to show when not directly on a data point
+         },
+       },
+       interaction: {
+         mode: "nearest",  // Tooltip appears near the closest point
+         axis: "y",  // Only interact with the y-axis (time)
+         intersect: false,  // Tooltip will show even if not on the data point
+       },
+       scales: {
+         x: {
+           beginAtZero: true,  // Start X-axis at 0 (useful for horizontal bar)
+         },
+         y: {
+           title: {
+             display: true,
+             text: 'Weeks',  // Title for the Y-axis
+           },
+         },
+       },
+     },
+   });
+    </script>
   </body>
 </html>

@@ -13,4 +13,7 @@ urlpatterns = [
     path('approve-user/<int:user_id>/', views.admin_approve_user, name='approve-user'),
     path('logout/', LogoutView.as_view(next_page='/'), name='logout'),
     path('reject-user/<int:user_id>/', views.reject_user, name='reject-user'),
+    path("add-event/", views.add_event, name="add_event"),
+    path('update-users/', views.update_users, name='update-users'),
+
 ]

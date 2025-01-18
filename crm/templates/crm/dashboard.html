@@ -11,12 +11,7 @@
     />
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
-      .card {
-        transition: transform 0.2s;
-      }
-      .card:hover {
-        transform: scale(1.02);
-      }
+      
       .status-approved {
         color: green;
         font-weight: bold;
@@ -79,7 +74,7 @@
         <div class="collapse navbar-collapse" id="navbarNav">
           <ul class="navbar-nav ms-auto">
             <li class="nav-item">
-              <a class="nav-link btn btn-outline-light" href="#">Dashboard</a>
+              <a class="nav-link btn btn-outline-light" href="{% url 'dashboard' %}">Dashboard</a>
             </li>
             <li class="nav-item">
               <a
@@ -141,136 +136,222 @@
       </div>
 
       <!-- Search Bar -->
-      <div class="row mb-3">
-        <div class="col-md-6 mx-auto">
+      <div class="row">
+        <div class="col-md-6 mx-auto mb-3">
+          <!-- Search Bar -->
           <input
             type="text"
             id="searchBar"
             class="form-control"
-            placeholder="Search users by username or email"
+            placeholder="Search by username, email"
           />
         </div>
       </div>
+      
 
-      <!-- User Cards -->
-      <div class="row" id="userCards">
-        {% for user in users %}
-        <div class="col-md-6 col-lg-4 mb-4 user-card">
-          <div class="card shadow-sm h-100">
-            <div class="card-body">
-              <h5 class="card-title">{{ user.user.username }}</h5>
-              <p class="card-text text-muted">{{ user.user.email }}</p>
-
-              <!-- User Details -->
-              <p><strong>Username:</strong> {{ user.user.username }}</p>
-              <p><strong>Gender:</strong> {{ user.gender }}</p>
-              <p><strong>Date of Birth:</strong> {{ user.date_of_birth }}</p>
-
-              <!-- Approval Status -->
-              <p>
-                <strong>Status:</strong>
-                <span
-                  class="{% if user.is_approved %} status-approved {% elif user.is_rejected %} status-rejected {% else %} status-pending {% endif %}"
-                >
-                  {% if user.is_approved %} Approved {% elif user.is_rejected %}
-                  Rejected {% else %} Pending {% endif %}
-                </span>
-              </p>
-
-              <!-- Action Buttons -->
-              <div class="d-flex justify-content-between">
+<!-- User Table -->
+<!-- User Table -->
+<div class="row">
+  <div class="col-12">
+    <form id="userTableForm" method="POST" action="{% url 'update-users' %}">
+      {% csrf_token %}
+      <table class="table table-bordered table-hover">
+        <thead class="table-dark">
+          <tr>
+            <th>Username</th>
+            <th>Email</th>
+            <th>Gender</th>
+            <th>Date of Birth</th>
+            <th>Status</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody id="userTableBody">
+          {% for user in users %}
+          <tr>
+            <td>{{ user.user.username }}</td>
+            <td>
+              <input
+                type="email"
+                name="email_{{ user.user.id }}"
+                value="{{ user.user.email }}"
+                class="form-control"
+              />
+            </td>
+            <td>
+              <select name="gender_{{ user.user.id }}" class="form-select">
+                <option value="Male" {% if user.gender == "Male" %}selected{% endif %}>Male</option>
+                <option value="Female" {% if user.gender == "Female" %}selected{% endif %}>Female</option>
+              </select>
+            </td>
+            <td>
+              <input
+                type="date"
+                name="dob_{{ user.user.id }}"
+                value="{{ user.date_of_birth|date:'Y-m-d' }}"
+                class="form-control"
+              />
+            </td>
+            <td>
+              <span
+                class="{% if user.is_approved %} status-approved {% elif user.is_rejected %} status-rejected {% else %} status-pending {% endif %}"
+              >
+                {% if user.is_approved %} Approved {% elif user.is_rejected %} Rejected {% else %} Pending {% endif %}
+              </span>
+            </td>
+            <td>
+              <div class="d-flex gap-2">
                 <a
                   href="{% url 'approve-user' user.user.id %}"
                   class="btn btn-success btn-sm"
-                  >Approve</a
                 >
+                  Approve
+                </a>
                 <a
                   href="{% url 'reject-user' user.user.id %}"
                   class="btn btn-danger btn-sm"
-                  >Reject</a
                 >
+                  Reject
+                </a>
+                <button
+                  type="submit"
+                  name="save_{{ user.user.id }}"
+                  class="btn btn-primary btn-sm"
+                >
+                  Save
+                </button>
               </div>
-            </div>
-          </div>
-        </div>
-        {% endfor %}
-      </div>
-    </div>
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </form>
+  </div>
+</div>
+
+{% if messages %}
+<div class="container mt-3">
+  {% for message in messages %}
+  <div class="alert alert-success alert-dismissible fade show" role="alert">
+    {{ message }}
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+  </div>
+  {% endfor %}
+</div>
+{% endif %}
+
 
     <!-- Bootstrap JS Bundle -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
-      // Search bar functionality
+     
       const searchBar = document.getElementById("searchBar");
-      const userCards = document.querySelectorAll(".user-card");
+  const tableBody = document.getElementById("userTableBody");
+  const rows = tableBody.getElementsByTagName("tr");
 
-      searchBar.addEventListener("keyup", function () {
-        const searchValue = searchBar.value.toLowerCase();
+  searchBar.addEventListener("keyup", function () {
+    const searchValue = searchBar.value.toLowerCase(); // Convert search value to lowercase
 
-        userCards.forEach((card) => {
-          const username = card
-            .querySelector(".card-title")
-            .textContent.toLowerCase();
-          const email = card
-            .querySelector(".card-text")
-            .textContent.toLowerCase();
+    // Iterate over all rows in the table
+    for (let row of rows) {
+      const username = row.cells[0].textContent.toLowerCase(); // Username column
+      const email = row.cells[1].textContent.toLowerCase(); // Email column
+      const gender = row.cells[2].textContent.toLowerCase(); // Gender column
+      const dob = row.cells[3].textContent.toLowerCase(); // Date of Birth column
 
-          if (username.includes(searchValue) || email.includes(searchValue)) {
-            card.style.display = "block";
-          } else {
-            card.style.display = "none";
-          }
-        });
-      });
-
-      // Analytics Graph - Line Chart
-      const ctx = document.getElementById("userAnalytics").getContext("2d");
-      const userAnalyticsChart = new Chart(ctx, {
-        type: "line",
-        data: {
-          labels: ["Week 1", "Week 2", "Week 3", "Week 4"], // Example time periods
-          datasets: [
-            {
-              label: "Approved Users",
-              data: [5, 10, 15, 20], // Example data for approved users
-              borderColor: "rgba(75, 192, 192, 1)",
-              backgroundColor: "rgba(75, 192, 192, 0.2)",
-              tension: 0.4,
-            },
-            {
-              label: "Rejected Users",
-              data: [2, 5, 3, 7], // Example data for rejected users
-              borderColor: "rgba(255, 99, 132, 1)",
-              backgroundColor: "rgba(255, 99, 132, 0.2)",
-              tension: 0.4,
-            },
-            {
-              label: "Pending Users",
-              data: [10, 8, 12, 5], // Example data for pending users
-              borderColor: "rgba(255, 206, 86, 1)",
-              backgroundColor: "rgba(255, 206, 86, 0.2)",
-              tension: 0.4,
-            },
-          ],
-        },
-        options: {
-          responsive: true,
-          plugins: {
-            legend: {
-              position: "top",
-            },
-            title: {
-              display: true,
-              text: "User Approval Statistics Over Time",
-            },
-          },
-          scales: {
-            y: {
-              beginAtZero: true,
-            },
-          },
-        },
-      });
+      // Show row if any column matches the search value
+      if (
+        username.includes(searchValue) ||
+        email.includes(searchValue) ||
+        gender.includes(searchValue) ||
+        dob.includes(searchValue)
+      ) {
+        row.style.display = ""; // Show row
+      } else {
+        row.style.display = "none"; // Hide row
+      }
+    }
+  });
+      
+   // Check if the dynamic data is being passed correctly
+   console.log("Labels:", {{ labels|safe }});
+   console.log("Approved Users:", {{ approved_users_weekly|safe }});
+   console.log("Rejected Users:", {{ rejected_users_weekly|safe }});
+   console.log("Pending Users:", {{ pending_users_weekly|safe }});
+ 
+   // Dynamic data from Django
+   const labels = {{ labels|safe }};
+   const approvedData = {{ approved_users_weekly|safe }};
+   const rejectedData = {{ rejected_users_weekly|safe }};
+   const pendingData = {{ pending_users_weekly|safe }};
+ 
+   // Get the canvas element for the chart
+   const ctx = document.getElementById("userAnalytics").getContext("2d");
+ 
+   // Create the horizontal bar chart
+   const userAnalyticsChart = new Chart(ctx, {
+     type: "bar",  // Set the chart type to 'bar' for horizontal bars
+     data: {
+       labels: labels,  // X-axis labels (weeks)
+       datasets: [
+         {
+           label: "Approved Users",
+           data: approvedData,  // Data for approved users
+           backgroundColor: "rgba(75, 192, 192, 0.6)",  // Bar color for approved users
+           borderColor: "rgba(75, 192, 192, 1)",  // Border color for bars
+           borderWidth: 1,  // Border width for bars
+         },
+         {
+           label: "Rejected Users",
+           data: rejectedData,  // Data for rejected users
+           backgroundColor: "rgba(255, 99, 132, 0.6)",  // Bar color for rejected users
+           borderColor: "rgba(255, 99, 132, 1)",  // Border color for bars
+           borderWidth: 1,  // Border width for bars
+         },
+         {
+           label: "Pending Users",
+           data: pendingData,  // Data for pending users
+           backgroundColor: "rgba(255, 206, 86, 0.6)",  // Bar color for pending users
+           borderColor: "rgba(255, 206, 86, 1)",  // Border color for bars
+           borderWidth: 1,  // Border width for bars
+         },
+       ],
+     },
+     options: {
+       responsive: true,  // Ensure the chart is responsive
+       indexAxis: 'y',  // Change bars to horizontal (default is vertical)
+       plugins: {
+         legend: {
+           position: "top",  // Position of the legend
+         },
+         title: {
+           display: true,  // Display the title
+           text: "User Approval Statistics Over Time",  // Chart title
+         },
+         tooltip: {
+           mode: "index",  // Show tooltips for all datasets on hover
+           intersect: false,  // Allow tooltip to show when not directly on a data point
+         },
+       },
+       interaction: {
+         mode: "nearest",  // Tooltip appears near the closest point
+         axis: "y",  // Only interact with the y-axis (time)
+         intersect: false,  // Tooltip will show even if not on the data point
+       },
+       scales: {
+         x: {
+           beginAtZero: true,  // Start X-axis at 0 (useful for horizontal bar)
+         },
+         y: {
+           title: {
+             display: true,
+             text: 'Weeks',  // Title for the Y-axis
+           },
+         },
+       },
+     },
+   });
     </script>
   </body>
 </html>
