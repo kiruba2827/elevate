@@ -1,0 +1,139 @@
+<!-- User Profile Section aligned to the right -->
+<div class="dropdown" id="userProfileDropdownContainer">
+  <button
+    class="btn btn-secondary dropdown-toggle"
+    type="button"
+    id="userProfileDropdown"
+    data-bs-toggle="dropdown"
+    aria-expanded="false"
+  >
+    <i class="fa fa-user"></i>
+    <!-- Default user icon -->
+    <span id="usernameText">Guest</span>
+    <!-- Default text for guest users -->
+  </button>
+  <ul class="dropdown-menu" aria-labelledby="userProfileDropdown">
+    <!-- Content will be dynamically updated based on authentication -->
+  </ul>
+</div>
+<script>
+  $(document).ready(function () {
+    // Function to get CSRF token from cookies
+    function getCSRFToken() {
+      let csrfToken = null;
+      const csrfCookie = document.cookie
+        .split(";")
+        .find((cookie) => cookie.trim().startsWith("csrftoken="));
+      if (csrfCookie) {
+        csrfToken = csrfCookie.split("=")[1];
+      }
+      return csrfToken;
+    }
+
+    // Function to update the user profile dropdown dynamically
+    function updateProfileDropdown(isAuthenticated, userData) {
+      const dropdownMenu = $("#userProfileDropdown").next(".dropdown-menu");
+
+      if (isAuthenticated) {
+        // Clear any previous content
+        dropdownMenu.empty();
+        // Add profile info to the dropdown
+        dropdownMenu.append(`
+            <li>
+              <div class="dropdown-item text-center">
+                {% if user.userprofile.profile_picture %}
+<img src="{{ user.userprofile.profile_picture.url }}" alt="Profile Picture" width="100" height="100" style="border-radius: 50%;">
+{% else %}
+<img src="{% static 'images/default-profile.png' %}" alt="Default Profile" width="100" height="100">
+{% endif %}
+
+              </div>
+            </li>
+            <li>
+              <p class="dropdown-item"><strong>Username:</strong> ${userData.username}</p>
+            </li>
+            <li>
+              <p class="dropdown-item"><strong>Staff Status:</strong> ${userData.is_staff}</p>
+            </li>
+            <li>
+              <p class="dropdown-item"><strong>Email:</strong> ${userData.email}</p>
+            </li>
+            <li>
+              <a class="dropdown-item text-danger" href="{% url 'logout' %}"><i class="fa fa-sign-out-alt"></i> Logout</a>
+            </li>
+          `);
+
+        // Update the button to display the username
+        $("#usernameText").text(userData.username);
+      } else {
+        // Update dropdown for unauthenticated users
+        dropdownMenu.empty();
+        dropdownMenu.append(`
+            <li>
+              <p class="dropdown-item text-danger">You are not logged in.</p>
+              <p class="dropdown-item text-danger" style="margin-left: 35px">Kindly login!!</p>
+            </li>
+          `);
+        // Update the button text to 'Guest'
+        $("#usernameText").text("Guest");
+      }
+    }
+
+    // Check if the user is authenticated and update the profile dynamically
+    function checkAuthenticationStatus() {
+      $.ajax({
+        url: "{% url 'check-authentication' %}", // Make sure this URL is correct
+        method: "GET",
+        success: function (response) {
+          // Update the profile dropdown based on authentication status
+          updateProfileDropdown(response.is_authenticated, response.user_data);
+        },
+        error: function () {
+          alert("Error checking authentication status. Please try again.");
+        },
+      });
+    }
+
+    // Call the function to check authentication status on page load
+    checkAuthenticationStatus();
+
+    // Handle login form submission via AJAX
+    $("#loginForm").on("submit", function (e) {
+      e.preventDefault();
+      const formData = $(this).serialize(); // Serialize form data
+      $.ajax({
+        url: "{% url 'my-login' %}", // Replace with your login URL
+        method: "POST",
+        data: formData,
+        success: function (response) {
+          if (response.is_authenticated) {
+            // After login, update the profile dropdown
+            updateProfileDropdown(true, response.user_data);
+          }
+        },
+        error: function () {
+          alert("Error logging in. Please try again.");
+        },
+      });
+    });
+
+    // Handle logout via AJAX
+    $("#logoutLink").on("click", function (e) {
+      e.preventDefault();
+      $.ajax({
+        url: "{% url 'logout' %}", // Make sure this URL is correct
+        method: "POST",
+        data: {
+          csrfmiddlewaretoken: getCSRFToken(),
+        },
+        success: function () {
+          // After logout, update the profile dropdown
+          updateProfileDropdown(false, {});
+        },
+        error: function () {
+          alert("Error logging out. Please try again.");
+        },
+      });
+    });
+  });
+</script>

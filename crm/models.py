@@ -1,7 +1,5 @@
 from django.contrib.auth.models import User
 from django.db import models
-
-from django.db import models
 from django.utils.timezone import now
 
 class UserProfile(models.Model):
@@ -10,20 +8,20 @@ class UserProfile(models.Model):
     gender = models.CharField(max_length=10, null=True, blank=True)
     date_of_birth = models.DateField(null=True, blank=True)
     is_approved = models.BooleanField(default=False)  # Approval status
-    is_approved = models.BooleanField(default=False)  # Track approval status
-    is_rejected = models.BooleanField(default=False)  # Add this field
-    created_at = models.DateTimeField(default=now)  # New field to track creation time
+    is_rejected = models.BooleanField(default=False)  # Rejection status
+    created_at = models.DateTimeField(default=now)  # Track creation time
+    profile_picture = models.ImageField(upload_to='profile_pics/', blank=True, null=True)  # Profile Picture
 
     def __str__(self):
         return self.user.username
-    
-# models.py
-from django.db import models
+
 
 class ImportantEvent(models.Model):
     title = models.CharField(max_length=200)
     date = models.DateField()
     description = models.TextField(null=True, blank=True)
+    created_at = models.DateTimeField(default=now)  # Track creation time
+    is_featured = models.BooleanField(default=False)  # Feature flag for important events
 
     def __str__(self):
-        return self.title
+        return f"{self.title} - {self.date}"

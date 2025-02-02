@@ -123,7 +123,11 @@ def register(request):
     context = {'registerform': form}
     return render(request, 'crm/register.html', context)
 
-# View for login
+from django.http import JsonResponse
+from django.shortcuts import render, redirect
+from django.contrib.auth import authenticate, login
+from .forms import LoginForm
+
 def my_login(request):
     form = LoginForm()
 
@@ -132,15 +136,17 @@ def my_login(request):
         if form.is_valid():
             username = form.cleaned_data.get('username')
             password = form.cleaned_data.get('password')
-
             user = authenticate(request, username=username, password=password)
 
             if user is not None:
                 login(request, user)
-                return redirect("dashboard")
+                return JsonResponse({'redirect_url': '/dashboard/'})  # Redirect after login
 
-    context = {'loginform': form}
-    return render(request, 'crm/my-login.html', context=context)
+        # If form is invalid, return form HTML with errors
+        return JsonResponse({'form_html': render(request, 'crm/my-login.html', {'loginform': form}).content.decode()})
+
+    return render(request, 'crm/my-login.html', {'loginform': form})
+
 
 # View for logout
 def user_logout(request):
@@ -262,3 +268,45 @@ def update_users(request):
 
         # Redirect back to the dashboard after processing all updates
         return redirect("dashboard")
+from django.shortcuts import render
+
+def home1(request):
+    return render(request, 'crm/home1.html')
+
+def home2(request):
+    return render(request, 'crm/home2.html')
+
+def home3(request):
+    return render(request, 'crm/home3.html')
+
+def about_us(request):
+    return render(request, 'crm/about_us.html')
+
+def our_mission(request):
+    return render(request, 'crm/our_mission.html')
+
+def our_team(request):
+    return render(request, 'crm/our_team.html')
+
+def email_us(request):
+    return render(request, 'crm/email_us.html')
+
+def call_us(request):
+    return render(request, 'crm/call_us.html')
+
+def visit_us(request):
+    return render(request, 'crm/visit_us.html')
+
+from django.http import JsonResponse
+
+def check_authentication(request):
+    if request.user.is_authenticated:
+        user_data = {
+            'username': request.user.username,
+            'email': request.user.email,
+            'is_staff': 'Yes' if request.user.is_staff else 'No',
+            'profile_picture': request.user.profile.picture.url if hasattr(request.user, 'profile') else None
+        }
+        return JsonResponse({'is_authenticated': True, 'user_data': user_data})
+    else:
+        return JsonResponse({'is_authenticated': False})

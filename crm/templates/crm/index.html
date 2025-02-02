@@ -16,8 +16,6 @@
     <!-- Custom CSS -->
     <link rel="stylesheet" href="{% static 'css/styles.css' %}" />
 
-    <!-- jQuery -->
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
     <style>
@@ -97,7 +95,7 @@
         color: white;
         padding: 20px 0;
         text-align: center;
-        margin-left: 150px;
+        margin-left: 0px;
       }
 
       h1 {
@@ -135,14 +133,18 @@
 
       /* Sidebar Styles */
       aside {
-        background-color: #f8f9fa; /* Light gray background */
+        background-color: #f8f9fa;
         border-right: 1px solid #ddd;
         padding: 16px;
         width: 250px;
-        min-height: 100vh; /* Full height sidebar */
-        position: fixed;
+        position: absolute;
         left: 0;
-        top: 0;
+        top: 160px;
+        overflow-y: auto;
+        display: flex;
+        flex-direction: column;
+        min-height: calc(100vh - 136px); /* Adjust to match the page layout */
+        bottom: 0;
       }
 
       aside ul {
@@ -222,8 +224,8 @@
         padding: 10px 20px;
         background-color: #343a40; /* Footer-like dark background */
         color: white;
-        margin-top: 20px;
-        margin-left: 150px;
+        margin-top: 30px;
+        margin-left: 0px;
       }
 
       /* Scroll to Top Button */
@@ -266,12 +268,13 @@
       @media (max-width: 768px) {
         aside {
           width: 100%;
-          position: static;
+          position: absolute;
           min-height: auto;
+          margin-top: 75px;
         }
 
         main {
-          margin-left: 0;
+          margin-left: 180px;
         }
 
         nav {
@@ -310,6 +313,51 @@
       .fc-toolbar .fc-right {
         flex: 1;
       }
+
+      /* Custom styles for user profile dropdown */
+      #userProfileDropdown {
+        position: relative;
+      }
+
+      .dropdown-menu {
+        min-width: 200px;
+      }
+
+      .dropdown-item {
+        padding: 12px 20px;
+      }
+
+      .dropdown-item:hover {
+        background-color: #f8f9fa; /* Light background on hover */
+        cursor: pointer;
+      }
+
+      .dropdown-item a {
+        color: #dc3545; /* Red color for logout link */
+      }
+
+      .dropdown-item a:hover {
+        color: #fff; /* White color on hover for logout link */
+        background-color: #dc3545;
+      }
+
+      .dropdown-item .fa {
+        margin-right: 10px; /* Add space before the icon */
+      }
+
+      /* Profile picture styling */
+      .dropdown-item img {
+        border-radius: 50%;
+      }
+
+      .text-center img {
+        border: 3px solid #ddd;
+      }
+
+      .text-center h5 {
+        margin-top: 10px;
+        color: #007bff; /* Blue color for the username */
+      }
     </style>
 
     <link
@@ -323,9 +371,12 @@
     </header>
     <nav class="d-flex justify-content-between align-items-center">
       <!-- Dropdown Menus for Home, About, and Contact -->
+
+      <!-- Dropdown Menus for Home, About, and Contact -->
+      <!-- Dropdown Menus for Home, About, and Contact -->
       <div class="d-flex justify-content-center w-100">
         <!-- Home Dropdown -->
-        <div class="dropdown" style="margin-left: 100px">
+        <div class="dropdown" style="margin-left: 70px">
           <button
             class="btn btn-link nav-link dropdown-toggle"
             type="button"
@@ -336,16 +387,46 @@
             Home
           </button>
           <ul class="dropdown-menu" aria-labelledby="homeDropdown">
-            <li><a class="dropdown-item" href="#home1">Home Submenu 1</a></li>
+            <li>
+              {% if user.is_authenticated %}
+              <a class="dropdown-item" href="{% url 'home1' %}"
+                >Home Submenu 1</a
+              >
+              {% else %}
+              <a class="dropdown-item restricted" href="home1"
+                >Home Submenu 1</a
+              >
+              {% endif %}
+            </li>
             <hr class="dropdown-divider" />
-            <li><a class="dropdown-item" href="#home2">Home Submenu 2</a></li>
+            <li>
+              {% if user.is_authenticated %}
+              <a class="dropdown-item" href="{% url 'home2' %}"
+                >Home Submenu 2</a
+              >
+              {% else %}
+              <a class="dropdown-item restricted" href="home2"
+                >Home Submenu 2</a
+              >
+              {% endif %}
+            </li>
             <hr class="dropdown-divider" />
-            <li><a class="dropdown-item" href="#home3">Home Submenu 3</a></li>
+            <li>
+              {% if user.is_authenticated %}
+              <a class="dropdown-item" href="{% url 'home3' %}"
+                >Home Submenu 3</a
+              >
+              {% else %}
+              <a class="dropdown-item restricted" href="home3"
+                >Home Submenu 3</a
+              >
+              {% endif %}
+            </li>
           </ul>
         </div>
 
         <!-- About Dropdown -->
-        <div class="dropdown" style="margin-left: 20px">
+        <div class="dropdown" style="margin-left: 10px">
           <button
             class="btn btn-link nav-link dropdown-toggle"
             type="button"
@@ -356,16 +437,38 @@
             About
           </button>
           <ul class="dropdown-menu" aria-labelledby="aboutDropdown">
-            <li><a class="dropdown-item" href="#about1">About Us</a></li>
+            <li>
+              {% if user.is_authenticated %}
+              <a class="dropdown-item" href="{% url 'about_us' %}">About Us</a>
+              {% else %}
+              <a class="dropdown-item restricted" href="about_us">About Us</a>
+              {% endif %}
+            </li>
             <hr class="dropdown-divider" />
-            <li><a class="dropdown-item" href="#about2">Our Mission</a></li>
+            <li>
+              {% if user.is_authenticated %}
+              <a class="dropdown-item" href="{% url 'our_mission' %}"
+                >Our Mission</a
+              >
+              {% else %}
+              <a class="dropdown-item restricted" href="our_mission"
+                >Our Mission</a
+              >
+              {% endif %}
+            </li>
             <hr class="dropdown-divider" />
-            <li><a class="dropdown-item" href="#about3">Our Team</a></li>
+            <li>
+              {% if user.is_authenticated %}
+              <a class="dropdown-item" href="{% url 'our_team' %}">Our Team</a>
+              {% else %}
+              <a class="dropdown-item restricted" href="our_team">Our Team</a>
+              {% endif %}
+            </li>
           </ul>
         </div>
 
         <!-- Contact Dropdown -->
-        <div class="dropdown" style="margin-left: 20px">
+        <div class="dropdown" style="margin-left: 10px">
           <button
             class="btn btn-link nav-link dropdown-toggle"
             type="button"
@@ -376,55 +479,310 @@
             Contact
           </button>
           <ul class="dropdown-menu" aria-labelledby="contactDropdown">
-            <li><a class="dropdown-item" href="#contact1">Email Us</a></li>
+            <li>
+              {% if user.is_authenticated %}
+              <a class="dropdown-item" href="{% url 'email_us' %}">Email Us</a>
+              {% else %}
+              <a class="dropdown-item restricted" href="email_us">Email Us</a>
+              {% endif %}
+            </li>
             <hr class="dropdown-divider" />
-            <li><a class="dropdown-item" href="#contact2">Call Us</a></li>
+            <li>
+              {% if user.is_authenticated %}
+              <a class="dropdown-item" href="{% url 'call_us' %}">Call Us</a>
+              {% else %}
+              <a class="dropdown-item restricted" href="call_us">Call Us</a>
+              {% endif %}
+            </li>
             <hr class="dropdown-divider" />
-            <li><a class="dropdown-item" href="#contact3">Visit Us</a></li>
+            <li>
+              {% if user.is_authenticated %}
+              <a class="dropdown-item" href="{% url 'visit_us' %}">Visit Us</a>
+              {% else %}
+              <a class="dropdown-item restricted" href="visit_us">Visit Us</a>
+              {% endif %}
+            </li>
           </ul>
         </div>
       </div>
 
+      <!-- Modal for Login Prompt -->
+      <div
+        id="loginModal"
+        class="modal fade"
+        tabindex="-1"
+        aria-labelledby="loginModalLabel"
+        aria-hidden="true"
+      >
+        <div class="modal-dialog modal-dialog-centered">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="loginModalLabel">Login Required</h5>
+              <button
+                type="button"
+                class="btn-close"
+                data-bs-dismiss="modal"
+                aria-label="Close"
+              ></button>
+            </div>
+            <div class="modal-body">
+              <p style="color: red; font-weight: bold">
+                Kindly login to access this feature.
+              </p>
+              <button id="loadForm" class="btn btn-primary" style="width: 100%">
+                Sign In
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+      <script>
+        $(document).ready(function () {
+          // Function to get CSRF token from the cookies
+          function getCSRFToken() {
+            let csrfToken = null;
+            const csrfCookie = document.cookie
+              .split(";")
+              .find((cookie) => cookie.trim().startsWith("csrftoken="));
+            if (csrfCookie) {
+              csrfToken = csrfCookie.split("=")[1];
+            }
+            return csrfToken;
+          }
+
+          // Store the clicked URL in a variable
+          let clickedUrl = "";
+
+          // Attach click event to dropdown items
+          $(".dropdown-item").on("click", function (e) {
+            e.preventDefault();
+
+            // Update clickedUrl to the new clicked item's URL
+            clickedUrl = $(this).attr("href");
+
+            // Check if the clicked item has the "restricted" class (for unauthenticated users)
+            if ($(this).hasClass("restricted")) {
+              // Show the login modal
+              $("#loginModal").modal("show");
+            } else {
+              // If the clicked item is not restricted, load the page content into #k1-article
+              loadPageContent(clickedUrl);
+            }
+          });
+
+          // Handle the login form submission
+          $("#k1-article").on("submit", "form", function (e) {
+            e.preventDefault();
+            const formData = $(this).serialize(); // Serialize the form data
+
+            // Get the CSRF token
+            const csrfToken = getCSRFToken();
+
+            $.ajax({
+              url: "{% url 'my-login' %}", // Replace with your login URL
+              method: "POST",
+              data: formData,
+              headers: {
+                "X-CSRFToken": csrfToken, // Add CSRF token to the request headers
+              },
+              success: function (response) {
+                if (response.redirect_url) {
+                  // After login, check if we need to redirect after login
+                  if (clickedUrl) {
+                    // Load the clicked URL after login
+                    loadPageContent(clickedUrl);
+                  } else {
+                    // If no specific URL was clicked, load the dashboard or default page
+                    loadPageContent(response.redirect_url);
+                  }
+                } else {
+                  // If the response includes the updated form, replace the content with errors
+                  $("#k1-article").html(response.form_html);
+                }
+              },
+              error: function () {
+                alert("Error logging in. Please try again.");
+              },
+            });
+          });
+
+          // Handle click event on the "Sign In" button inside the modal
+          $("#loadForm").on("click", function (e) {
+            e.preventDefault();
+
+            // Dynamically load the login form into the #k1-article div
+            const url = "{% url 'my-login' %}"; // Replace 'my-login' with your Django login URL
+
+            $.ajax({
+              url: url,
+              method: "GET",
+              success: function (data) {
+                // Load the login form into the content area
+                $("#k1-article").html(data);
+              },
+              error: function () {
+                alert("Error loading the login form. Please try again.");
+              },
+            });
+
+            // Close the modal after the form is loaded
+            $("#loginModal").modal("hide");
+          });
+
+          // Function to load page content dynamically into #k1-article
+          function loadPageContent(url) {
+            $.ajax({
+              url: url,
+              method: "GET",
+              success: function (data) {
+                // Inject the content into #k1-article
+                $("#k1-article").html(data);
+              },
+              error: function () {
+                $("#k1-article").html(
+                  "<p>Error loading the page. Please try again.</p>"
+                );
+              },
+            });
+          }
+        });
+      </script>
+
       <!-- User Profile Section aligned to the right -->
+      <!-- User Profile Section with improved design -->
       <div class="dropdown">
         <button
-          class="btn btn-secondary dropdown-toggle"
+          class="btn btn-light dropdown-toggle d-flex align-items-center p-2 shadow-sm rounded"
           type="button"
           id="userProfileDropdown"
           data-bs-toggle="dropdown"
           aria-expanded="false"
+          style="border: 1px solid #ddd; min-width: 180px"
         >
-          <i class="fa fa-user"></i>
-          <!-- User profile icon here -->
-        </button>
-        <ul class="dropdown-menu" aria-labelledby="userProfileDropdown">
-          {% if user.is_authenticated %}
-          <li>
-            <p class="dropdown-item">
-              <strong>Username:</strong> {{ user.username }}
-            </p>
-          </li>
-          <li>
-            <p class="dropdown-item">
-              <strong>Staff Status:</strong> {{ user.is_staff|yesno:"Yes,No" }}
-            </p>
-          </li>
-          <li>
-            <p class="dropdown-item">
-              <strong>Email:</strong> {{ user.email }}
-            </p>
-          </li>
-
+          {% if user.profile.picture %}
+          <img
+            src="{{ user.profile.picture.url }}"
+            alt="Profile Picture"
+            class="rounded-circle me-2"
+            width="35"
+            height="35"
+          />
           {% else %}
-          <li>
-            <p class="dropdown-item text-danger">You are not logged in.</p>
-            <p class="dropdown-item text-danger" style="margin-left: 35px">
-              Kindly login!!
+          <i class="fa fa-user-circle me-2" style="font-size: 24px"></i>
+          {% endif %}
+          <span class="fw-bold">{{ user.username }}</span>
+        </button>
+        <ul
+          class="dropdown-menu dropdown-menu-end p-3 shadow-lg border-0"
+          aria-labelledby="userProfileDropdown"
+          style="width: 250px"
+        >
+          {% if user.is_authenticated %}
+          <li class="text-center">
+            {% if user.profile.picture %}
+            <img
+              src="{{ user.profile.picture.url }}"
+              alt="Profile Picture"
+              class="rounded-circle mb-2"
+              width="80"
+              height="80"
+            />
+            {% else %}
+            <i class="fa fa-user-circle fa-5x mb-2 text-secondary"></i>
+            {% endif %}
+            <h5 class="fw-semibold">{{ user.username }}</h5>
+            <hr />
+          </li>
+          <li class="mb-2">
+            <p class="mb-1"><strong>Username:</strong> {{ user.username }}</p>
+          </li>
+          <li class="mb-2">
+            <p class="mb-1">
+              <strong>Staff Status:</strong>
+              <span
+                class="badge bg-{% if user.is_staff %}success{% else %}danger{% endif %}"
+                >{{ user.is_staff|yesno:"Yes,No" }}</span
+              >
             </p>
           </li>
-
+          <li class="mb-3">
+            <p class="mb-1"><strong>Email:</strong> {{ user.email }}</p>
+          </li>
+          <li>
+            <a
+              class="dropdown-item text-danger text-center fw-bold p-2"
+              href="{% url 'logout' %}"
+              style="border-radius: 8px; background: #ffe6e6"
+            >
+              <i class="fa fa-sign-out-alt"></i> Logout
+            </a>
+          </li>
+          {% else %}
+          <li class="text-center text-danger fw-bold">
+            <p class="mb-1">You are not logged in.</p>
+            <a
+              class="btn btn-primary mt-2"
+              href="{% url 'my-login' %}"
+              data-bs-toggle="modal"
+              data-bs-target="#loginModal"
+              >Login</a
+            >
+          </li>
           {% endif %}
         </ul>
+      </div>
+
+      <!-- Login Modal -->
+      <div
+        class="modal fade"
+        id="loginModal"
+        tabindex="-1"
+        aria-labelledby="loginModalLabel"
+        aria-hidden="true"
+      >
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="loginModalLabel">Login</h5>
+              <button
+                type="button"
+                class="btn-close"
+                data-bs-dismiss="modal"
+                aria-label="Close"
+              ></button>
+            </div>
+            <div class="modal-body">
+              <form method="POST" action="{% url 'my-login' %}">
+                {% csrf_token %}
+                <div class="mb-3">
+                  <label for="username" class="form-label">Username</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="username"
+                    name="username"
+                    required
+                  />
+                </div>
+                <div class="mb-3">
+                  <label for="password" class="form-label">Password</label>
+                  <input
+                    type="password"
+                    class="form-control"
+                    id="password"
+                    name="password"
+                    required
+                  />
+                </div>
+                <button type="submit" class="btn btn-primary w-100">
+                  Login
+                </button>
+              </form>
+            </div>
+          </div>
+        </div>
       </div>
     </nav>
     <div class="container">
@@ -433,70 +791,246 @@
           background-color: #f8f9fa;
           border-right: 1px solid #ddd;
           padding: 16px;
-          width: 250px;
-          min-height: 100vh;
-          position: fixed;
+          width: 270px;
+          min-height: calc(100vh - 60px - 195px);
+          position: absolute;
           left: 0;
-          top: 0;
-          overflow-y: auto; /* Allows scrolling if content overflows */
+          top: 155px;
+          overflow-y: auto;
           display: flex;
-          flex-direction: column; /* Ensure flex layout */
+          flex-direction: column;
         "
       >
-        <!-- Toggle Button -->
-        <input type="checkbox" id="checkbox2" />
-        <label for="checkbox2" class="toggle2">
-          <div id="bar4" class="bars"></div>
-          <div id="bar5" class="bars"></div>
-          <div id="bar6" class="bars"></div>
-        </label>
+        <h3
+          class="text-primary"
+          style="text-align: center; margin-bottom: 10px"
+        >
+          Quick Links 🔗
+        </h3>
 
-        <!-- Collapsible Links -->
-        <div class="collapse mt-2" id="quickLinks">
+        <!-- Quick Links (No toggle button) -->
+        <div class="mt-2">
           <ul class="list-group">
             <li class="list-group-item">
               <a
                 href="#"
                 data-content="<h2>Dashboard</h2><p>Welcome to our dashboard!</p>"
-                >Dashboard</a
               >
+                📊 Dashboard
+              </a>
             </li>
-            <li class="list-group-item">
-              <a
-                href="#"
-                data-content="<h2>Profile</h2><p>Manage your profile here🪪.</p>"
-                >Profile</a
+
+            <!-- Dropdown Menu for Home -->
+            <li class="list-group-item dropdown">
+              <button
+                class="btn btn-link dropdown-toggle"
+                type="button"
+                id="homeDropdown"
+                data-bs-toggle="dropdown"
+                aria-expanded="false"
               >
+                🏠 Home
+              </button>
+              <ul class="dropdown-menu" aria-labelledby="homeDropdown">
+                <li>
+                  {% if user.is_authenticated %}
+                  <a class="dropdown-item" href="{% url 'home1' %}"
+                    >Home Submenu 1</a
+                  >
+                  {% else %}
+                  <a class="dropdown-item restricted" href="home1"
+                    >Home Submenu 1</a
+                  >
+                  {% endif %}
+                </li>
+                <hr class="dropdown-divider" />
+                <li>
+                  {% if user.is_authenticated %}
+                  <a class="dropdown-item" href="{% url 'home2' %}"
+                    >Home Submenu 2</a
+                  >
+                  {% else %}
+                  <a class="dropdown-item restricted" href="home2"
+                    >Home Submenu 2</a
+                  >
+                  {% endif %}
+                </li>
+                <hr class="dropdown-divider" />
+                <li>
+                  {% if user.is_authenticated %}
+                  <a class="dropdown-item" href="{% url 'home3' %}"
+                    >Home Submenu 3</a
+                  >
+                  {% else %}
+                  <a class="dropdown-item restricted" href="home3"
+                    >Home Submenu 3</a
+                  >
+                  {% endif %}
+                </li>
+              </ul>
             </li>
-            <li class="list-group-item">
-              <a
-                href="#"
-                data-content="<h2>Settings</h2><p>Adjust your settings here🔧.</p>"
-                >Settings</a
+
+            <!-- Dropdown Menu for About -->
+            <li class="list-group-item dropdown">
+              <button
+                class="btn btn-link dropdown-toggle"
+                type="button"
+                id="aboutDropdown"
+                data-bs-toggle="dropdown"
+                aria-expanded="false"
               >
+                ℹ️ About
+              </button>
+              <ul class="dropdown-menu" aria-labelledby="aboutDropdown">
+                <li>
+                  {% if user.is_authenticated %}
+                  <a class="dropdown-item" href="{% url 'about_us' %}"
+                    >About Us</a
+                  >
+                  {% else %}
+                  <a class="dropdown-item restricted" href="about_us"
+                    >About Us</a
+                  >
+                  {% endif %}
+                </li>
+                <hr class="dropdown-divider" />
+                <li>
+                  {% if user.is_authenticated %}
+                  <a class="dropdown-item" href="{% url 'our_mission' %}"
+                    >Our Mission</a
+                  >
+                  {% else %}
+                  <a class="dropdown-item restricted" href="our_mission"
+                    >Our Mission</a
+                  >
+                  {% endif %}
+                </li>
+                <hr class="dropdown-divider" />
+                <li>
+                  {% if user.is_authenticated %}
+                  <a class="dropdown-item" href="{% url 'our_team' %}"
+                    >Our Team</a
+                  >
+                  {% else %}
+                  <a class="dropdown-item restricted" href="our_team"
+                    >Our Team</a
+                  >
+                  {% endif %}
+                </li>
+              </ul>
             </li>
+
+            <!-- Dropdown Menu for Contact -->
+            <li class="list-group-item dropdown">
+              <button
+                class="btn btn-link dropdown-toggle"
+                type="button"
+                id="contactDropdown"
+                data-bs-toggle="dropdown"
+                aria-expanded="false"
+              >
+                📞 Contact
+              </button>
+              <ul class="dropdown-menu" aria-labelledby="contactDropdown">
+                <li>
+                  {% if user.is_authenticated %}
+                  <a class="dropdown-item" href="{% url 'email_us' %}"
+                    >Email Us</a
+                  >
+                  {% else %}
+                  <a class="dropdown-item restricted" href="email_us"
+                    >Email Us</a
+                  >
+                  {% endif %}
+                </li>
+                <hr class="dropdown-divider" />
+                <li>
+                  {% if user.is_authenticated %}
+                  <a class="dropdown-item" href="{% url 'call_us' %}"
+                    >Call Us</a
+                  >
+                  {% else %}
+                  <a class="dropdown-item restricted" href="call_us">Call Us</a>
+                  {% endif %}
+                </li>
+                <hr class="dropdown-divider" />
+                <li>
+                  {% if user.is_authenticated %}
+                  <a class="dropdown-item" href="{% url 'visit_us' %}"
+                    >Visit Us</a
+                  >
+                  {% else %}
+                  <a class="dropdown-item restricted" href="visit_us"
+                    >Visit Us</a
+                  >
+                  {% endif %}
+                </li>
+              </ul>
+            </li>
+
             <li class="list-group-item">
               {% if user.is_authenticated %}
               <a
-                href="{% url 'logout' %}"
+                href="#"
+                id="logoutLink"
                 data-content="<h2>Logout</h2><p>You have been logged out 🤝</p>"
-                >Logout</a
               >
+                🚪 Logout
+              </a>
               {% else %}
-              <span class="text-danger">Kindly log in</span>
+              <span id="loginStatus" class="text-danger">🚨 Kindly log in</span>
               {% endif %}
             </li>
+
             <li class="list-group-item">
-              <a href="#" id="loadRegisterForm">Register Here</a>
+              <a href="#" id="loadRegisterForm">📝 Register Here</a>
             </li>
             <li class="list-group-item">
-              <a href="#" id="loadLoginForm">Login Here</a>
+              <a href="#" id="loadLoginForm">🔑 Login Here</a>
             </li>
           </ul>
         </div>
 
-        <div class="mt-3">
-          <h4>Add Event</h4>
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+        <script>
+          $(document).ready(function () {
+            // If the user is logged in, change the "Kindly log in" text to "Logout"
+            {% if user.is_authenticated %}
+            $("#loginStatus").hide(); // Hide the login prompt if logged in
+            $("#logoutLink").show();  // Show the logout link if logged in
+            {% else %}
+            $("#logoutLink").hide(); // Hide the logout link if not logged in
+            $("#loginStatus").show(); // Show the login prompt if not logged in
+            {% endif %}
+
+            // Handle the click event for the logout link
+            $("#logoutLink").on("click", function (e) {
+              e.preventDefault();
+
+              // Make an AJAX request to log out the user
+              $.ajax({
+                url: '{% url "logout" %}', // The Django logout URL
+                type: "POST", // POST request for logging out
+                data: {
+                  csrfmiddlewaretoken: "{{ csrf_token }}", // Include the CSRF token in the request
+                },
+                success: function (response) {
+                  // After logging out, hide the logout link and show the login prompt
+                  $("#logoutLink").hide();
+                  $("#loginStatus").show();
+                  $("#loginStatus").text("🚨 Kindly log in"); // Change the text back to login prompt
+                },
+                error: function () {
+                  alert("An error occurred while logging you out. Please try again.");
+                },
+              });
+            });
+          });
+        </script>
+
+        <!-- Sticky Add Event Form -->
+        <div class="mt-3" style="margin-top: auto">
+          <h4 class="text-secondary">📅 Add Event</h4>
           <form id="addEventForm">
             <div class="mb-2">
               <label for="eventTitle" class="form-label">Event Title</label>
@@ -510,13 +1044,7 @@
             </div>
             <div class="mb-2">
               <label for="eventDate" class="form-label">Event Date</label>
-              <input
-                type="date"
-                id="eventDate"
-                class="form-control"
-                placeholder="Choose a date"
-                required
-              />
+              <input type="date" id="eventDate" class="form-control" required />
             </div>
             <div class="mb-2">
               <label for="eventDescription" class="form-label"
@@ -528,15 +1056,171 @@
                 placeholder="Enter event description (optional)"
               ></textarea>
             </div>
-            <button type="submit" class="btn btn-primary">Add Event</button>
+            <button type="submit" class="btn btn-success w-100">
+              ➕ Add Event
+            </button>
           </form>
         </div>
       </aside>
 
+      <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+      <script>
+        $(document).ready(function () {
+          // Function to get CSRF token from the cookies
+          function getCSRFToken() {
+            let csrfToken = null;
+            const csrfCookie = document.cookie
+              .split(";")
+              .find((cookie) => cookie.trim().startsWith("csrftoken="));
+            if (csrfCookie) {
+              csrfToken = csrfCookie.split("=")[1];
+            }
+            return csrfToken;
+          }
+
+          // Store the clicked URL in a variable
+          let clickedUrl = "";
+
+          // Attach click event to dropdown items
+          $(".dropdown-item").on("click", function (e) {
+            e.preventDefault();
+
+            // Update clickedUrl to the new clicked item's URL
+            clickedUrl = $(this).attr("href");
+
+            // Check if the clicked item has the "restricted" class (for unauthenticated users)
+            if ($(this).hasClass("restricted")) {
+              // Show the login modal
+              $("#loginModal").modal("show");
+            } else {
+              // If the clicked item is not restricted, load the page content into #k1-article
+              loadPageContent(clickedUrl);
+            }
+          });
+
+          // Handle the login form submission
+          $("#k1-article").on("submit", "form", function (e) {
+            e.preventDefault();
+            const formData = $(this).serialize(); // Serialize the form data
+
+            // Get the CSRF token
+            const csrfToken = getCSRFToken();
+
+            $.ajax({
+              url: "{% url 'my-login' %}", // Replace with your login URL
+              method: "POST",
+              data: formData,
+              headers: {
+                "X-CSRFToken": csrfToken, // Add CSRF token to the request headers
+              },
+              success: function (response) {
+                if (response.redirect_url) {
+                  // After login, check if we need to redirect after login
+                  if (clickedUrl) {
+                    // Load the clicked URL after login
+                    loadPageContent(clickedUrl);
+                  } else {
+                    // If no specific URL was clicked, load the dashboard or default page
+                    loadPageContent(response.redirect_url);
+                  }
+                } else {
+                  // If the response includes the updated form, replace the content with errors
+                  $("#k1-article").html(response.form_html);
+                }
+              },
+              error: function () {
+                alert("Error logging in. Please try again.");
+              },
+            });
+          });
+
+          // Handle click event on the "Sign In" button inside the modal
+          $("#loadForm").on("click", function (e) {
+            e.preventDefault();
+
+            // Dynamically load the login form into the #k1-article div
+            const url = "{% url 'my-login' %}"; // Replace 'my-login' with your Django login URL
+
+            $.ajax({
+              url: url,
+              method: "GET",
+              success: function (data) {
+                // Load the login form into the content area
+                $("#k1-article").html(data);
+              },
+              error: function () {
+                alert("Error loading the login form. Please try again.");
+              },
+            });
+
+            // Close the modal after the form is loaded
+            $("#loginModal").modal("hide");
+          });
+
+          // Function to load page content dynamically into #k1-article
+          function loadPageContent(url) {
+            $.ajax({
+              url: url,
+              method: "GET",
+              success: function (data) {
+                $("#k1-article").html(data);
+              },
+              error: function () {
+                alert("Error loading page content.");
+              },
+            });
+          }
+        });
+      </script>
+
+      <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+      <script>
+        $(document).ready(function () {
+          // Handle click event for the logout link
+          $("#logoutLink").on("click", function (e) {
+            e.preventDefault();
+
+            // Make an AJAX request to log out the user
+            $.ajax({
+              url: '{% url "logout" %}', // The Django logout URL
+              type: "POST", // POST request for logging out
+              data: {
+                csrfmiddlewaretoken: "{{ csrf_token }}", // Include the CSRF token in the request
+              },
+              success: function (response) {
+                // If the logout is successful, load final.html dynamically into #k1-article
+                $("#k1-article").load(
+                  "{% url 'final' %}",
+                  function (response, status, xhr) {
+                    if (status == "error") {
+                      alert("An error occurred while loading the final page.");
+                    }
+                  }
+                );
+              },
+              error: function () {
+                // Handle any errors that occur during the logout process
+                alert(
+                  "An error occurred while logging you out. Please try again."
+                );
+              },
+            });
+          });
+        });
+      </script>
+
       <main>
-        <article id="k1-article">
+        <article
+          id="k1-article"
+          style="
+            height: 550px; /* Set the desired smaller height for the scrollable area */
+            overflow-y: auto; /* Enable vertical scrolling */
+            border: 1px solid #ddd; /* Optional: Add a border for better visual separation */
+            padding: 15px; /* Optional: Add padding for better spacing */
+          "
+        >
           <div>
-            <div class="card shadow-sm p-4">
+            <div class="card shadow-sm p-2">
               <h2 class="card-title">Welcome to Our Website</h2>
               <p class="card-text">
                 Explore our website to discover the various services and
@@ -559,23 +1243,21 @@
 
           <script>
             $(document).ready(function () {
-              // Ensure the events_data is passed correctly as a JavaScript object
-              const eventsData = JSON.parse("{{ events_data|escapejs }}"); // Escape and parse the JSON data
+              const eventsData = JSON.parse("{{ events_data|escapejs }}");
 
-              // Initialize the main calendar (for all events)
+              // Initialize the main calendar
               const calendar = $("#calendarTable").fullCalendar({
                 header: {
                   left: "prev,next today",
                   center: "title",
                   right: "month,agendaWeek,agendaDay",
                 },
-                events: eventsData, // Pass the eventsData here
+                events: eventsData,
                 height: "auto",
                 contentHeight: "auto",
 
                 // Event click handler
                 eventClick: function (event) {
-                  console.log(event); // Log the event object to check its properties
                   alert(
                     "Event: " +
                       event.title +
@@ -602,15 +1284,8 @@
                     success: function (response) {
                       alert(response.message);
 
-                      // Add the new event to both calendars
+                      // Add the new event to the calendar
                       calendar.fullCalendar("renderEvent", {
-                        title: title,
-                        start: date,
-                        description: description || "No description available",
-                      });
-
-                      // Add the new event to the added events calendar
-                      addedEventsCalendar.fullCalendar("renderEvent", {
                         title: title,
                         start: date,
                         description: description || "No description available",
@@ -630,8 +1305,16 @@
             });
           </script>
 
-          <!-- Calendar for All Events -->
-          <div id="calendarTable"></div>
+          <!-- Scrollable Calendar -->
+          <div
+            id="calendarTable"
+            style="
+              height: 300px; /* Set smaller height */
+              overflow-y: auto; /* Enable vertical scrolling */
+              border: 1px solid #ccc; /* Optional: Add border for better visual separation */
+              padding: 10px; /* Optional: Add padding for better appearance */
+            "
+          ></div>
         </article>
       </main>
     </div>
@@ -657,23 +1340,24 @@
         $("#loadRegisterForm").on("click", function (event) {
           event.preventDefault();
           $.ajax({
-            url: '{% url "register" %}', // URL for the login form
+            url: '{% url "register" %}', // URL for the registration form
             type: "GET",
             success: function (data) {
-              $("#k1-article").html(data); // Load the login form content into the article
+              $("#k1-article").html(data); // Load the registration form content into the article
 
               // Attach a submit event listener to the dynamically loaded form
               $("#k1-article").on("submit", "form", function (e) {
                 e.preventDefault();
                 const formData = $(this).serialize(); // Serialize form data
                 $.ajax({
-                  url: '{% url "register" %}',
+                  url: '{% url "register" %}', // Ensure this is the correct URL for handling registration
                   type: "POST",
                   data: formData,
                   success: function (response) {
-                    // Redirect if login is successful
+                    // Check for a redirect URL in the response
                     if (response.redirect_url) {
-                      window.location.href = response.redirect_url;
+                      // If registration is successful, dynamically load new page content into a container
+                      $("#k1-article").load(response.redirect_url);
                     } else {
                       // If the response includes the updated form, replace the content
                       $("#k1-article").html(response);
@@ -686,7 +1370,7 @@
               });
             },
             error: function () {
-              alert("Error loading login form");
+              alert("Error loading registration form");
             },
           });
         });
@@ -708,13 +1392,14 @@
                 e.preventDefault();
                 const formData = $(this).serialize(); // Serialize form data
                 $.ajax({
-                  url: '{% url "my-login" %}',
+                  url: '{% url "my-login" %}', // Ensure this is the correct URL for login processing
                   type: "POST",
                   data: formData,
                   success: function (response) {
-                    // Redirect if login is successful
+                    // Check for a redirect URL in the response
                     if (response.redirect_url) {
-                      window.location.href = response.redirect_url;
+                      // If login is successful, dynamically load new page content into a container
+                      $("#k1-article").load(response.redirect_url);
                     } else {
                       // If the response includes the updated form, replace the content
                       $("#k1-article").html(response);
@@ -735,16 +1420,32 @@
     </script>
 
     <script>
-      // Ensure the collapse functionality works with the checkbox
-      const checkbox = document.getElementById("checkbox2");
-      const quickLinks = document.getElementById("quickLinks");
-
-      checkbox.addEventListener("change", function () {
-        if (this.checked) {
-          quickLinks.classList.add("show"); // Show the content when checkbox is checked
-        } else {
-          quickLinks.classList.remove("show"); // Hide the content when checkbox is unchecked
+      $(document).ready(function () {
+        // General function for loading forms dynamically
+        function loadForm(url, container) {
+          $.ajax({
+            url: url, // URL for the form (either login or registration)
+            type: "GET",
+            success: function (data) {
+              $(container).html(data); // Load the form content into the specified container
+            },
+            error: function () {
+              alert("Error loading the form.");
+            },
+          });
         }
+
+        // Attach click event listener for the "Register here" link dynamically
+        $("#k1-article").on("click", "#registerLink", function (e) {
+          e.preventDefault(); // Prevent default anchor behavior
+          loadForm("{% url 'register' %}", "#k1-article"); // Load the registration form
+        });
+
+        // Attach click event listener for the "LogLink" (login link) dynamically
+        $("#k1-article").on("click", "#LogLink", function (e) {
+          e.preventDefault(); // Prevent default anchor behavior
+          loadForm("{% url 'my-login' %}", "#k1-article"); // Load the login form
+        });
       });
     </script>
   </body>

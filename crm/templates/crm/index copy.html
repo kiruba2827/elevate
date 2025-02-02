@@ -16,8 +16,6 @@
     <!-- Custom CSS -->
     <link rel="stylesheet" href="{% static 'css/styles.css' %}" />
 
-    <!-- jQuery -->
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
     <style>
@@ -97,7 +95,7 @@
         color: white;
         padding: 20px 0;
         text-align: center;
-        margin-left: 150px;
+        margin-left: 0px;
       }
 
       h1 {
@@ -135,14 +133,18 @@
 
       /* Sidebar Styles */
       aside {
-        background-color: #f8f9fa; /* Light gray background */
+        background-color: #f8f9fa;
         border-right: 1px solid #ddd;
         padding: 16px;
         width: 250px;
-        min-height: 100vh; /* Full height sidebar */
-        position: fixed;
+        position: absolute;
         left: 0;
-        top: 0;
+        top: 140px;
+        overflow-y: auto;
+        display: flex;
+        flex-direction: column;
+        min-height: calc(100vh - 136px); /* Adjust to match the page layout */
+        bottom: 0;
       }
 
       aside ul {
@@ -222,8 +224,8 @@
         padding: 10px 20px;
         background-color: #343a40; /* Footer-like dark background */
         color: white;
-        margin-top: 20px;
-        margin-left: 150px;
+        margin-top: 105px;
+        margin-left: 0px;
       }
 
       /* Scroll to Top Button */
@@ -266,12 +268,13 @@
       @media (max-width: 768px) {
         aside {
           width: 100%;
-          position: static;
+          position: absolute;
           min-height: auto;
+          margin-top: 136px;
         }
 
         main {
-          margin-left: 0;
+          margin-left: 150px;
         }
 
         nav {
@@ -323,6 +326,9 @@
     </header>
     <nav class="d-flex justify-content-between align-items-center">
       <!-- Dropdown Menus for Home, About, and Contact -->
+
+      <!-- Dropdown Menus for Home, About, and Contact -->
+      <!-- Dropdown Menus for Home, About, and Contact -->
       <div class="d-flex justify-content-center w-100">
         <!-- Home Dropdown -->
         <div class="dropdown" style="margin-left: 100px">
@@ -336,9 +342,41 @@
             Home
           </button>
           <ul class="dropdown-menu" aria-labelledby="homeDropdown">
-            <li><a class="dropdown-item" href="#home1">Home Submenu 1</a></li>
-            <li><a class="dropdown-item" href="#home2">Home Submenu 2</a></li>
-            <li><a class="dropdown-item" href="#home3">Home Submenu 3</a></li>
+            <li>
+              {% if user.is_authenticated %}
+              <a class="dropdown-item" href="{% url 'home1' %}"
+                >Home Submenu 1</a
+              >
+              {% else %}
+              <a class="dropdown-item restricted" href="home1"
+                >Home Submenu 1</a
+              >
+              {% endif %}
+            </li>
+            <hr class="dropdown-divider" />
+            <li>
+              {% if user.is_authenticated %}
+              <a class="dropdown-item" href="{% url 'home2' %}"
+                >Home Submenu 2</a
+              >
+              {% else %}
+              <a class="dropdown-item restricted" href="home2"
+                >Home Submenu 2</a
+              >
+              {% endif %}
+            </li>
+            <hr class="dropdown-divider" />
+            <li>
+              {% if user.is_authenticated %}
+              <a class="dropdown-item" href="{% url 'home3' %}"
+                >Home Submenu 3</a
+              >
+              {% else %}
+              <a class="dropdown-item restricted" href="home3"
+                >Home Submenu 3</a
+              >
+              {% endif %}
+            </li>
           </ul>
         </div>
 
@@ -354,9 +392,33 @@
             About
           </button>
           <ul class="dropdown-menu" aria-labelledby="aboutDropdown">
-            <li><a class="dropdown-item" href="#about1">About Us</a></li>
-            <li><a class="dropdown-item" href="#about2">Our Mission</a></li>
-            <li><a class="dropdown-item" href="#about3">Our Team</a></li>
+            <li>
+              {% if user.is_authenticated %}
+              <a class="dropdown-item" href="{% url 'about_us' %}">About Us</a>
+              {% else %}
+              <a class="dropdown-item restricted" href="about_us">About Us</a>
+              {% endif %}
+            </li>
+            <hr class="dropdown-divider" />
+            <li>
+              {% if user.is_authenticated %}
+              <a class="dropdown-item" href="{% url 'our_mission' %}"
+                >Our Mission</a
+              >
+              {% else %}
+              <a class="dropdown-item restricted" href="our_mission"
+                >Our Mission</a
+              >
+              {% endif %}
+            </li>
+            <hr class="dropdown-divider" />
+            <li>
+              {% if user.is_authenticated %}
+              <a class="dropdown-item" href="{% url 'our_team' %}">Our Team</a>
+              {% else %}
+              <a class="dropdown-item restricted" href="our_team">Our Team</a>
+              {% endif %}
+            </li>
           </ul>
         </div>
 
@@ -372,12 +434,176 @@
             Contact
           </button>
           <ul class="dropdown-menu" aria-labelledby="contactDropdown">
-            <li><a class="dropdown-item" href="#contact1">Email Us</a></li>
-            <li><a class="dropdown-item" href="#contact2">Call Us</a></li>
-            <li><a class="dropdown-item" href="#contact3">Visit Us</a></li>
+            <li>
+              {% if user.is_authenticated %}
+              <a class="dropdown-item" href="{% url 'email_us' %}">Email Us</a>
+              {% else %}
+              <a class="dropdown-item restricted" href="email_us">Email Us</a>
+              {% endif %}
+            </li>
+            <hr class="dropdown-divider" />
+            <li>
+              {% if user.is_authenticated %}
+              <a class="dropdown-item" href="{% url 'call_us' %}">Call Us</a>
+              {% else %}
+              <a class="dropdown-item restricted" href="call_us">Call Us</a>
+              {% endif %}
+            </li>
+            <hr class="dropdown-divider" />
+            <li>
+              {% if user.is_authenticated %}
+              <a class="dropdown-item" href="{% url 'visit_us' %}">Visit Us</a>
+              {% else %}
+              <a class="dropdown-item restricted" href="visit_us">Visit Us</a>
+              {% endif %}
+            </li>
           </ul>
         </div>
       </div>
+
+      <!-- Modal for Login Prompt -->
+      <div
+        id="loginModal"
+        class="modal fade"
+        tabindex="-1"
+        aria-labelledby="loginModalLabel"
+        aria-hidden="true"
+      >
+        <div class="modal-dialog modal-dialog-centered">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="loginModalLabel">Login Required</h5>
+              <button
+                type="button"
+                class="btn-close"
+                data-bs-dismiss="modal"
+                aria-label="Close"
+              ></button>
+            </div>
+            <div class="modal-body">
+              <p style="color: red; font-weight: bold">
+                Kindly login to access this feature.
+              </p>
+              <button id="loadForm" class="btn btn-primary" style="width: 100%">
+                Sign In
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+      <script>
+        $(document).ready(function () {
+          // Function to get CSRF token from the cookies
+          function getCSRFToken() {
+            let csrfToken = null;
+            const csrfCookie = document.cookie
+              .split(";")
+              .find((cookie) => cookie.trim().startsWith("csrftoken="));
+            if (csrfCookie) {
+              csrfToken = csrfCookie.split("=")[1];
+            }
+            return csrfToken;
+          }
+
+          // Store the clicked URL in a variable
+          let clickedUrl = "";
+
+          // Attach click event to dropdown items
+          $(".dropdown-item").on("click", function (e) {
+            e.preventDefault();
+
+            // Update clickedUrl to the new clicked item's URL
+            clickedUrl = $(this).attr("href");
+
+            // Check if the clicked item has the "restricted" class (for unauthenticated users)
+            if ($(this).hasClass("restricted")) {
+              // Show the login modal
+              $("#loginModal").modal("show");
+            } else {
+              // If the clicked item is not restricted, load the page content into #k1-article
+              loadPageContent(clickedUrl);
+            }
+          });
+
+          // Handle the login form submission
+          $("#k1-article").on("submit", "form", function (e) {
+            e.preventDefault();
+            const formData = $(this).serialize(); // Serialize the form data
+
+            // Get the CSRF token
+            const csrfToken = getCSRFToken();
+
+            $.ajax({
+              url: "{% url 'my-login' %}", // Replace with your login URL
+              method: "POST",
+              data: formData,
+              headers: {
+                "X-CSRFToken": csrfToken, // Add CSRF token to the request headers
+              },
+              success: function (response) {
+                if (response.redirect_url) {
+                  // After login, check if we need to redirect after login
+                  if (clickedUrl) {
+                    // Load the clicked URL after login
+                    loadPageContent(clickedUrl);
+                  } else {
+                    // If no specific URL was clicked, load the dashboard or default page
+                    loadPageContent(response.redirect_url);
+                  }
+                } else {
+                  // If the response includes the updated form, replace the content with errors
+                  $("#k1-article").html(response.form_html);
+                }
+              },
+              error: function () {
+                alert("Error logging in. Please try again.");
+              },
+            });
+          });
+
+          // Handle click event on the "Sign In" button inside the modal
+          $("#loadForm").on("click", function (e) {
+            e.preventDefault();
+
+            // Dynamically load the login form into the #k1-article div
+            const url = "{% url 'my-login' %}"; // Replace 'my-login' with your Django login URL
+
+            $.ajax({
+              url: url,
+              method: "GET",
+              success: function (data) {
+                // Load the login form into the content area
+                $("#k1-article").html(data);
+              },
+              error: function () {
+                alert("Error loading the login form. Please try again.");
+              },
+            });
+
+            // Close the modal after the form is loaded
+            $("#loginModal").modal("hide");
+          });
+
+          // Function to load page content dynamically into #k1-article
+          function loadPageContent(url) {
+            $.ajax({
+              url: url,
+              method: "GET",
+              success: function (data) {
+                // Inject the content into #k1-article
+                $("#k1-article").html(data);
+              },
+              error: function () {
+                $("#k1-article").html(
+                  "<p>Error loading the page. Please try again.</p>"
+                );
+              },
+            });
+          }
+        });
+      </script>
 
       <!-- User Profile Section aligned to the right -->
       <div class="dropdown">
@@ -428,10 +654,12 @@
           border-right: 1px solid #ddd;
           padding: 16px;
           width: 250px;
-          min-height: 100vh;
-          position: fixed;
+          min-height: calc(
+            100vh - 0px - 0px
+          ); /* Match the article's min-height */
+          position: absolute;
           left: 0;
-          top: 0;
+          top: 140px; /* Move down by 100px */
           overflow-y: auto; /* Allows scrolling if content overflows */
           display: flex;
           flex-direction: column; /* Ensure flex layout */
@@ -472,14 +700,17 @@
             <li class="list-group-item">
               {% if user.is_authenticated %}
               <a
-                href="{% url 'logout' %}"
+                href="#"
+                id="logoutLink"
                 data-content="<h2>Logout</h2><p>You have been logged out 🤝</p>"
-                >Logout</a
               >
+                Logout
+              </a>
               {% else %}
               <span class="text-danger">Kindly log in</span>
               {% endif %}
             </li>
+
             <li class="list-group-item">
               <a href="#" id="loadRegisterForm">Register Here</a>
             </li>
@@ -526,11 +757,49 @@
           </form>
         </div>
       </aside>
+      <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+      <script>
+        $(document).ready(function () {
+          // Handle click event for the logout link
+          $("#logoutLink").on("click", function (e) {
+            e.preventDefault();
+
+            // Make an AJAX request to log out the user
+            $.ajax({
+              url: '{% url "logout" %}', // The Django logout URL
+              type: "POST",
+              data: {
+                csrfmiddlewaretoken: "{{ csrf_token }}", // Include the CSRF token in the request
+              },
+              success: function (response) {
+                // Update #k1-article with a logout message or any content
+                $("#k1-article").html(
+                  "<h2>Logout Successful</h2><p>You have been logged out successfully. See you again!</p>"
+                );
+              },
+              error: function () {
+                // Handle any errors that occur during the logout process
+                alert(
+                  "An error occurred while logging you out. Please try again."
+                );
+              },
+            });
+          });
+        });
+      </script>
 
       <main>
-        <article id="k1-article">
+        <article
+          id="k1-article"
+          style="
+            height: 600px; /* Set the desired height for the scrollable area */
+            overflow-y: auto; /* Enable vertical scrolling */
+            border: 1px solid #ddd; /* Optional: Add a border for better visual separation */
+            padding: 15px; /* Optional: Add padding for better spacing */
+          "
+        >
           <div>
-            <div class="card shadow-sm p-4">
+            <div class="card shadow-sm p-2">
               <h2 class="card-title">Welcome to Our Website</h2>
               <p class="card-text">
                 Explore our website to discover the various services and
@@ -553,23 +822,21 @@
 
           <script>
             $(document).ready(function () {
-              // Ensure the events_data is passed correctly as a JavaScript object
-              const eventsData = JSON.parse("{{ events_data|escapejs }}"); // Escape and parse the JSON data
+              const eventsData = JSON.parse("{{ events_data|escapejs }}");
 
-              // Initialize the main calendar (for all events)
+              // Initialize the main calendar
               const calendar = $("#calendarTable").fullCalendar({
                 header: {
                   left: "prev,next today",
                   center: "title",
                   right: "month,agendaWeek,agendaDay",
                 },
-                events: eventsData, // Pass the eventsData here
+                events: eventsData,
                 height: "auto",
                 contentHeight: "auto",
 
                 // Event click handler
                 eventClick: function (event) {
-                  console.log(event); // Log the event object to check its properties
                   alert(
                     "Event: " +
                       event.title +
@@ -596,15 +863,8 @@
                     success: function (response) {
                       alert(response.message);
 
-                      // Add the new event to both calendars
+                      // Add the new event to the calendar
                       calendar.fullCalendar("renderEvent", {
-                        title: title,
-                        start: date,
-                        description: description || "No description available",
-                      });
-
-                      // Add the new event to the added events calendar
-                      addedEventsCalendar.fullCalendar("renderEvent", {
                         title: title,
                         start: date,
                         description: description || "No description available",
@@ -624,8 +884,16 @@
             });
           </script>
 
-          <!-- Calendar for All Events -->
-          <div id="calendarTable"></div>
+          <!-- Scrollable Calendar -->
+          <div
+            id="calendarTable"
+            style="
+              height: 400px; /* Set desired height */
+              overflow-y: auto; /* Enable vertical scrolling */
+              border: 1px solid #ccc; /* Optional: Add border for better visual separation */
+              padding: 10px; /* Optional: Add padding for better appearance */
+            "
+          ></div>
         </article>
       </main>
     </div>
@@ -739,6 +1007,44 @@
         } else {
           quickLinks.classList.remove("show"); // Hide the content when checkbox is unchecked
         }
+      });
+    </script>
+
+    <script>
+      $(document).ready(function () {
+        // Attach a click event listener for the "Register here" link dynamically
+        $("#k1-article").on("click", "#registerLink", function (e) {
+          e.preventDefault(); // Prevent default anchor behavior
+          $.ajax({
+            url: '{% url "register" %}', // URL for the registration form
+            type: "GET",
+            success: function (data) {
+              $("#k1-article").html(data); // Load the registration form content into the article
+            },
+            error: function () {
+              alert("Error loading the registration form.");
+            },
+          });
+        });
+      });
+    </script>
+
+    <script>
+      $(document).ready(function () {
+        // Attach a click event listener for the "Register here" link dynamically
+        $("#k1-article").on("click", "#LogLink", function (e) {
+          e.preventDefault(); // Prevent default anchor behavior
+          $.ajax({
+            url: '{% url "my-login" %}', // URL for the registration form
+            type: "GET",
+            success: function (data) {
+              $("#k1-article").html(data); // Load the registration form content into the article
+            },
+            error: function () {
+              alert("Error loading the registration form.");
+            },
+          });
+        });
       });
     </script>
   </body>

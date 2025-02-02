@@ -139,4 +139,7 @@ EMAIL_HOST_PASSWORD = 'hrjw hqmg lgvt asaj'  # Your email password or app passwo
 DEFAULT_FROM_EMAIL = 'kalaimani2827@gmail.com'
 EMAIL_USE_SSL = False
 
+import os
 
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')

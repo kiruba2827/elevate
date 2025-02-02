@@ -17,6 +17,26 @@
 
     <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+      $(document).ready(function () {
+        // Hide both forms initially
+        $("#user-login-form").hide();
+        $("#admin-login-form").hide();
+
+        // Show User Login Form
+        $("#user-btn").click(function () {
+          $("#user-login-form").show();
+          $("#admin-login-form").hide();
+        });
+
+        // Show Admin Login Form
+        $("#admin-btn").click(function () {
+          $("#admin-login-form").show();
+          $("#user-login-form").hide();
+        });
+      });
+    </script>
   </head>
 
   <body class="bg-light">
@@ -26,16 +46,58 @@
       <div class="card shadow-lg" style="width: 28rem">
         <div class="card-body">
           <h1 class="text-center mb-4">Login Here</h1>
-          <form method="POST" autocomplete="off">
+
+          <!-- Buttons to toggle login forms -->
+          <div class="mb-3 d-flex justify-content-around">
+            <button id="user-btn" class="btn btn-outline-primary">User</button>
+            <button id="admin-btn" class="btn btn-outline-danger">Admin</button>
+          </div>
+
+          <script>
+            $(document).ready(function () {
+              // Show user form and set login type to 'user'
+              $("#user-btn").click(function () {
+                $("#user-login-form").show();
+                $("#admin-login-form").hide();
+                $("#login-type").val("user"); // Set the login type to 'user'
+              });
+
+              // Show admin form and set login type to 'admin'
+              $("#admin-btn").click(function () {
+                $("#admin-login-form").show();
+                $("#user-login-form").hide();
+                $("#login-type").val("admin"); // Set the login type to 'admin'
+              });
+            });
+          </script>
+
+          <!-- Add a hidden input field for login type -->
+          <input type="hidden" id="login-type" name="login_type" value="user" />
+
+          <!-- User Login Form -->
+          <form id="user-login-form" method="POST" autocomplete="off">
             {% csrf_token %}
-            <!-- Bootstrap Form Group -->
             <div class="mb-3">{{ loginform.as_p }}</div>
-            <button type="submit" class="btn btn-primary w-100">Login</button>
+            <button type="submit" class="btn btn-primary w-100">
+              Login as User
+            </button>
+          </form>
+
+          <!-- Admin Login Form -->
+          <form id="admin-login-form" method="POST" autocomplete="off">
+            {% csrf_token %}
+            <div class="mb-3">{{ loginform.as_p }}</div>
+            <button type="submit" class="btn btn-danger w-100">
+              Login as Admin
+            </button>
           </form>
 
           <p class="text-center mt-3">
             Don't have an account?
-            <a href="{% url 'register' %}" class="text-decoration-none"
+            <a
+              href="{% url 'register' %}"
+              class="text-decoration-none"
+              id="registerLink"
               >Register here</a
             >
           </p>
