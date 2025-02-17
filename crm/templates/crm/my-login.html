@@ -4,7 +4,7 @@
     {% load static %}
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Login Here</title>
+    <title>Login</title>
 
     <!-- Bootstrap CSS -->
     <link
@@ -20,88 +20,201 @@
 
     <script>
       $(document).ready(function () {
-        // Hide both forms initially
-        $("#user-login-form").hide();
-        $("#admin-login-form").hide();
+        $("#user-login-form, #admin-login-form, .back-btn").hide(); // Hide forms and back button initially
 
-        // Show User Login Form
-        $("#user-btn").click(function () {
-          $("#user-login-form").show();
-          $("#admin-login-form").hide();
+        $(".login-btn").click(function () {
+          let target = $(this).data("target");
+          $(".login-btn-container").hide();
+          $(target).fadeIn();
+          $(".back-btn").fadeIn(); // Show back button when a form appears
         });
 
-        // Show Admin Login Form
-        $("#admin-btn").click(function () {
-          $("#admin-login-form").show();
-          $("#user-login-form").hide();
+        $(".back-btn").click(function () {
+          $("#user-login-form, #admin-login-form").fadeOut(200, function () {
+            $(".login-btn-container").fadeIn(300);
+            $(".back-btn").fadeOut(); // Hide back button when going back
+          });
+        });
+
+        // Password toggle functionality
+        $(".toggle-password").click(function () {
+          let passwordField = $(this).siblings("input");
+          let type =
+            passwordField.attr("type") === "password" ? "text" : "password";
+          passwordField.attr("type", type);
+          $(this).html(
+            type === "password"
+              ? "<i class='bi bi-eye'></i>"
+              : "<i class='bi bi-eye-slash'></i>"
+          );
+        });
+
+        // Show loading spinner and hide the form on submission
+        $("form").submit(function (event) {
+          event.preventDefault(); // Prevent default form submission
+
+          // Hide the login form
+          $(this).fadeOut(200, function () {
+            // Show the spinner in place of the form
+            $(".spinner-container").fadeIn();
+          });
+
+          // Simulate a delay to show the spinner (replace with actual login logic)
+          setTimeout(function () {
+            $(".spinner-container").fadeOut(200); // Hide spinner
+            alert("Login successful!"); // Replace this with actual success behavior
+          }, 3000); // Simulated delay of 3 seconds (change as necessary)
         });
       });
     </script>
+
+    <style>
+      .login-container {
+        width: 100%;
+        width: 100%;
+        max-width: 400px;
+        padding: 30px;
+        border-radius: 12px;
+        box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+        margin-top: 70px;
+        margin-left: 265px;
+      }
+      .btn-sm {
+        padding: 6px 12px;
+        font-size: 0.9rem;
+      }
+      .card-body {
+        padding: 20px;
+      }
+      .back-btn {
+        background: none;
+        border: none;
+        color: #007bff;
+        font-size: 0.9rem;
+        cursor: pointer;
+        margin-top: 10px;
+      }
+
+      .toggle-password {
+        position: absolute;
+        right: 10px;
+        top: 50%;
+        transform: translateY(-50%);
+        cursor: pointer;
+        color: #6c757d;
+      }
+
+      /* Spinner container */
+      .spinner-container {
+        display: none;
+        text-align: center;
+      }
+    </style>
   </head>
 
-  <body class="bg-light">
-    <div
-      class="container d-flex justify-content-center align-items-center vh-100"
-    >
-      <div class="card shadow-lg" style="width: 28rem">
-        <div class="card-body">
-          <h1 class="text-center mb-4">Login Here</h1>
+  <body
+    class="bg-light d-flex justify-content-center align-items-center vh-100"
+  >
+    <div class="card shadow login-container">
+      <div class="card-body text-center">
+        <img
+          src="{% static 'img/cdaclogo.png' %}"
+          alt="C-DAC Logo"
+          class="img-fluid"
+          style="
+            height: 70px;
+            background: transparent;
+            border: none;
+            box-shadow: none;
+          "
+        />
+        <h1 class="text-center mb-4">C-DAC Login</h1>
 
-          <!-- Buttons to toggle login forms -->
-          <div class="mb-3 d-flex justify-content-around">
-            <button id="user-btn" class="btn btn-outline-primary">User</button>
-            <button id="admin-btn" class="btn btn-outline-danger">Admin</button>
+        <!-- Buttons to toggle login forms -->
+        <div class="login-btn-container">
+          <button
+            class="btn btn-outline-primary btn-sm login-btn w-100 mb-2"
+            data-target="#user-login-form"
+          >
+            Login as User
+          </button>
+          <button
+            class="btn btn-outline-danger btn-sm login-btn w-100"
+            data-target="#admin-login-form"
+          >
+            Login as Admin
+          </button>
+        </div>
+
+        <!-- User Login Form -->
+        <form
+          id="user-login-form"
+          method="POST"
+          class="mt-3"
+          autocomplete="off"
+        >
+          {% csrf_token %}
+
+          <label for="{{ loginform.username1.id_for_label }}">Username:</label>
+          {{ loginform.username }}
+
+          <div class="password-container">
+            <br />
+            <label for="{{ loginform.password1.id_for_label }}"
+              >Password:</label
+            >
+            {{ loginform.password }}
+            <span class="toggle-password"><i class="bi bi-eye"></i></span>
           </div>
 
-          <script>
-            $(document).ready(function () {
-              // Show user form and set login type to 'user'
-              $("#user-btn").click(function () {
-                $("#user-login-form").show();
-                $("#admin-login-form").hide();
-                $("#login-type").val("user"); // Set the login type to 'user'
-              });
+          <button type="submit" class="btn btn-primary w-100 btn-sm mt-3">
+            Login
+          </button>
+        </form>
 
-              // Show admin form and set login type to 'admin'
-              $("#admin-btn").click(function () {
-                $("#admin-login-form").show();
-                $("#user-login-form").hide();
-                $("#login-type").val("admin"); // Set the login type to 'admin'
-              });
-            });
-          </script>
+        <!-- Admin Login Form -->
+        <form
+          id="admin-login-form"
+          method="POST"
+          class="mt-3"
+          autocomplete="off"
+        >
+          {% csrf_token %}
 
-          <!-- Add a hidden input field for login type -->
-          <input type="hidden" id="login-type" name="login_type" value="user" />
+          <label for="{{ loginform.username.id_for_label }}">Username:</label>
+          {{ loginform.username }}
 
-          <!-- User Login Form -->
-          <form id="user-login-form" method="POST" autocomplete="off">
-            {% csrf_token %}
-            <div class="mb-3">{{ loginform.as_p }}</div>
-            <button type="submit" class="btn btn-primary w-100">
-              Login as User
-            </button>
-          </form>
+          <div class="password-container">
+            <br />
+            <label for="{{ loginform.password.id_for_label }}">Password:</label>
+            {{ loginform.password }}
+            <span class="toggle-password"><i class="bi bi-eye"></i></span>
+          </div>
 
-          <!-- Admin Login Form -->
-          <form id="admin-login-form" method="POST" autocomplete="off">
-            {% csrf_token %}
-            <div class="mb-3">{{ loginform.as_p }}</div>
-            <button type="submit" class="btn btn-danger w-100">
-              Login as Admin
-            </button>
-          </form>
+          <button type="submit" class="btn btn-danger w-100 btn-sm mt-3">
+            Login
+          </button>
+        </form>
 
-          <p class="text-center mt-3">
-            Don't have an account?
-            <a
-              href="{% url 'register' %}"
-              class="text-decoration-none"
-              id="registerLink"
-              >Register here</a
-            >
-          </p>
+        <!-- Spinner Container -->
+        <div class="spinner-container">
+          <div class="spinner-border text-primary" role="status">
+            <span class="visually-hidden">Loading...</span>
+          </div>
+          <p>Logging in...</p>
         </div>
+
+        <button type="button" class="back-btn">← Back</button>
+
+        <p class="text-center mt-3">
+          Don't have an account?
+          <a
+            href="{% url 'register' %}"
+            class="text-decoration-none"
+            id="registerLink"
+            >Register here</a
+          >
+        </p>
       </div>
     </div>
   </body>

@@ -48,26 +48,29 @@ def reject_user(request, user_id):
     else:
         return redirect('login')
 
+import json
 from django.shortcuts import render
 from .models import ImportantEvent
-import json
 
 def homepage(request):
-    # Fetch all events from the database
     events = ImportantEvent.objects.all()
 
-    # Prepare events data for FullCalendar (convert to a format FullCalendar can understand)
     events_data = [
         {
+            'id': event.id,  # Ensure ID is included
             'title': event.title,
-            'start': event.date.strftime('%Y-%m-%d'),  # Format date as string
-            'description': event.description,
+            'date': event.date.strftime('%Y-%m-%d') if event.date else "No Date",  # Change 'start' to 'date'
+            'description': event.description or "No description available",
         }
         for event in events
     ]
 
-    # Pass events data to template as a JSON object
+    
+
     return render(request, 'crm/index.html', {'events_data': json.dumps(events_data)})
+
+
+
 
 
 from django.http import JsonResponse
@@ -76,6 +79,7 @@ from .models import ImportantEvent
 from datetime import datetime
 import json
 
+# View to add events
 @csrf_exempt
 def add_event(request):
     if request.method == "POST":
@@ -97,11 +101,45 @@ def add_event(request):
         return JsonResponse({
             "message": "Event added successfully!",
             "event": {
+                "id": event.id,  # Including event ID for possible deletion later
                 "title": event.title,
                 "date": event.date.strftime('%Y-%m-%d'),
                 "description": event.description,
             },
         })
+    return JsonResponse({"error": "Invalid request"}, status=400)
+
+from django.http import JsonResponse
+from django.views.decorators.csrf import csrf_exempt
+from .models import ImportantEvent
+import json
+
+# View to delete an event based on title and date
+@csrf_exempt
+def delete_event(request):
+    if request.method == "POST":
+        # Load the data from the request body
+        data = json.loads(request.body)
+        title = data.get("title")
+        date_str = data.get("date")
+
+        if not title or not date_str:
+            return JsonResponse({"error": "Event title and date are required"}, status=400)
+
+        # Convert the string date to a datetime object
+        try:
+            event_date = datetime.strptime(date_str, '%Y-%m-%d').date()
+        except ValueError:
+            return JsonResponse({"error": "Invalid date format"}, status=400)
+
+        # Try to find the event based on title and date
+        try:
+            event = ImportantEvent.objects.get(title=title, date=event_date)
+            event.delete()
+            return JsonResponse({"message": "Event deleted successfully!"})
+        except ImportantEvent.DoesNotExist:
+            return JsonResponse({"error": "Event not found"}, status=404)
+
     return JsonResponse({"error": "Invalid request"}, status=400)
 
 
@@ -146,6 +184,8 @@ def my_login(request):
         return JsonResponse({'form_html': render(request, 'crm/my-login.html', {'loginform': form}).content.decode()})
 
     return render(request, 'crm/my-login.html', {'loginform': form})
+
+
 
 
 # View for logout
@@ -269,6 +309,7 @@ def update_users(request):
         # Redirect back to the dashboard after processing all updates
         return redirect("dashboard")
 from django.shortcuts import render
+from django.http import HttpResponse
 
 def home1(request):
     return render(request, 'crm/home1.html')
@@ -297,6 +338,33 @@ def call_us(request):
 def visit_us(request):
     return render(request, 'crm/visit_us.html')
 
+
+# Services Views
+def service1(request):
+    return render(request, 'crm/service1.html')
+
+def service2(request):
+    return render(request, 'crm/service2.html')
+
+def service3(request):
+    return render(request, 'crm/service3.html')
+
+from django.shortcuts import render
+
+def service4(request):
+    return render(request, 'crm/service4.html')  # Ensure path is correct
+
+
+# Downloads Views
+def download1(request):
+    return HttpResponse("Download 1 Page")  # Replace with actual file download logic
+
+def download2(request):
+    return HttpResponse("Download 2 Page")  # Replace with actual file download logic
+
+def download3(request):
+    return HttpResponse("Download 3 Page")  
+
 from django.http import JsonResponse
 
 def check_authentication(request):
@@ -310,3 +378,14 @@ def check_authentication(request):
         return JsonResponse({'is_authenticated': True, 'user_data': user_data})
     else:
         return JsonResponse({'is_authenticated': False})
+
+from django.shortcuts import render
+
+def request_internet_access(request):
+    return render(request, 'crm/request_internet_access.html')
+
+from django.shortcuts import render
+
+def whitelist_ip(request):
+    return render(request, 'crm/whitelist_ip.html')
+

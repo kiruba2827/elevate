@@ -17,17 +17,111 @@
 
     <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Add some custom CSS for the countdown and button hover -->
+    <style>
+      body {
+        background-image: url("https://via.placeholder.com/1920x1080/87CEEB/FFFFFF?text=Thank+You");
+        background-size: cover;
+        background-position: center;
+      }
+      .btn-primary {
+        transition: all 0.3s ease;
+      }
+      .btn-primary:hover {
+        transform: scale(1.1);
+        background-color: #0056b3;
+      }
+      .countdown-timer {
+        font-size: 1.5rem;
+        color: #495057;
+        margin-top: 20px;
+      }
+      .confetti {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        pointer-events: none;
+      }
+    </style>
   </head>
   <body
-    class="bg-light d-flex align-items-center justify-content-center vh-100"
+    class="bg-light d-flex align-items-center justify-content-center vh-100 position-relative"
   >
+    <!-- Confetti animation -->
+    <div class="confetti"></div>
+
     <div class="container text-center p-5 shadow rounded bg-white">
       <h1 class="text-primary fw-bold mb-4">THANK YOU!</h1>
       <p class="message lead text-muted mb-4">
         Your action has been successfully completed.
       </p>
       <a href="/" class="btn btn-primary btn-lg">Go to Homepage</a>
+
+      <!-- Countdown Timer -->
+      <div id="countdown" class="countdown-timer mt-4">
+        Redirecting in <span id="time">5</span> seconds...
+      </div>
     </div>
+
+    <script>
+      // Countdown Timer for automatic redirection
+      let countdownTime = 5;
+      const countdownElement = document.getElementById("time");
+
+      const countdownInterval = setInterval(() => {
+        countdownTime -= 1;
+        countdownElement.innerText = countdownTime;
+
+        if (countdownTime <= 0) {
+          clearInterval(countdownInterval);
+          window.location.href = "/"; // Redirect to the homepage
+        }
+      }, 1000);
+
+      // Confetti animation (using a simple JS function for confetti effect)
+      function startConfetti() {
+        const confettiContainer = document.querySelector(".confetti");
+        for (let i = 0; i < 100; i++) {
+          const confetti = document.createElement("div");
+          confetti.classList.add("confetti-piece");
+          confetti.style.position = "absolute";
+          confetti.style.top = `${Math.random() * 100}%`;
+          confetti.style.left = `${Math.random() * 100}%`;
+          confetti.style.width = "10px";
+          confetti.style.height = "10px";
+          confetti.style.backgroundColor = `hsl(${
+            Math.random() * 360
+          }, 100%, 50%)`;
+          confetti.style.transform = `rotate(${Math.random() * 360}deg)`;
+          confettiContainer.appendChild(confetti);
+
+          // Animate confetti falling
+          confetti.style.animation = "fall 2s ease-out forwards";
+        }
+      }
+
+      startConfetti();
+    </script>
+
+    <style>
+      /* Confetti fall animation */
+      @keyframes fall {
+        0% {
+          transform: translateY(-100px);
+        }
+        100% {
+          transform: translateY(100vh);
+        }
+      }
+
+      /* Confetti piece styling */
+      .confetti-piece {
+        animation-duration: 2s;
+        animation-timing-function: ease-in-out;
+      }
+    </style>
   </body>
-  <script src="{% static 'js/script3.js' %}"></script>
 </html>

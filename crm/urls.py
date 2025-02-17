@@ -1,6 +1,8 @@
 from django.urls import path
 from . import views
 from django.contrib.auth.views import LogoutView
+from .views import request_internet_access
+from .views import whitelist_ip
 
 urlpatterns = [
     path('', views.homepage, name='homepage'),
@@ -27,4 +29,17 @@ urlpatterns = [
     path('contact/visit/', views.visit_us, name='visit_us'),
      # Other URL patterns...
     path('check-authentication/', views.check_authentication, name='check-authentication'),
+    path('delete_event/', views.delete_event, name='delete_event'),
+     # Services Dropdown
+    path('service1/', views.service1, name='service1'),
+    path('service2/', views.service2, name='service2'),
+    path('service3/', views.service3, name='service3'),
+    path('service4/', views.service4, name='service4'),
+
+    # Downloads Dropdown
+    path('download1/', views.download1, name='download1'),
+    path('download2/', views.download2, name='download2'),
+    path('download3/', views.download3, name='download3'),
+    path('request-internet-access/', request_internet_access, name='request_internet_access'),
+    path('whitelist-ip/', whitelist_ip, name='whitelist_ip'),
 ]

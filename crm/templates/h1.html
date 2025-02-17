@@ -137,3 +137,42 @@
     });
   });
 </script>
+
+<!-- Google Translate Element -->
+<div id="google_translate_element"></div>
+
+<!-- Language Change Link -->
+<a
+  href="#"
+  class="text-white mr-3"
+  onclick="changeLanguage('hi'); return false;"
+  >हिन्दी</a
+>
+<a
+  href="#"
+  class="text-white mr-3"
+  onclick="changeLanguage('en'); return false;"
+  >English</a
+>
+
+<script>
+  // Load Google Translate
+  function googleTranslateElementInit() {
+    new google.translate.TranslateElement(
+      { pageLanguage: "en" },
+      "google_translate_element"
+    );
+  }
+
+  // Function to change language
+  function changeLanguage(lang) {
+    var select = document.querySelector(".goog-te-combo");
+    if (select) {
+      select.value = lang;
+      select.dispatchEvent(new Event("change"));
+    }
+  }
+</script>
+
+<!-- Load Google Translate API -->
+<script src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>

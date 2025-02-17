@@ -59,3 +59,22 @@
     });
   });
 </script>
+
+<script>
+  $(document).ready(function () {
+    // Automatically trigger logout on page refresh
+    $.ajax({
+      url: '{% url "logout" %}', // Logout URL
+      type: "GET", // You may use POST if needed
+      success: function (response) {
+        // Redirect to the final logout page after successful logout
+        if (response.redirect_url) {
+          window.location.href = response.redirect_url; // Redirect after logout
+        }
+      },
+      error: function () {
+        alert("Error logging out. Please try again.");
+      },
+    });
+  });
+</script>
