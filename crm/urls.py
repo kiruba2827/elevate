@@ -3,6 +3,9 @@ from . import views
 from django.contrib.auth.views import LogoutView
 from .views import request_internet_access
 from .views import whitelist_ip
+from .views import get_system_details
+from .views import system_details_page
+from .views import check_authentication 
 
 urlpatterns = [
     path('', views.homepage, name='homepage'),
@@ -27,8 +30,6 @@ urlpatterns = [
     path('contact/email/', views.email_us, name='email_us'),
     path('contact/call/', views.call_us, name='call_us'),
     path('contact/visit/', views.visit_us, name='visit_us'),
-     # Other URL patterns...
-    path('check-authentication/', views.check_authentication, name='check-authentication'),
     path('delete_event/', views.delete_event, name='delete_event'),
      # Services Dropdown
     path('service1/', views.service1, name='service1'),
@@ -42,4 +43,8 @@ urlpatterns = [
     path('download3/', views.download3, name='download3'),
     path('request-internet-access/', request_internet_access, name='request_internet_access'),
     path('whitelist-ip/', whitelist_ip, name='whitelist_ip'),
+    path('api/system-details/', get_system_details, name='system-details'),
+    path('system-details/', system_details_page, name='system_details'),
+    path('approve-all/', views.approve_all_users, name='approve-all-users'),
+     path('auth-status/', check_authentication, name='auth_status'),
 ]

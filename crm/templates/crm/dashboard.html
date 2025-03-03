@@ -167,11 +167,7 @@
         </div>
       </div>
 
-      <!-- Analytics Graph -->
-      <div class="chart-container">
-        <h3 class="text-center">User Statistics Over Time</h3>
-        <canvas id="userAnalytics"></canvas>
-      </div>
+     
 
       <!-- Search Bar -->
       <div class="row">
@@ -185,18 +181,27 @@
           />
         </div>
       </div>
+
+      <!-- Approve All Button -->
+<div class="d-flex justify-content-between mb-3">
+  <h4>User List</h4>
+  <form method="POST" action="{% url 'approve-all-users' %}">
+    {% csrf_token %}
+    <button type="submit" class="btn btn-success">Approve All</button>
+  </form>
+</div>
       
 
-<!-- User Table -->
 <!-- User Table -->
 <!-- User Table -->
 <div class="row">
   <div class="col-12">
     <form id="userTableForm" method="POST" action="{% url 'update-users' %}">
       {% csrf_token %}
-      <table class="table table-bordered table-hover">
+      <table class="table table-bordered table-hover text-center">
         <thead class="table-dark">
           <tr>
+            
             <th>Username</th>
             <th>Email</th>
             <th>Gender</th>
@@ -208,7 +213,14 @@
         <tbody id="userTableBody">
           {% for user in users %}
           <tr>
-            <td>{{ user.user.username }}</td>
+            
+            
+
+            <td style="width: 150px;text-align: left; padding-left: 10px;">{% if user.gender == 'Male' %}
+              <img src="{% static 'img/profile.png' %}" alt="Male Avatar" class="img-fluid" style="height: 36px;background: transparent; border: none; box-shadow: none; " />
+            {% else %}
+              <img src="{% static 'img/woman.png' %}" alt="Female Avatar" class="img-fluid" style="height: 36px;background: transparent; border: none; box-shadow: none;" />
+            {% endif %}{{ user.user.username }}</td>
             <td>
               <input
                 type="email"
@@ -217,11 +229,18 @@
                 class="form-control"
               />
             </td>
-            <td>
+            <td class="d-flex align-items-center gap-2">
               <select name="gender_{{ user.user.id }}" class="form-select">
-                <option value="Male" {% if user.gender == "Male" %}selected{% endif %}>Male</option>
-                <option value="Female" {% if user.gender == "Female" %}selected{% endif %}>Female</option>
+                <option value="Male" {% if user.gender == "Male" %}selected{% endif %}>
+                  Male
+                </option>
+                <option value="Female" {% if user.gender == "Female" %}selected{% endif %}>
+                  Female
+                </option>
               </select>
+              <span class="badge {% if user.gender == 'Male' %}bg-primary{% else %}bg-danger{% endif %}">
+                <i class="fas {% if user.gender == 'Male' %}fa-mars{% else %}fa-venus{% endif %}"></i>
+              </span>
             </td>
             <td>
               <input
@@ -268,6 +287,23 @@
     </form>
   </div>
 </div>
+
+<!-- Include Font Awesome -->
+<script src="https://kit.fontawesome.com/YOUR_KIT_CODE.js" crossorigin="anonymous"></script>
+
+<!-- Custom Styles -->
+<style>
+  .avatar-icon {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    color: white;
+    font-size: 18px;
+  }
+</style>
 
 
 

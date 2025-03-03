@@ -5,7 +5,15 @@
 
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Homepage</title>
+    {% load static %}
+    <head>
+      <title>C-DAC Chennai - System & Security Services</title>
+      <link
+        rel="icon"
+        type="image/x-icon"
+        href="{% static 'img/cdaclogo.png' %}"
+      />
+    </head>
 
     <!-- Bootstrap CSS -->
     <link
@@ -19,66 +27,6 @@
     <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
     <style>
-      #checkbox2 {
-        display: none;
-      }
-
-      .toggle2 {
-        position: relative;
-        width: 60px;
-        height: 60px;
-        cursor: pointer;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        gap: 12px;
-        transition-duration: 0.5s;
-      }
-
-      .bars {
-        width: 100%;
-        height: 6px;
-        background-color: rgb(92, 176, 255);
-        border-radius: 6px;
-      }
-
-      #bar5 {
-        transition-duration: 0.8s;
-      }
-
-      #bar4,
-      #bar6 {
-        width: 80%;
-      }
-
-      #checkbox2:checked + .toggle2 .bars {
-        position: absolute;
-        transition-duration: 0.5s;
-      }
-
-      #checkbox2:checked + .toggle2 #bar5 {
-        transform: scaleX(0);
-        transition-duration: 0.5s;
-      }
-
-      #checkbox2:checked + .toggle2 #bar4 {
-        width: 100%;
-        transform: rotate(45deg);
-        transition-duration: 0.5s;
-      }
-
-      #checkbox2:checked + .toggle2 #bar6 {
-        width: 100%;
-        transform: rotate(-45deg);
-        transition-duration: 0.5s;
-      }
-
-      #checkbox2:checked + .toggle2 {
-        transition-duration: 0.5s;
-        transform: rotate(180deg);
-      }
-
       /* General Styles */
       body {
         font-family: Arial, sans-serif;
@@ -96,6 +44,22 @@
         padding: 20px 0;
         text-align: center;
         margin-left: 0px;
+        position: relative;
+      }
+
+      .logo {
+        position: absolute;
+        top: 5px;
+        left: 370px;
+        width: 140px; /* Adjust size as needed */
+        height: auto;
+        transition: transform 0.3s ease-in-out, opacity 0.3s;
+        cursor: pointer;
+      }
+
+      .logo:hover {
+        transform: scale(1.1); /* Slight zoom effect */
+        opacity: 0.8; /* Fade effect */
       }
 
       h1 {
@@ -139,7 +103,7 @@
         width: 250px;
         position: absolute;
         left: 0;
-        top: 140px;
+        top: 160px;
         overflow-y: auto;
         display: flex;
         flex-direction: column;
@@ -171,34 +135,24 @@
         color: white;
       }
 
+      .home-link {
+        text-decoration: none;
+        font-size: 1rem;
+        color: #007bff;
+        display: block;
+        padding: 8px 12px;
+        border-radius: 4px;
+        transition: background-color 0.3s, color 0.3s;
+      }
+
+      .home-link:hover {
+        background-color: #007bff;
+        color: white;
+      }
+
       /* Toggle Button Styles */
       #checkbox2 {
         display: none;
-      }
-
-      .toggle2 {
-        position: relative;
-        width: 60px;
-        height: 60px;
-        cursor: pointer;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        gap: 12px;
-        transition-duration: 0.5s;
-        margin-bottom: 16px;
-      }
-
-      .bars {
-        width: 100%;
-        height: 6px;
-        background-color: #007bff; /* Primary color */
-        border-radius: 6px;
-      }
-
-      .toggle2:hover .bars {
-        background-color: #0056b3; /* Darker on hover */
       }
 
       /* Main Content Area */
@@ -209,6 +163,7 @@
         box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         border-radius: 8px;
         flex: 1; /* Allows the main content to stretch to the bottom */
+        max-height: 570px;
       }
 
       article {
@@ -224,7 +179,7 @@
         padding: 10px 20px;
         background-color: #343a40; /* Footer-like dark background */
         color: white;
-        margin-top: 105px;
+        margin-top: 0px;
         margin-left: 0px;
       }
 
@@ -264,17 +219,30 @@
         color: #dc3545;
       }
 
+      .nav-separator {
+        width: 2px;
+        height: 30px;
+        background-color: #ccc;
+        margin: 0 15px;
+        align-self: center;
+      }
+
       /* Responsive Design */
       @media (max-width: 768px) {
         aside {
           width: 100%;
           position: absolute;
           min-height: auto;
-          margin-top: 136px;
+          margin-top: 75px;
+        }
+
+        .logo {
+          left: 0%;
+          width: 135px;
         }
 
         main {
-          margin-left: 150px;
+          margin-left: 180px;
         }
 
         nav {
@@ -313,6 +281,70 @@
       .fc-toolbar .fc-right {
         flex: 1;
       }
+
+      /* Custom styles for user profile dropdown */
+      #userProfileDropdown {
+        position: relative;
+      }
+
+      .dropdown-menu {
+        min-width: 200px;
+      }
+
+      .dropdown-item {
+        padding: 12px 20px;
+      }
+
+      .dropdown-item:hover {
+        background-color: #f8f9fa; /* Light background on hover */
+        cursor: pointer;
+      }
+
+      .dropdown-item a {
+        color: #dc3545; /* Red color for logout link */
+      }
+
+      .dropdown-item a:hover {
+        color: #fff; /* White color on hover for logout link */
+        background-color: #dc3545;
+      }
+
+      .dropdown-item .fa {
+        margin-right: 10px; /* Add space before the icon */
+      }
+
+      /* Profile picture styling */
+      .dropdown-item img {
+        border-radius: 50%;
+      }
+
+      .text-center img {
+        border: 3px solid #ddd;
+      }
+
+      .text-center h5 {
+        margin-top: 10px;
+        color: #007bff; /* Blue color for the username */
+      }
+
+      /* Center the avatar container */
+.avatar-container {
+    display: flex;
+    justify-content: center; /* Centers horizontally */
+    align-items: center; /* Centers vertically */
+    width: 100%; /* Full width */
+    padding: 10px 0; /* Add spacing if needed */
+}
+
+/* Avatar image styling */
+.avatar-image {
+    height: 75px;
+    background: transparent;
+    border: none;
+    box-shadow: none;
+    border-radius: 50%;
+}
+
     </style>
 
     <link
@@ -321,17 +353,60 @@
     />
   </head>
   <body>
+    
     <header>
-      <h1>Welcome to the Homepage</h1>
+      {% load static %}
+      <div class="d-flex align-items-center justify-content-between">
+        <div class="d-flex align-items-center">
+          <img
+            src="{% static 'img/cdaclogo.png' %}"
+            alt="C-DAC Logo"
+            class="img-fluid"
+            style="height: 70px"
+          />
+          <span
+            class="ml-3 text-white font-weight-bold"
+            style="font-size: 35px"
+          >
+            C-DAC Chennai - System & Security Services
+          </span>
+        </div>
+        <div class="ml-auto">
+          <a href="#navigation" class="text-white mr-3">Skip to navigation</a> |
+          <a href="#main-content" class="text-white mr-3"
+            >Skip to main content</a
+          >
+          |
+          <a href="#" class="text-white mr-3">हिन्दी</a>
+          <button id="themeToggle" class="btn btn-sm btn-light ml-3">Dark Mode</button>
+        </div>
+      </div>
     </header>
-    <nav class="d-flex justify-content-between align-items-center">
+
+
+    <script>
+      document.getElementById("themeToggle").addEventListener("click", function () {
+        document.body.classList.toggle("dark-mode");
+      });
+    </script>
+    
+    <style>
+      .dark-mode {
+        background-color: #121212;
+        color: white;
+      }
+    </style>
+
+    <nav
+      id="navigation"
+      class="d-flex justify-content-between align-items-center"
+    >
       <!-- Dropdown Menus for Home, About, and Contact -->
 
-      <!-- Dropdown Menus for Home, About, and Contact -->
-      <!-- Dropdown Menus for Home, About, and Contact -->
+      <!-- Dropdown Menus for Home, About, Contact, Services, and Downloads -->
       <div class="d-flex justify-content-center w-100">
         <!-- Home Dropdown -->
-        <div class="dropdown" style="margin-left: 100px">
+        <div class="dropdown" style="margin-left: 0px">
           <button
             class="btn btn-link nav-link dropdown-toggle"
             type="button"
@@ -343,45 +418,42 @@
           </button>
           <ul class="dropdown-menu" aria-labelledby="homeDropdown">
             <li>
-              {% if user.is_authenticated %}
-              <a class="dropdown-item" href="{% url 'home1' %}"
+              {% if user.is_authenticated %}<a
+                class="dropdown-item"
+                href="{% url 'home1' %}"
                 >Home Submenu 1</a
-              >
-              {% else %}
-              <a class="dropdown-item restricted" href="home1"
+              >{% else %}<a class="dropdown-item restricted" href="home1"
                 >Home Submenu 1</a
-              >
-              {% endif %}
+              >{% endif %}
             </li>
             <hr class="dropdown-divider" />
             <li>
-              {% if user.is_authenticated %}
-              <a class="dropdown-item" href="{% url 'home2' %}"
+              {% if user.is_authenticated %}<a
+                class="dropdown-item"
+                href="{% url 'home2' %}"
                 >Home Submenu 2</a
-              >
-              {% else %}
-              <a class="dropdown-item restricted" href="home2"
+              >{% else %}<a class="dropdown-item restricted" href="home2"
                 >Home Submenu 2</a
-              >
-              {% endif %}
+              >{% endif %}
             </li>
             <hr class="dropdown-divider" />
             <li>
-              {% if user.is_authenticated %}
-              <a class="dropdown-item" href="{% url 'home3' %}"
+              {% if user.is_authenticated %}<a
+                class="dropdown-item"
+                href="{% url 'home3' %}"
                 >Home Submenu 3</a
-              >
-              {% else %}
-              <a class="dropdown-item restricted" href="home3"
+              >{% else %}<a class="dropdown-item restricted" href="home3"
                 >Home Submenu 3</a
-              >
-              {% endif %}
+              >{% endif %}
             </li>
           </ul>
         </div>
 
+        <!-- Vertical Separator -->
+        <div class="nav-separator"></div>
+
         <!-- About Dropdown -->
-        <div class="dropdown" style="margin-left: 20px">
+        <div class="dropdown" style="margin-left: 10px">
           <button
             class="btn btn-link nav-link dropdown-toggle"
             type="button"
@@ -393,37 +465,146 @@
           </button>
           <ul class="dropdown-menu" aria-labelledby="aboutDropdown">
             <li>
-              {% if user.is_authenticated %}
-              <a class="dropdown-item" href="{% url 'about_us' %}">About Us</a>
-              {% else %}
-              <a class="dropdown-item restricted" href="about_us">About Us</a>
-              {% endif %}
+              {% if user.is_authenticated %}<a
+                class="dropdown-item"
+                href="{% url 'about_us' %}"
+                >About Us</a
+              >{% else %}<a class="dropdown-item restricted" href="about_us"
+                >About Us</a
+              >{% endif %}
             </li>
             <hr class="dropdown-divider" />
             <li>
-              {% if user.is_authenticated %}
-              <a class="dropdown-item" href="{% url 'our_mission' %}"
+              {% if user.is_authenticated %}<a
+                class="dropdown-item"
+                href="{% url 'our_mission' %}"
                 >Our Mission</a
-              >
-              {% else %}
-              <a class="dropdown-item restricted" href="our_mission"
+              >{% else %}<a class="dropdown-item restricted" href="our_mission"
                 >Our Mission</a
-              >
-              {% endif %}
+              >{% endif %}
             </li>
             <hr class="dropdown-divider" />
             <li>
-              {% if user.is_authenticated %}
-              <a class="dropdown-item" href="{% url 'our_team' %}">Our Team</a>
-              {% else %}
-              <a class="dropdown-item restricted" href="our_team">Our Team</a>
-              {% endif %}
+              {% if user.is_authenticated %}<a
+                class="dropdown-item"
+                href="{% url 'our_team' %}"
+                >Our Team</a
+              >{% else %}<a class="dropdown-item restricted" href="our_team"
+                >Our Team</a
+              >{% endif %}
             </li>
           </ul>
         </div>
 
+        
+        <!-- Vertical Separator -->
+        <div class="nav-separator"></div>
+
+        <!-- Services Dropdown -->
+        <div class="dropdown" style="margin-left: 10px">
+          <button
+            class="btn btn-link nav-link dropdown-toggle"
+            type="button"
+            id="servicesDropdown"
+            data-bs-toggle="dropdown"
+            aria-expanded="false"
+          >
+            Services
+          </button>
+          <ul class="dropdown-menu" aria-labelledby="servicesDropdown">
+            <li>
+              {% if user.is_authenticated %}<a
+                class="dropdown-item"
+                href="{% url 'service1' %}"
+                >Internet Access</a
+              >{% else %}<a class="dropdown-item restricted" href="service1"
+                >Internet Access</a
+              >{% endif %}
+            </li>
+            <hr class="dropdown-divider" />
+            <li>
+              {% if user.is_authenticated %}<a
+                class="dropdown-item"
+                href="{% url 'service2' %}"
+                >IP Whitelist</a
+              >{% else %}<a class="dropdown-item restricted" href="service2"
+                >IP Whitelist</a
+              >{% endif %}
+            </li>
+            <hr class="dropdown-divider" />
+            <li>
+              {% if user.is_authenticated %}<a
+                class="dropdown-item"
+                href="{% url 'service3' %}"
+                >Public IP</a
+              >{% else %}<a class="dropdown-item restricted" href="service3"
+                >Public IP</a
+              >{% endif %}
+            </li>
+            <hr class="dropdown-divider" />
+            <li>
+              {% if user.is_authenticated %}<a
+                class="dropdown-item"
+                href="{% url 'service4' %}"
+                >System</a
+              >{% else %}<a class="dropdown-item restricted" href="service4"
+                >system</a
+              >{% endif %}
+            </li>
+          </ul>
+        </div>
+
+        <!-- Vertical Separator -->
+        <div class="nav-separator"></div>
+
+        <!-- Downloads Dropdown -->
+        <div class="dropdown" style="margin-left: 10px">
+          <button
+            class="btn btn-link nav-link dropdown-toggle"
+            type="button"
+            id="downloadsDropdown"
+            data-bs-toggle="dropdown"
+            aria-expanded="false"
+          >
+            Downloads
+          </button>
+          <ul class="dropdown-menu" aria-labelledby="downloadsDropdown">
+            <li>
+              {% if user.is_authenticated %}<a
+                class="dropdown-item"
+                href="{% url 'download1' %}"
+                >Form 1</a
+              >{% else %}<a class="dropdown-item restricted" href="download1"
+                >Form 1</a
+              >{% endif %}
+            </li>
+            <hr class="dropdown-divider" />
+            <li>
+              {% if user.is_authenticated %}<a
+                class="dropdown-item"
+                href="{% url 'download2' %}"
+                >Form 2</a
+              >{% else %}<a class="dropdown-item restricted" href="download2"
+                >Form 2</a
+              >{% endif %}
+            </li>
+            <hr class="dropdown-divider" />
+            <li>
+              {% if user.is_authenticated %}<a
+                class="dropdown-item"
+                href="{% url 'download3' %}"
+                >Form 3</a
+              >{% else %}<a class="dropdown-item restricted" href="download3"
+                >Form 3</a
+              >{% endif %}
+            </li>
+          </ul>
+        </div>
+        <!-- Vertical Separator -->
+        <div class="nav-separator"></div>
+
         <!-- Contact Dropdown -->
-        <div class="dropdown" style="margin-left: 20px">
+        <div class="dropdown" style="margin-left: 10px">
           <button
             class="btn btn-link nav-link dropdown-toggle"
             type="button"
@@ -435,30 +616,40 @@
           </button>
           <ul class="dropdown-menu" aria-labelledby="contactDropdown">
             <li>
-              {% if user.is_authenticated %}
-              <a class="dropdown-item" href="{% url 'email_us' %}">Email Us</a>
-              {% else %}
-              <a class="dropdown-item restricted" href="email_us">Email Us</a>
-              {% endif %}
+              {% if user.is_authenticated %}<a
+                class="dropdown-item"
+                href="{% url 'email_us' %}"
+                >Email Us</a
+              >{% else %}<a class="dropdown-item restricted" href="email_us"
+                >Email Us</a
+              >{% endif %}
             </li>
             <hr class="dropdown-divider" />
             <li>
-              {% if user.is_authenticated %}
-              <a class="dropdown-item" href="{% url 'call_us' %}">Call Us</a>
-              {% else %}
-              <a class="dropdown-item restricted" href="call_us">Call Us</a>
-              {% endif %}
+              {% if user.is_authenticated %}<a
+                class="dropdown-item"
+                href="{% url 'call_us' %}"
+                >Call Us</a
+              >{% else %}<a class="dropdown-item restricted" href="call_us"
+                >Call Us</a
+              >{% endif %}
             </li>
             <hr class="dropdown-divider" />
             <li>
-              {% if user.is_authenticated %}
-              <a class="dropdown-item" href="{% url 'visit_us' %}">Visit Us</a>
-              {% else %}
-              <a class="dropdown-item restricted" href="visit_us">Visit Us</a>
-              {% endif %}
+              {% if user.is_authenticated %}<a
+                class="dropdown-item"
+                href="{% url 'visit_us' %}"
+                >Visit Us</a
+              >{% else %}<a class="dropdown-item restricted" href="visit_us"
+                >Visit Us</a
+              >{% endif %}
             </li>
           </ul>
         </div>
+
+
+        <!-- Vertical Separator -->
+        <div class="nav-separator"></div>
       </div>
 
       <!-- Modal for Login Prompt -->
@@ -604,47 +795,139 @@
           }
         });
       </script>
+      
 
       <!-- User Profile Section aligned to the right -->
+      <!-- User Profile Section with improved design -->
       <div class="dropdown">
         <button
-          class="btn btn-secondary dropdown-toggle"
+          class="btn btn-light dropdown-toggle d-flex align-items-center p-2 shadow-sm rounded"
           type="button"
           id="userProfileDropdown"
           data-bs-toggle="dropdown"
           aria-expanded="false"
+          style="border: 1px solid #ddd; min-width: 180px"
         >
-          <i class="fa fa-user"></i>
-          <!-- User profile icon here -->
+        {% if user.is_authenticated %}
+        
+        {% if  user.gender == 'Male' %}
+            <img src="{% static 'img/woman1.png' %}" alt="Female Avatar" class="rounded-circle me-2" width="25" height="25">
+        {% else %}
+            <img src="{% static 'img/man.png' %}" alt="Male Avatar" class="rounded-circle me-2" width="25" height="25">
+        {% endif %}
+    {% else %}
+        <i class="fa fa-user-circle me-2" style="font-size: 24px"></i>
+    {% endif %}
+    
+          <span class="fw-bold">{{ user.username }}</span>
         </button>
-        <ul class="dropdown-menu" aria-labelledby="userProfileDropdown">
+        <ul
+          class="dropdown-menu dropdown-menu-end p-3 shadow-lg border-0"
+          aria-labelledby="userProfileDropdown"
+          style="width: 250px"
+        >
           {% if user.is_authenticated %}
-          <li>
-            <p class="dropdown-item">
-              <strong>Username:</strong> {{ user.username }}
+          <div class="avatar-container">
+            {% if user.gender == 'Male' %}
+                <img src="{% static 'img/woman1.png' %}" alt="Female Avatar" class="avatar-image" >
+            {% else %}
+                <img src="{% static 'img/man.png' %}" alt="Male Avatar" class="avatar-image">
+            {% endif %}
+        </div>
+        
+    
+            
+            <h5 class="fw-semibold" style="text-align:center;">{{ user.username }}</h5>
+            <hr />
+          </li>
+          <li class="mb-2">
+            <p class="mb-1"><strong>Username:</strong> {{ user.username }}</p>
+          </li>
+          <li class="mb-2">
+            <p class="mb-1">
+              <strong>Staff Status:</strong>
+              <span
+                class="badge bg-{% if user.is_staff %}success{% else %}danger{% endif %}"
+                >{{ user.is_staff|yesno:"Yes,No" }}</span
+              >
             </p>
           </li>
-          <li>
-            <p class="dropdown-item">
-              <strong>Staff Status:</strong> {{ user.is_staff|yesno:"Yes,No" }}
-            </p>
+          <li class="mb-3">
+            <p class="mb-1"><strong>Email:</strong> {{ user.email }}</p>
           </li>
           <li>
-            <p class="dropdown-item">
-              <strong>Email:</strong> {{ user.email }}
-            </p>
+            <a
+              class="dropdown-item text-danger text-center fw-bold p-2"
+              href="{% url 'logout' %}"
+              style="border-radius: 8px; background: #ffe6e6"
+            >
+              <i class="fa fa-sign-out-alt"></i> Logout
+            </a>
           </li>
-
           {% else %}
-          <li>
-            <p class="dropdown-item text-danger">You are not logged in.</p>
-            <p class="dropdown-item text-danger" style="margin-left: 35px">
-              Kindly login!!
-            </p>
+          <li class="text-center text-danger fw-bold">
+            <p class="mb-1">You are not logged in.</p>
+            <a
+              class="btn btn-primary mt-2"
+              href="{% url 'my-login' %}"
+              data-bs-toggle="modal"
+              data-bs-target="#loginModal"
+              >Login</a
+            >
           </li>
-
           {% endif %}
         </ul>
+      </div>
+
+      <!-- Login Modal -->
+      <div
+        class="modal fade"
+        id="loginModal"
+        tabindex="-1"
+        aria-labelledby="loginModalLabel"
+        aria-hidden="true"
+      >
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="loginModalLabel">Login</h5>
+              <button
+                type="button"
+                class="btn-close"
+                data-bs-dismiss="modal"
+                aria-label="Close"
+              ></button>
+            </div>
+            <div class="modal-body">
+              <form method="POST" action="{% url 'my-login' %}">
+                {% csrf_token %}
+                <div class="mb-3">
+                  <label for="username" class="form-label">Username</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="username"
+                    name="username"
+                    required
+                  />
+                </div>
+                <div class="mb-3">
+                  <label for="password" class="form-label">Password</label>
+                  <input
+                    type="password"
+                    class="form-control"
+                    id="password"
+                    name="password"
+                    required
+                  />
+                </div>
+                <button type="submit" class="btn btn-primary w-100">
+                  Login
+                </button>
+              </form>
+            </div>
+          </div>
+        </div>
       </div>
     </nav>
     <div class="container">
@@ -653,110 +936,799 @@
           background-color: #f8f9fa;
           border-right: 1px solid #ddd;
           padding: 16px;
-          width: 250px;
-          min-height: calc(
-            100vh - 0px - 0px
-          ); /* Match the article's min-height */
+          width: 270px;
+          min-height: calc(100vh - 60px - 195px);
           position: absolute;
           left: 0;
-          top: 140px; /* Move down by 100px */
-          overflow-y: auto; /* Allows scrolling if content overflows */
+          top: 175px;
+          overflow-y: auto;
           display: flex;
-          flex-direction: column; /* Ensure flex layout */
+          flex-direction: column;
         "
       >
-        <!-- Toggle Button -->
-        <input type="checkbox" id="checkbox2" />
-        <label for="checkbox2" class="toggle2">
-          <div id="bar4" class="bars"></div>
-          <div id="bar5" class="bars"></div>
-          <div id="bar6" class="bars"></div>
-        </label>
+        <h3
+          class="text-primary"
+          style="text-align: center; margin-bottom: 10px"
+        >
+        <i class="fas fa-link"></i> Quick Links
+        </h3>
 
-        <!-- Collapsible Links -->
-        <div class="collapse mt-2" id="quickLinks">
-          <ul class="list-group">
+        <!-- Search Bar -->
+        <input
+          type="text"
+          id="quickLinksSearch"
+          class="form-control mb-3"
+          placeholder="🔍 Search Quick Links..."
+          style="margin-bottom: 10px"
+        />
+
+        <script>
+          $(document).ready(function () {
+            $("#quickLinksSearch").on("keyup", function () {
+              var value = $(this).val().toLowerCase();
+              $("#quickLinksList li").filter(function () {
+                $(this).toggle(
+                  $(this).text().toLowerCase().indexOf(value) > -1
+                );
+              });
+            });
+          });
+        </script>
+
+        <!-- Quick Links (No toggle button) -->
+        <div class="mt-2">
+          <ul class="list-group" id="quickLinksList">
             <li class="list-group-item">
               <a
-                href="#"
+                href="#dashboard1"
                 data-content="<h2>Dashboard</h2><p>Welcome to our dashboard!</p>"
-                >Dashboard</a
               >
+              <i class="fas fa-chart-line text-primary"></i> Dashboard
+              </a>
             </li>
-            <li class="list-group-item">
+
+            <!-- Dropdown Menu for Home -->
+            <li class="list-group-item dropdown">
               <a
                 href="#"
-                data-content="<h2>Profile</h2><p>Manage your profile here🪪.</p>"
-                >Profile</a
+                class="dropdown-toggle home-link"
+                id="homeDropdown"
+                data-bs-toggle="dropdown"
+                aria-expanded="false"
               >
+              <i class="fas fa-home text-success"></i> Home
+              </a>
+              <ul class="dropdown-menu" aria-labelledby="homeDropdown">
+                <li>
+                  {% if user.is_authenticated %}
+                  <a class="dropdown-item" href="{% url 'home1' %}"
+                    >Home Submenu 1</a
+                  >
+                  {% else %}
+                  <a class="dropdown-item restricted" href="home1"
+                    >Home Submenu 1</a
+                  >
+                  {% endif %}
+                </li>
+                <hr class="dropdown-divider" />
+                <li>
+                  {% if user.is_authenticated %}
+                  <a class="dropdown-item" href="{% url 'home2' %}"
+                    >Home Submenu 2</a
+                  >
+                  {% else %}
+                  <a class="dropdown-item restricted" href="home2"
+                    >Home Submenu 2</a
+                  >
+                  {% endif %}
+                </li>
+                <hr class="dropdown-divider" />
+                <li>
+                  {% if user.is_authenticated %}
+                  <a class="dropdown-item" href="{% url 'home3' %}"
+                    >Home Submenu 3</a
+                  >
+                  {% else %}
+                  <a class="dropdown-item restricted" href="home3"
+                    >Home Submenu 3</a
+                  >
+                  {% endif %}
+                </li>
+              </ul>
             </li>
-            <li class="list-group-item">
+
+            <!-- Dropdown Menu for Services -->
+            <li class="list-group-item dropdown">
               <a
                 href="#"
-                data-content="<h2>Settings</h2><p>Adjust your settings here🔧.</p>"
-                >Settings</a
+                class="dropdown-toggle home-link"
+                id="servicesDropdown"
+                data-bs-toggle="dropdown"
+                aria-expanded="false"
               >
+              <i class="fas fa-tools text-warning"></i> Services
+              </a>
+              <ul class="dropdown-menu" aria-labelledby="servicesDropdown">
+
+                <li>
+                  {% if user.is_authenticated %}
+                  <a class="dropdown-item" href="{% url 'service1' %}"
+                    >Internet Access</a
+                  >
+                  {% else %}
+                  <a class="dropdown-item restricted" href="service1"
+                    >Internet Access</a
+                  >
+                  {% endif %}
+                </li>
+                
+                <li>
+                <hr class="dropdown-divider" />
+                <li>
+                  {% if user.is_authenticated %}
+                  <a class="dropdown-item" href="{% url 'service2' %}"
+                    >IP Whitelist</a
+                  >
+                  {% else %}
+                  <a class="dropdown-item restricted" href="service2"
+                    >IP Whitelist</a
+                  >
+                  {% endif %}
+                </li>
+                <li>
+                <hr class="dropdown-divider" />
+                <li>
+                  {% if user.is_authenticated %}
+                  <a class="dropdown-item" href="{% url 'service3' %}"
+                    >Public IP</a
+                  >
+                  {% else %}
+                  <a class="dropdown-item restricted" href="service3"
+                    >Public IP</a
+                  >
+                  {% endif %}
+                </li>
+                <li>
+                  <hr class="dropdown-divider" />
+                  <li>
+                    {% if user.is_authenticated %}
+                    <a class="dropdown-item" href="{% url 'service4' %}"
+                      >System</a
+                    >
+                    {% else %}
+                    <a class="dropdown-item restricted" href="service4"
+                      >System</a
+                    >
+                    {% endif %}
+                  </li>
+              </ul>
             </li>
+
+            <!-- Dropdown Menu for Downloads -->
+            <li class="list-group-item dropdown">
+              <a
+                href="#"
+                class="dropdown-toggle home-link"
+                id="downloadsDropdown"
+                data-bs-toggle="dropdown"
+                aria-expanded="false"
+              >
+              <i class="fas fa-download text-info"></i> Downloads
+              </a>
+              <ul class="dropdown-menu" aria-labelledby="downloadsDropdown">
+                <li>
+                  
+                  <li>
+                    {% if user.is_authenticated %}
+                    <a class="dropdown-item" href="{% url 'download1' %}"
+                      >Download 1</a
+                    >
+                    {% else %}
+                    <a class="dropdown-item restricted" href="download1"
+                      >Download 1</a
+                    >
+                    {% endif %}
+                  </li>
+                  <li>
+                    <hr class="dropdown-divider" />
+                    <li>
+                      {% if user.is_authenticated %}
+                      <a class="dropdown-item" href="{% url 'download2' %}"
+                        >Download 2</a
+                      >
+                      {% else %}
+                      <a class="dropdown-item restricted" href="download2"
+                        >Download 2</a
+                      >
+                      {% endif %}
+                    </li>
+                    <li>
+                      <hr class="dropdown-divider" />
+                      <li>
+                        {% if user.is_authenticated %}
+                        <a class="dropdown-item" href="{% url 'download3' %}"
+                          >Download 3</a
+                        >
+                        {% else %}
+                        <a class="dropdown-item restricted" href="download3"
+                          >Download 3</a
+                        >
+                        {% endif %}
+                      </li>
+              </ul>
+            </li>
+
+            <!-- Contact Dropdown -->
+            <li class="list-group-item dropdown">
+              <a
+                href="#"
+                class="dropdown-toggle home-link"
+                id="contactDropdown"
+                data-bs-toggle="dropdown"
+                aria-expanded="false"
+              >
+              <i class="fas fa-phone-alt text-danger"></i> Contact
+              </a>
+              <ul class="dropdown-menu" aria-labelledby="contactDropdown">
+                <li>
+                  {% if user.is_authenticated %}
+                  <a class="dropdown-item" href="{% url 'email_us' %}"
+                    >Email Us</a
+                  >
+                  {% else %}
+                  <a class="dropdown-item restricted" href="email_us"
+                    >Email Us</a
+                  >
+                  {% endif %}
+                </li>
+                <hr class="dropdown-divider" />
+                <li>
+                  {% if user.is_authenticated %}
+                  <a class="dropdown-item" href="{% url 'call_us' %}"
+                    >Call Us</a
+                  >
+                  {% else %}
+                  <a class="dropdown-item restricted" href="call_us">Call Us</a>
+                  {% endif %}
+                </li>
+                <hr class="dropdown-divider" />
+                <li>
+                  {% if user.is_authenticated %}
+                  <a class="dropdown-item" href="{% url 'visit_us' %}"
+                    >Visit Us</a
+                  >
+                  {% else %}
+                  <a class="dropdown-item restricted" href="visit_us"
+                    >Visit Us</a
+                  >
+                  {% endif %}
+                </li>
+              </ul>
+            </li>
+
             <li class="list-group-item">
               {% if user.is_authenticated %}
-              <a
-                href="#"
-                id="logoutLink"
-                data-content="<h2>Logout</h2><p>You have been logged out 🤝</p>"
-              >
-                Logout
-              </a>
+                <a 
+                  href="{% url 'logout' %}" 
+                  id="logoutLink" 
+                  data-content="<h2>Logout</h2><p>You have been logged out 🤝</p>"
+                  class="text-danger"
+                >
+                  <i class="fas fa-sign-out-alt"></i> Logout
+                </a>
               {% else %}
-              <span class="text-danger">Kindly log in</span>
+                <span id="loginStatus" class="text-danger">🚨 Kindly log in</span>
               {% endif %}
             </li>
+            
 
             <li class="list-group-item">
-              <a href="#" id="loadRegisterForm">Register Here</a>
+              <a href="#register" id="loadRegisterForm"><i class="fas fa-user-plus"></i> Register</a>
             </li>
             <li class="list-group-item">
-              <a href="#" id="loadLoginForm">Login Here</a>
+              <a href="#login" id="loadLoginForm"><i class="fas fa-sign-in-alt"></i> Login</a>
             </li>
           </ul>
         </div>
 
-        <div class="mt-3">
-          <h4>Add Event</h4>
-          <form id="addEventForm">
-            <div class="mb-2">
-              <label for="eventTitle" class="form-label">Event Title</label>
-              <input
-                type="text"
-                id="eventTitle"
-                class="form-control"
-                placeholder="Enter event title"
-                required
-              />
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+        <script>
+          $(document).ready(function () {
+            // If the user is logged in, change the "Kindly log in" text to "Logout"
+            {% if user.is_authenticated %}
+            $("#loginStatus").hide(); // Hide the login prompt if logged in
+            $("#logoutLink").show();  // Show the logout link if logged in
+            {% else %}
+            $("#logoutLink").hide(); // Hide the logout link if not logged in
+            $("#loginStatus").show(); // Show the login prompt if not logged in
+            {% endif %}
+
+            // Handle the click event for the logout link
+            $("#logoutLink").on("click", function (e) {
+              e.preventDefault();
+
+              // Make an AJAX request to log out the user
+              $.ajax({
+                url: '{% url "logout" %}', // The Django logout URL
+                type: "POST", // POST request for logging out
+                data: {
+                  csrfmiddlewaretoken: "{{ csrf_token }}", // Include the CSRF token in the request
+                },
+                success: function (response) {
+                  // After logging out, hide the logout link and show the login prompt
+                  $("#logoutLink").hide();
+                  $("#loginStatus").show();
+                  $("#loginStatus").text("🚨 Kindly log in"); // Change the text back to login prompt
+                },
+                error: function () {
+                  alert("An error occurred while logging you out. Please try again.");
+                },
+              });
+            });
+          });
+        </script>
+
+        <!-- Sticky Add Event Form -->
+        <!-- jQuery -->
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+        <script>
+          $(document).ready(function () {
+            // If the user is logged in, update UI
+            {% if user.is_authenticated %}
+              $("#loginStatus").hide();
+              $("#logoutLink").show();
+            {% else %}
+              $("#logoutLink").hide();
+              $("#loginStatus").show();
+            {% endif %}
+
+            // Handle logout
+            $("#logoutLink").on("click", function (e) {
+              e.preventDefault();
+              $.ajax({
+                url: '{% url "logout" %}',
+                type: "POST",
+                data: { csrfmiddlewaretoken: "{{ csrf_token }}" },
+                success: function () {
+                  $("#logoutLink").hide();
+                  $("#loginStatus").show().text("🚨 Kindly log in");
+                },
+                error: function () {
+                  alert("An error occurred while logging you out. Please try again.");
+                },
+              });
+            });
+
+            // Initialize mini calendar
+            createMiniCalendar();
+          });
+
+          function createMiniCalendar() {
+            const date = new Date();
+            const month = date.toLocaleString("default", { month: "long" });
+            const year = date.getFullYear();
+            $("#calendar-month").text(`${month} ${year}`);
+
+            const daysContainer = $("#calendar-days");
+            daysContainer.empty();
+
+            const firstDay = new Date(year, date.getMonth(), 1).getDay();
+            const lastDate = new Date(year, date.getMonth() + 1, 0).getDate();
+
+            for (let i = 0; i < firstDay; i++) {
+              daysContainer.append('<div class="day empty"></div>');
+            }
+
+            for (let day = 1; day <= lastDate; day++) {
+              const todayClass = day === date.getDate() ? "today" : "";
+              daysContainer.append(`<div class="day ${todayClass}">${day}</div>`);
+            }
+          }
+        </script>
+        <ul id="quickLinksList">
+          <!-- Sticky Add Event Form -->
+          <div>
+            <div class="mt-3">
+              <li><h4 class="text-secondary"><i class="fas fa-calendar-plus text-success me-2"></i>Add Event</h4>
+              <form id="addEventForm">
+                <div class="mb-2">
+                  <label for="eventTitle" class="form-label">Event Title</label>
+                  <input
+                    type="text"
+                    id="eventTitle"
+                    class="form-control"
+                    placeholder="Enter event title"
+                    required
+                  />
+                </div>
+                <div class="mb-2">
+                  <label for="eventDate" class="form-label">Event Date</label>
+                  <input
+                    type="date"
+                    id="eventDate"
+                    class="form-control"
+                    required
+                  />
+                </div>
+                <div class="mb-2">
+                  <label for="eventDescription" class="form-label"
+                    >Description</label
+                  >
+                  <textarea
+                    id="eventDescription"
+                    class="form-control"
+                    placeholder="Enter event description (optional)"
+                  ></textarea>
+                </div>
+                <button type="submit" class="btn btn-success w-100">
+                  ➕ Add Event
+                </button>
+              </form></li>
+
+              <!-- Delete Event Section -->
+              <li><h4 class="text-secondary mt-4"><i class="fas fa-calendar-times text-danger me-2"></i>Delete Event</h4>
+              <form id="deleteEventForm">
+                <div class="mb-2">
+                  <label for="deleteEventTitle" class="form-label"
+                    >Event Title</label
+                  >
+                  <input
+                    type="text"
+                    id="deleteEventTitle"
+                    class="form-control"
+                    placeholder="Enter title of the event to delete"
+                    required
+                  />
+                </div>
+                <div class="mb-2">
+                  <label for="deleteEventDate" class="form-label"
+                    >Event Date</label
+                  >
+                  <input
+                    type="date"
+                    id="deleteEventDate"
+                    class="form-control"
+                    required
+                  />
+                </div>
+                <button type="submit" class="btn btn-danger w-100">
+                  🗑️ Delete Event
+                </button>
+              </form></li>
+
+              <!-- Events Container -->
+              <li><h4 class="text-secondary mt-4"><i class="fas fa-newspaper text-info me-2"></i>Tips & News</h4>
+              <div
+                id="eventsContainer"
+                style="height: auto; overflow-y: auto"
+              ></div>
+            </div></li>
+
+            <!-- Mini Calendar -->
+           <li> <h4 class="text-secondary mt-4"><i class="fas fa-calendar-alt text-warning me-2"></i>Mini Calendar</h4>
+            <div class="calendar">
+              <h5 id="calendar-month"></h5>
+              <div class="days" id="calendar-days"></div>
             </div>
-            <div class="mb-2">
-              <label for="eventDate" class="form-label">Event Date</label>
-              <input
-                type="date"
-                id="eventDate"
-                class="form-control"
-                placeholder="Choose a date"
-                required
-              />
-            </div>
-            <div class="mb-2">
-              <label for="eventDescription" class="form-label"
-                >Description</label
-              >
-              <textarea
-                id="eventDescription"
-                class="form-control"
-                placeholder="Enter event description (optional)"
-              ></textarea>
-            </div>
-            <button type="submit" class="btn btn-primary">Add Event</button>
-          </form>
-        </div>
+          </div>
+        </ul></li>
+
+        <!-- Styles for Mini Calendar -->
+        <style>
+          .calendar {
+            width: 238px;
+            border: 1px solid #ccc;
+            padding: 10px;
+            text-align: center;
+            background: #f9f9f9;
+            border-radius: 5px;
+          }
+          .days {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 5px;
+          }
+          .day {
+            padding: 5px;
+            background: #fff;
+            border-radius: 3px;
+          }
+          .today {
+            background: #007bff;
+            color: white;
+            font-weight: bold;
+          }
+        </style>
+
+        <!-- FullCalendar Library Integration (No longer needed) -->
+        <link
+          href="https://cdn.jsdelivr.net/npm/fullcalendar@3.3.0/dist/fullcalendar.min.css"
+          rel="stylesheet"
+        />
+        <script src="https://cdn.jsdelivr.net/npm/moment@2.29.1/moment.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/fullcalendar@3.3.0/dist/fullcalendar.min.js"></script>
+
+        <style>
+          /* Message Box Container */
+          #eventsContainer {
+            padding: 20px;
+            background: linear-gradient(135deg, #f9f9f9, #ffffff);
+            border-radius: 12px;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+            height: auto;
+            overflow-y: auto;
+          }
+
+          /* Individual Event Box */
+          .eventBox {
+            background: linear-gradient(45deg, #ff7eb3, #ff758c);
+            color: white;
+            border-radius: 8px;
+            padding: 15px;
+            margin: 10px 0;
+            font-weight: bold;
+            overflow: hidden;
+            white-space: nowrap;
+          }
+
+          /* Marquee Effect */
+          .marquee {
+            display: block;
+            width: 100%;
+            white-space: nowrap;
+            overflow: hidden;
+            box-sizing: border-box;
+          }
+
+          .marquee span {
+            display: inline-block;
+            animation: marqueeAnimation 10s linear infinite;
+          }
+
+          @keyframes marqueeAnimation {
+            0% {
+              transform: translateX(100%);
+            }
+            100% {
+              transform: translateX(-100%);
+            }
+          }
+
+          /* Hover Effect on Event Boxes */
+          .eventBox:hover {
+            transform: scale(1.05);
+            box-shadow: 0px 3px 10px rgba(0, 0, 0, 0.2);
+          }
+
+          /* Button for adding events */
+          .addEventButton {
+            background: linear-gradient(45deg, #007bff, #0056b3);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 25px;
+            font-weight: bold;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease-in-out;
+          }
+
+          /* Hover effect for add event button */
+          .addEventButton:hover {
+            background: linear-gradient(45deg, #0056b3, #003580);
+          }
+        </style>
+
+        <script>
+          $(document).ready(function () {
+            const eventsData = JSON.parse("{{ events_data|escapejs }}");
+
+            // Container for events
+            const eventsContainer = $("#eventsContainer");
+
+            // Render each event as a message box with marquee and delete button
+            eventsData.forEach(function (event) {
+              const eventBox = $("<div class='eventBox'></div>");
+              eventBox.attr("id", `event_${event.id}`); // Give each event a unique ID
+              eventBox.html(`
+                  <strong>${event.title}</strong><br>
+                  <em>${event.date}</em><br>
+                  <div class="marquee"><span>${
+                    event.description || "No description available"
+                  }</span></div>
+                `);
+              eventsContainer.append(eventBox);
+            });
+
+            // Add Event Form Submission
+            $("#addEventForm").on("submit", function (e) {
+              e.preventDefault();
+
+              const title = $("#eventTitle").val();
+              const date = $("#eventDate").val();
+              const description = $("#eventDescription").val();
+
+              if (title && date) {
+                $.ajax({
+                  url: '{% url "add_event" %}',
+                  type: "POST",
+                  data: JSON.stringify({ title, date, description }),
+                  contentType: "application/json",
+                  success: function (response) {
+                    alert(response.message);
+
+                    const newEventBox = $("<div class='eventBox'></div>");
+                    newEventBox.attr("id", `event_${response.event.id}`);
+                    newEventBox.html(`
+                        <strong>${response.event.title}</strong><br>
+                        <em>${response.event.date}</em><br>
+                        <div class="marquee"><span>${
+                          response.event.description ||
+                          "No description available"
+                        }</span></div>
+                      `);
+                    eventsContainer.append(newEventBox);
+
+                    $("#addEventForm")[0].reset();
+                  },
+                  error: function () {
+                    alert("An error occurred. Please try again.");
+                  },
+                });
+              } else {
+                alert("Please fill in the required fields (Title and Date).");
+              }
+            });
+
+            // Delete Event Form Submission
+            $("#deleteEventForm").on("submit", function (e) {
+              e.preventDefault();
+
+              const title = $("#deleteEventTitle").val();
+              const date = $("#deleteEventDate").val();
+
+              if (title && date) {
+                $.ajax({
+                  url: '{% url "delete_event" %}',
+                  type: "POST",
+                  data: JSON.stringify({ title, date }),
+                  contentType: "application/json",
+                  success: function (response) {
+                    alert(response.message);
+                    // Remove the event from the UI after successful deletion
+                    $(`#eventsContainer .eventBox`).each(function () {
+                      if (
+                        $(this).find("strong").text().trim() === title &&
+                        $(this).find("em").text().trim() === date
+                      ) {
+                        $(this).remove();
+                      }
+                    });
+                  },
+                  error: function () {
+                    alert("An error occurred while deleting the event.");
+                  },
+                });
+              } else {
+                alert(
+                  "Please fill in the Title and Date of the event to delete."
+                );
+              }
+            });
+          });
+        </script>
       </aside>
+
+      <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+      <script>
+        $(document).ready(function () {
+          // Function to get CSRF token from the cookies
+          function getCSRFToken() {
+            let csrfToken = null;
+            const csrfCookie = document.cookie
+              .split(";")
+              .find((cookie) => cookie.trim().startsWith("csrftoken="));
+            if (csrfCookie) {
+              csrfToken = csrfCookie.split("=")[1];
+            }
+            return csrfToken;
+          }
+
+          // Store the clicked URL in a variable
+          let clickedUrl = "";
+
+          // Attach click event to dropdown items
+          $(".dropdown-item").on("click", function (e) {
+            e.preventDefault();
+
+            // Update clickedUrl to the new clicked item's URL
+            clickedUrl = $(this).attr("href");
+
+            // Check if the clicked item has the "restricted" class (for unauthenticated users)
+            if ($(this).hasClass("restricted")) {
+              // Show the login modal
+              $("#loginModal").modal("show");
+            } else {
+              // If the clicked item is not restricted, load the page content into #k1-article
+              loadPageContent(clickedUrl);
+            }
+          });
+
+          // Handle the login form submission
+          $("#k1-article").on("submit", "form", function (e) {
+            e.preventDefault();
+            const formData = $(this).serialize(); // Serialize the form data
+
+            // Get the CSRF token
+            const csrfToken = getCSRFToken();
+
+            $.ajax({
+              url: "{% url 'my-login' %}", // Replace with your login URL
+              method: "POST",
+              data: formData,
+              headers: {
+                "X-CSRFToken": csrfToken, // Add CSRF token to the request headers
+              },
+              success: function (response) {
+                if (response.redirect_url) {
+                  // After login, check if we need to redirect after login
+                  if (clickedUrl) {
+                    // Load the clicked URL after login
+                    loadPageContent(clickedUrl);
+                  } else {
+                    // If no specific URL was clicked, load the dashboard or default page
+                    loadPageContent(response.redirect_url);
+                  }
+                } else {
+                  // If the response includes the updated form, replace the content with errors
+                  $("#k1-article").html(response.form_html);
+                }
+              },
+              error: function () {
+                alert("Error logging in. Please try again.");
+              },
+            });
+          });
+
+          // Handle click event on the "Sign In" button inside the modal
+          $("#loadForm").on("click", function (e) {
+            e.preventDefault();
+
+            // Dynamically load the login form into the #k1-article div
+            const url = "{% url 'my-login' %}"; // Replace 'my-login' with your Django login URL
+
+            $.ajax({
+              url: url,
+              method: "GET",
+              success: function (data) {
+                // Load the login form into the content area
+                $("#k1-article").html(data);
+              },
+              error: function () {
+                alert("Error loading the login form. Please try again.");
+              },
+            });
+
+            // Close the modal after the form is loaded
+            $("#loginModal").modal("hide");
+          });
+
+          // Function to load page content dynamically into #k1-article
+          function loadPageContent(url) {
+            $.ajax({
+              url: url,
+              method: "GET",
+              success: function (data) {
+                $("#k1-article").html(data);
+              },
+              error: function () {
+                alert("Error loading page content.");
+              },
+            });
+          }
+        });
+      </script>
+
       <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
       <script>
         $(document).ready(function () {
@@ -767,14 +1739,19 @@
             // Make an AJAX request to log out the user
             $.ajax({
               url: '{% url "logout" %}', // The Django logout URL
-              type: "POST",
+              type: "POST", // POST request for logging out
               data: {
                 csrfmiddlewaretoken: "{{ csrf_token }}", // Include the CSRF token in the request
               },
               success: function (response) {
-                // Update #k1-article with a logout message or any content
-                $("#k1-article").html(
-                  "<h2>Logout Successful</h2><p>You have been logged out successfully. See you again!</p>"
+                // If the logout is successful, load final.html dynamically into #k1-article
+                $("#k1-article").load(
+                  "{% url 'final' %}",
+                  function (response, status, xhr) {
+                    if (status == "error") {
+                      alert("An error occurred while loading the final page.");
+                    }
+                  }
                 );
               },
               error: function () {
@@ -788,118 +1765,471 @@
         });
       </script>
 
-      <main>
+      <main id="main-content">
         <article
           id="k1-article"
           style="
-            height: 600px; /* Set the desired height for the scrollable area */
-            overflow-y: auto; /* Enable vertical scrolling */
-            border: 1px solid #ddd; /* Optional: Add a border for better visual separation */
-            padding: 15px; /* Optional: Add padding for better spacing */
+            height: 550px; /* Scrollable area */
+            overflow-y: auto;
+            border: 1px solid #ddd;
+            padding: 15px;
+            background-color: #f8f9fa; /* Light background for a clean look */
+            border-radius: 10px; /* Rounded corners */
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
           "
         >
-          <div>
-            <div class="card shadow-sm p-2">
-              <h2 class="card-title">Welcome to Our Website</h2>
-              <p class="card-text">
-                Explore our website to discover the various services and
-                features we offer. Whether you are here to learn more, sign up,
-                or just browse, we've got something for everyone.
-              </p>
-            </div>
-          </div>
+        <div class="card shadow-lg p-5 bg-white rounded position-relative"
+     style="transition: transform 0.3s ease-in-out; border-left: 6px solid #006a9f;
+            background: linear-gradient(135deg, rgba(0,106,159,0.1), rgba(255,255,255,0.9));">
+  
+  <!-- Animated Hover Effect -->
+  <style>
+    .card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 30px rgba(0, 106, 159, 0.2);
+    }
+    .btn-custom {
+      transition: all 0.3s ease-in-out;
+      font-size: 1.1rem;
+    }
+    .btn-custom:hover {
+      transform: scale(1.07);
+    }
+    .highlight {
+      background: linear-gradient(90deg, #006a9f, #6610f2);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+  </style>
 
-          <br />
-          <h3>Event Calendar</h3>
-
-          <!-- FullCalendar Library Integration -->
-          <link
-            href="https://cdn.jsdelivr.net/npm/fullcalendar@3.3.0/dist/fullcalendar.min.css"
-            rel="stylesheet"
+  <!-- Header with Gradient -->
+  <h2 class="card-title text-center mb-4 fw-bold"
+      style="font-size: 2.5rem; font-family: 'Arial', sans-serif;">
+      <img
+            src="{% static 'img/cdaclogo.png' %}"
+            alt="C-DAC Logo"
+            class="img-fluid"
+            style="height: 70px; background: transparent; border: none; box-shadow: none;" 
           />
-          <script src="https://cdn.jsdelivr.net/npm/moment@2.29.1/moment.min.js"></script>
-          <script src="https://cdn.jsdelivr.net/npm/fullcalendar@3.3.0/dist/fullcalendar.min.js"></script>
+      <span class="highlight"> Welcome to C-DAC Chennai System Security & Services</span>  
+    <br> 
+  </h2>
 
-          <script>
-            $(document).ready(function () {
-              const eventsData = JSON.parse("{{ events_data|escapejs }}");
+  <!-- Stylish Divider -->
+  <div class="mx-auto mb-4" style="width: 100px; height: 5px; background: #006a9f; border-radius: 10px;"></div>
 
-              // Initialize the main calendar
-              const calendar = $("#calendarTable").fullCalendar({
-                header: {
-                  left: "prev,next today",
-                  center: "title",
-                  right: "month,agendaWeek,agendaDay",
-                },
-                events: eventsData,
-                height: "auto",
-                contentHeight: "auto",
+  <!-- Content -->
+  <p class="card-text text-muted mb-4"
+     style="font-size: 1.2rem; line-height: 1.8; text-align: justify;">
+    <strong>Centre for Development of Advanced Computing (C-DAC) Chennai</strong> is a leading institution in  
+    <span class="highlight">System Security and Services</span>, delivering next-gen solutions in **cybersecurity, digital forensics, network security, and cloud security frameworks**.  
+    We specialize in safeguarding critical digital assets through:
+  </p>
 
-                // Event click handler
-                eventClick: function (event) {
-                  alert(
-                    "Event: " +
-                      event.title +
-                      "\nDescription: " +
-                      (event.description || "No description available")
-                  );
-                },
-              });
+  <!-- Features with Modern Icons -->
+  <ul class="list-unstyled text-muted" style="font-size: 1.2rem; line-height: 1.8;">
+    <li><i class="fas fa-shield-alt text-primary"></i> <strong> Advanced Threat Intelligence:</strong> AI-driven detection & automated response.</li>
+    <li><i class="fas fa-cloud"></i> 
+      <strong> Secure Cloud & Data Protection:</strong> Blockchain encryption & zero-trust security.</li>
+    <li><i class="fas fa-user-secret text-warning"></i> <strong> Digital Forensics & Incident Response:</strong> Cutting-edge forensic investigation tools.</li>
+    <li><i class="fas fa-network-wired text-success"></i> <strong> Enterprise & Government Security:</strong> Tailored solutions for high-risk infrastructures.</li>
+  </ul>
 
-              // Add Event Form Submission
-              $("#addEventForm").on("submit", function (e) {
-                e.preventDefault();
+  <!-- Trust-Building CTA -->
+  <p class="card-text text-muted text-center mt-4"
+     style="font-size: 1.3rem; line-height: 1.8;">
+    🏆 **Industry-Leading Security Solutions Trusted by Enterprises & Government Sectors.**  
+    💡 <strong>Partner with us</strong> for innovative security solutions that redefine digital protection.
+  </p>
 
-                const title = $("#eventTitle").val();
-                const date = $("#eventDate").val();
-                const description = $("#eventDescription").val();
+  <!-- CTA Buttons for Clients -->
+  <div class="d-flex flex-column flex-md-row justify-content-center gap-3 mt-4">
+    <a href="#explore" class="btn btn-primary btn-lg btn-custom rounded-pill px-5 py-3 shadow">
+      🚀 Explore Solutions
+    </a>
+    <a href="#contact" class="btn btn-outline-danger btn-lg btn-custom rounded-pill px-5 py-3 shadow">
+      📩 Schedule a Consultation
+    </a>
+  </div>
+</div>
 
-                if (title && date) {
-                  $.ajax({
-                    url: '{% url "add_event" %}',
-                    type: "POST",
-                    data: JSON.stringify({ title, date, description }),
-                    contentType: "application/json",
-                    success: function (response) {
-                      alert(response.message);
 
-                      // Add the new event to the calendar
-                      calendar.fullCalendar("renderEvent", {
-                        title: title,
-                        start: date,
-                        description: description || "No description available",
-                      });
-
-                      // Reset form fields
-                      $("#addEventForm")[0].reset();
-                    },
-                    error: function () {
-                      alert("An error occurred. Please try again.");
-                    },
-                  });
-                } else {
-                  alert("Please fill in the required fields (Title and Date).");
-                }
-              });
-            });
-          </script>
-
-          <!-- Scrollable Calendar -->
-          <div
-            id="calendarTable"
-            style="
-              height: 400px; /* Set desired height */
-              overflow-y: auto; /* Enable vertical scrolling */
-              border: 1px solid #ccc; /* Optional: Add border for better visual separation */
-              padding: 10px; /* Optional: Add padding for better appearance */
-            "
-          ></div>
+   
+          <br />
         </article>
       </main>
     </div>
+    
     <footer>
-      <p>&copy; 2024 Your Website. All rights reserved.</p>
+      <p>&copy; 2025 Centre for Development of Advanced Computing (CDAC). All rights reserved.</p>
+     <!-- Chatbot Icon -->
+<div id="chatbot-icon" onclick="toggleChatbot()">
+  <i class="fas fa-comment-alt"></i>
+</div>
+
+<!-- Chatbot Window -->
+<div id="chatbot-window">
+  <div id="chatbot-header">
+      <span>Chatbot</span>
+      <div class="chatbot-header-buttons">
+        <span id="help-btn" class="chatbot-btn" onclick="showChatbotCommands()">
+            <i class="fa-solid fa-question-circle"></i> Help
+        </span>
+        <span id="clear-chat-btn" class="chatbot-btn" onclick="clearChat()">
+            <i class="fa-solid fa-trash"></i> Clear Chat
+        </span>
+    </div>
+    
+      <button onclick="toggleChatbot()">✖</button>
+  </div>
+  
+  <div id="chatbot-messages"></div>
+  <!-- Chatbot Input & Voice Button -->
+<div id="chatbot-input-container">
+  <input type="text" id="chatbot-input" placeholder="Type a message..." onkeypress="sendMessage(event)">
+  <button id="voice-btn" onclick="startVoiceRecognition()">
+      <i class="fa-solid fa-microphone"></i>
+  </button>
+</div>
+
+</div>
     </footer>
+
+    <script>
+      function toggleChatbot() {
+          var chatbot = document.getElementById("chatbot-window");
+          var input = document.getElementById("chatbot-input");
+          var chatbox = document.getElementById("chatbot-messages");
+      
+          if (chatbot.style.display === "none" || chatbot.style.display === "") {
+              chatbot.style.display = "flex"; // Show chatbot
+              input.focus();
+              loadChatHistory(); // Load previous messages
+          } else {
+              chatbot.style.display = "none"; // Hide chatbot
+          }
+      }
+      
+      function sendMessage(event) {
+          if (event.key === "Enter") {
+              var input = document.getElementById("chatbot-input");
+              var message = input.value.trim();
+              if (message === "") return;
+      
+              var chatbox = document.getElementById("chatbot-messages");
+      
+              // Add user message
+              chatbox.innerHTML += `<div class="message user-message"><span>You:</span> ${message} <small>${getTime()}</small></div>`;
+              saveChatHistory(); // Save message history
+              input.value = "";
+      
+              chatbox.scrollTop = chatbox.scrollHeight;
+      
+              // Show typing indicator
+              setTimeout(() => {
+                  chatbox.innerHTML += `<div id="typing-indicator" class="message bot-message">Bot is typing...</div>`;
+                  chatbox.scrollTop = chatbox.scrollHeight;
+              }, 500);
+      
+              // Generate bot response
+              setTimeout(() => {
+                  document.getElementById("typing-indicator").remove(); // Remove typing indicator
+                  var botResponse = generateBotResponse(message);
+                  typeBotResponse(botResponse);
+                  chatbox.scrollTop = chatbox.scrollHeight;
+              }, 1500);
+          }
+      }
+      
+      // Function to generate bot responses
+      function generateBotResponse(userMessage) {
+          const responses = {
+              "hello": ["Hi there! How can I assist you?", "Hello! What brings you here?", "Hey! How can I help?"],
+              "hi": ["Hello! Need any help?", "Hey there! How can I assist?", "Hi! What do you need?"],
+              "how are you": ["I'm just a bot, but I'm here to help!", "I don't have feelings, but I'm always ready to assist!", "I'm doing great! How about you?"],
+              "bye": ["Goodbye! Have a great day!", "See you later! Take care!", "Bye! Stay safe!"],
+              "what is your name": ["I'm your friendly chatbot!", "Just call me ChatBot!", "I'm a virtual assistant here to help."],
+              "tell me a joke": ["Why did the scarecrow win an award? Because he was outstanding in his field!", "Why don’t skeletons fight each other? They don’t have the guts!", "What did one ocean say to the other ocean? Nothing, they just waved!"],
+              "help": ["Sure! What do you need help with?", "I'm here to assist. Ask me anything!", "Tell me how I can assist you today."],
+              "nav": ["Kindly Login to access the features."],
+          };
+      
+          let lowerMessage = userMessage.toLowerCase();
+      
+          // Check if message exists in responses, else provide a fallback response
+          if (responses[lowerMessage]) {
+              return responses[lowerMessage][Math.floor(Math.random() * responses[lowerMessage].length)];
+          } else {
+              const defaultResponses = [
+                  "I'm not sure, but I can try to help!",
+                  "Could you please rephrase that?",
+                  "That's interesting! Tell me more.",
+                  "I might not have the answer, but I can try!",
+              ];
+              return defaultResponses[Math.floor(Math.random() * defaultResponses.length)];
+          }
+      }
+      
+      // Function to type the bot response letter by letter (Typing Effect)
+      function typeBotResponse(text) {
+          var chatbox = document.getElementById("chatbot-messages");
+          var botMessage = document.createElement("div");
+          botMessage.classList.add("message", "bot-message");
+      
+          var span = document.createElement("span");
+          span.innerText = "Bot: ";
+          botMessage.appendChild(span);
+      
+          var messageSpan = document.createElement("span");
+          botMessage.appendChild(messageSpan);
+      
+          chatbox.appendChild(botMessage);
+          chatbox.scrollTop = chatbox.scrollHeight;
+      
+          let i = 0;
+          function typeText() {
+              if (i < text.length) {
+                  messageSpan.innerHTML += text.charAt(i);
+                  i++;
+                  setTimeout(typeText, 50); // Adjust speed of typing effect
+              } else {
+                  messageSpan.innerHTML += ` <small>${getTime()}</small>`;
+                  speakResponse(text);
+                  saveChatHistory(); // Save message history after full response
+              }
+          }
+          typeText();
+      }
+      
+      
+      
+      // Function to get current time
+      function getTime() {
+          let now = new Date();
+          return now.getHours() + ":" + (now.getMinutes() < 10 ? "0" : "") + now.getMinutes();
+      }
+      
+      // Function to save chat history in local storage
+      function saveChatHistory() {
+          localStorage.setItem("chatHistory", document.getElementById("chatbot-messages").innerHTML);
+      }
+      
+      // Function to load chat history from local storage
+      function loadChatHistory() {
+          let chatHistory = localStorage.getItem("chatHistory");
+          if (chatHistory) {
+              document.getElementById("chatbot-messages").innerHTML = chatHistory;
+          }
+      }
+      
+      // Function to clear chat history
+      function clearChat() {
+          document.getElementById("chatbot-messages").innerHTML = "";
+          localStorage.removeItem("chatHistory");
+      }
+
+      let recognition; // Global variable for speech recognition
+
+function startVoiceRecognition() {
+    if (!('webkitSpeechRecognition' in window)) {
+        alert("Your browser does not support voice recognition.");
+        return;
+    }
+
+    if (recognition) {
+        recognition.stop(); // Stop recognition if already running
+        recognition = null;
+        document.getElementById("voice-btn").style.background = "red"; // Reset button color
+        return;
+    }
+
+    recognition = new webkitSpeechRecognition();
+    recognition.continuous = false;
+    recognition.lang = "en-US";
+
+    recognition.onresult = function(event) {
+        var transcript = event.results[0][0].transcript;
+        document.getElementById("voice-btn").style.background = "red"; // Reset button after recognition stops
+        processVoiceMessage(transcript); // ✅ Convert speech to chatbot message
+    };
+
+    recognition.onend = function() {
+        document.getElementById("voice-btn").style.background = "red"; // Ensure button resets
+    };
+
+    recognition.start();
+    document.getElementById("voice-btn").style.background = "green"; // Change color while recording
+}
+
+// Function to handle voice message and add it to the chat
+function processVoiceMessage(voiceMessage) {
+    if (!voiceMessage.trim()) return;
+
+    var chatbox = document.getElementById("chatbot-messages");
+
+    // Add user message from voice input
+    chatbox.innerHTML += `<div class="message user-message"><span>You:</span> ${voiceMessage} <small>${getTime()}</small></div>`;
+    
+    chatbox.scrollTop = chatbox.scrollHeight;
+    saveChatHistory(); // Save message history
+
+    // Show typing indicator
+    setTimeout(() => {
+        chatbox.innerHTML += `<div id="typing-indicator" class="message bot-message">Bot is typing...</div>`;
+        chatbox.scrollTop = chatbox.scrollHeight;
+    }, 500);
+
+    // Generate bot response
+    setTimeout(() => {
+        document.getElementById("typing-indicator").remove(); // Remove typing indicator
+        var botResponse = generateBotResponse(voiceMessage);
+        typeBotResponse(botResponse);
+        chatbox.scrollTop = chatbox.scrollHeight;
+    }, 1500);
+}
+
+function showChatbotCommands() {
+  var chatbox = document.getElementById("chatbot-messages");
+
+  const commandsList = `
+      <div class="message bot-message">
+          <span>Bot:</span> Here are some commands you can use: <br><br>
+          <b>• hello</b> - Greets you<br>
+          <b>• how are you</b> - Checks bot status<br>
+          <b>• what is your name</b> - Tells bot name<br>
+          <b>• tell me a joke</b> - Bot tells a joke <br>
+          <b>• bye</b> - Ends the chat<br>
+          <b>• help</b> - Shows this list of commands<br>
+      </div>
+  `;
+
+  chatbox.innerHTML += commandsList;
+  chatbox.scrollTop = chatbox.scrollHeight;
+}
+
+      </script>
+      
+      <style>
+        
+      
+        /* Chatbot Icon */
+#chatbot-icon {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background: #007bff;
+    color: white;
+    font-size: 24px;
+    width: 50px;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    cursor: pointer;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    transition: background 0.3s ease;
+}
+#chatbot-icon:hover {
+    background: #0056b3;
+}
+
+/* Chatbot Window */
+#chatbot-window {
+    display: none;
+    position: fixed;
+    bottom: 80px;
+    right: 20px;
+    width: 300px;
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    overflow: hidden;
+    flex-direction: column;
+    z-index: 1000;
+}
+
+/* Chatbot Header */
+#chatbot-header {
+    background: #007bff;
+    color: white;
+    padding: 10px;
+    font-size: 16px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+#chatbot-header button {
+    background: transparent;
+    border: none;
+    color: white;
+    font-size: 18px;
+    cursor: pointer;
+}
+
+/* Chat Messages */
+#chatbot-messages {
+    height: 250px;
+    padding: 10px;
+    overflow-y: auto;
+    background: #f9f9f9;
+}
+#chatbot-messages div {
+    margin: 5px 0;
+    padding: 8px;
+    border-radius: 5px;
+}
+#chatbot-messages div:nth-child(odd) {
+    background:  #007bff;
+    text-align: left;
+}
+#chatbot-messages div:nth-child(even) {
+    background: lightgreen;
+    text-align: left;
+}
+/* Chatbot Input Area */
+#chatbot-input-container {
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    background: white;
+}
+
+/* Chatbot Input */
+#chatbot-input {
+    flex: 1; /* Takes full width */
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+    outline: none;
+}
+
+/* Voice Button */
+#voice-btn {
+    background: #007bff;
+    color: white;
+    border: none;
+    cursor: pointer;
+    font-size: 18px;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-left: 10px; /* Space between input and button */
+    transition: background 0.3s;
+}
+
+#voice-btn:hover {
+    background: #0056b3;
+}
+
+
+
+      </style>
+      
 
     <button id="scrollTopBtn" title="Go to top">↑</button>
 
@@ -919,23 +2249,24 @@
         $("#loadRegisterForm").on("click", function (event) {
           event.preventDefault();
           $.ajax({
-            url: '{% url "register" %}', // URL for the login form
+            url: '{% url "register" %}', // URL for the registration form
             type: "GET",
             success: function (data) {
-              $("#k1-article").html(data); // Load the login form content into the article
+              $("#k1-article").html(data); // Load the registration form content into the article
 
               // Attach a submit event listener to the dynamically loaded form
               $("#k1-article").on("submit", "form", function (e) {
                 e.preventDefault();
                 const formData = $(this).serialize(); // Serialize form data
                 $.ajax({
-                  url: '{% url "register" %}',
+                  url: '{% url "register" %}', // Ensure this is the correct URL for handling registration
                   type: "POST",
                   data: formData,
                   success: function (response) {
-                    // Redirect if login is successful
+                    // Check for a redirect URL in the response
                     if (response.redirect_url) {
-                      window.location.href = response.redirect_url;
+                      // If registration is successful, dynamically load new page content into a container
+                      $("#k1-article").load(response.redirect_url);
                     } else {
                       // If the response includes the updated form, replace the content
                       $("#k1-article").html(response);
@@ -948,7 +2279,7 @@
               });
             },
             error: function () {
-              alert("Error loading login form");
+              alert("Error loading registration form");
             },
           });
         });
@@ -970,13 +2301,14 @@
                 e.preventDefault();
                 const formData = $(this).serialize(); // Serialize form data
                 $.ajax({
-                  url: '{% url "my-login" %}',
+                  url: '{% url "my-login" %}', // Ensure this is the correct URL for login processing
                   type: "POST",
                   data: formData,
                   success: function (response) {
-                    // Redirect if login is successful
+                    // Check for a redirect URL in the response
                     if (response.redirect_url) {
-                      window.location.href = response.redirect_url;
+                      // If login is successful, dynamically load new page content into a container
+                      $("#k1-article").load(response.redirect_url);
                     } else {
                       // If the response includes the updated form, replace the content
                       $("#k1-article").html(response);
@@ -997,53 +2329,31 @@
     </script>
 
     <script>
-      // Ensure the collapse functionality works with the checkbox
-      const checkbox = document.getElementById("checkbox2");
-      const quickLinks = document.getElementById("quickLinks");
-
-      checkbox.addEventListener("change", function () {
-        if (this.checked) {
-          quickLinks.classList.add("show"); // Show the content when checkbox is checked
-        } else {
-          quickLinks.classList.remove("show"); // Hide the content when checkbox is unchecked
-        }
-      });
-    </script>
-
-    <script>
       $(document).ready(function () {
-        // Attach a click event listener for the "Register here" link dynamically
+        // General function for loading forms dynamically
+        function loadForm(url, container) {
+          $.ajax({
+            url: url, // URL for the form (either login or registration)
+            type: "GET",
+            success: function (data) {
+              $(container).html(data); // Load the form content into the specified container
+            },
+            error: function () {
+              alert("Error loading the form.");
+            },
+          });
+        }
+
+        // Attach click event listener for the "Register here" link dynamically
         $("#k1-article").on("click", "#registerLink", function (e) {
           e.preventDefault(); // Prevent default anchor behavior
-          $.ajax({
-            url: '{% url "register" %}', // URL for the registration form
-            type: "GET",
-            success: function (data) {
-              $("#k1-article").html(data); // Load the registration form content into the article
-            },
-            error: function () {
-              alert("Error loading the registration form.");
-            },
-          });
+          loadForm("{% url 'register' %}", "#k1-article"); // Load the registration form
         });
-      });
-    </script>
 
-    <script>
-      $(document).ready(function () {
-        // Attach a click event listener for the "Register here" link dynamically
+        // Attach click event listener for the "LogLink" (login link) dynamically
         $("#k1-article").on("click", "#LogLink", function (e) {
           e.preventDefault(); // Prevent default anchor behavior
-          $.ajax({
-            url: '{% url "my-login" %}', // URL for the registration form
-            type: "GET",
-            success: function (data) {
-              $("#k1-article").html(data); // Load the registration form content into the article
-            },
-            error: function () {
-              alert("Error loading the registration form.");
-            },
-          });
+          loadForm("{% url 'my-login' %}", "#k1-article"); // Load the login form
         });
       });
     </script>
